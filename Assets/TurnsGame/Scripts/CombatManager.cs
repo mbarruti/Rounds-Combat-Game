@@ -109,16 +109,16 @@ public class CombatManager : MonoBehaviour
                 Clash(playerAttack, enemyAttack);
                 break;
 
-            case (Attack playerAttack, Block enemyBlock):
+            case (Attack, Block):
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
 
-            case (Block playerBlock, Block enemyBlock):
+            case (Block, Block):
                 UI.Instance.WriteText("Both players block what the fuck");
                 break;
 
-            case (Block playerBlock, Attack enemyAttack):
+            case (Block, Attack):
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
                 break;
@@ -128,10 +128,8 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
-        //if (player.action is not Block) player.RecoverShieldCharge();
-        //if (enemy.action is not Block) enemy.RecoverShieldCharge();
-
-        RoundAction();
+        CheckCombatState();
+        if (state != CombatState.END) RoundAction();
     }
 
     void Clash(Attack playerAttack, Attack enemyAttack)
@@ -160,4 +158,24 @@ public class CombatManager : MonoBehaviour
         clashLoser.PerformAction(clashWinner);
     }
 
+    void CheckCombatState()
+    {
+        if (player.IsDead() || enemy.IsDead())
+        {
+            state = CombatState.END;
+            EndCombat();
+        }
+        else return;
+    }
+
+    void EndCombat()
+    {
+        if (player.IsDead() && enemy.IsDead()) UI.Instance.WriteText("Both players have fallen. The match ends in a draw!");
+        else
+        {
+            (var winner, var loser) = player.IsDead() ? (enemy, player) : (player, enemy);
+            UI.Instance.WriteText(winner.name + " wins the match!");
+        }
+        StartCoroutine(UI.Instance.ExecuteAnimations());
+    }
 }

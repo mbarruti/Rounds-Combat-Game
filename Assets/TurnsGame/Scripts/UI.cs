@@ -37,7 +37,7 @@ public class UI : MonoBehaviour
             yield return StartCoroutine(enumerator);
             if (i < count-1) yield return new WaitForSeconds(waitTime);
         }
-        CombatManager.GetInstance().state = CombatState.CHOOSE;
+        if (CombatManager.GetInstance().state != CombatState.END) CombatManager.GetInstance().state = CombatState.CHOOSE;
     }
 
     public void WriteText(string message, float delay = 0.03f)

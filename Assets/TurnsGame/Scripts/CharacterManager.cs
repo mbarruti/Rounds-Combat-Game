@@ -49,4 +49,10 @@ public class CharacterManager : MonoBehaviour
     {
         if (currentShieldCharges > 0) currentShieldCharges -= 1;
     }
+
+    public bool IsDead()
+    {
+        if (currentHP <= 0) return true;
+        return false;
+    }
 }
