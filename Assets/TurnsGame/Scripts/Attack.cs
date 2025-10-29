@@ -16,6 +16,6 @@ public class Attack : Action
             target.TakeDamage(totalDamage);
         }
 
-        user.RecoverShieldCharge();
+        //user.RecoverShieldCharge();
     }
 }

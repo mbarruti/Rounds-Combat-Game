@@ -75,6 +75,14 @@ public class CombatManager : MonoBehaviour
         AIAction();
     }
 
+    void AIAction()
+    {
+        int randomChoice = Random.Range(0, 2);
+
+        if (randomChoice == 1 && enemy.currentShieldCharges > 0) enemy.action = new Block();
+        else enemy.action = new Attack();
+    }
+
     public void OnAttackButton()
     {
         if (state != CombatState.CHOOSE) return;
@@ -86,19 +94,11 @@ public class CombatManager : MonoBehaviour
 
     public void OnBlockButton()
     {
-        if (state != CombatState.CHOOSE) return;
+        if (state != CombatState.CHOOSE || player.currentShieldCharges <= 0) return;
         state = CombatState.ACTION;
         player.action = new Block();
 
         PerformRound();
-    }
-
-    void AIAction()
-    {
-        int randomChoice = Random.Range(0, 2);
-
-        if (randomChoice == 0) enemy.action = new Block();
-        else if (randomChoice == 1) enemy.action = new Block();
     }
 
     void PerformRound()
@@ -123,8 +123,15 @@ public class CombatManager : MonoBehaviour
                 player.PerformAction(enemy);
                 break;
         }
+        RoundEnd();
+    }
+
+    void RoundEnd()
+    {
+        if (player.action is not Block) player.RecoverShieldCharge();
+        if (enemy.action is not Block) enemy.RecoverShieldCharge();
+
         RoundAction();
-        //StartCoroutine(UI.Instance.ExecuteAnimations());
     }
 
     void Clash(Attack playerAttack, Attack enemyAttack)
