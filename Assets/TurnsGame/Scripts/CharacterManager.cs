@@ -27,6 +27,7 @@ public class CharacterManager : MonoBehaviour
     public void PerformAction(CharacterManager target)
     {
         action?.Execute(this, target);
+        if (action is not Block) RecoverShieldCharge();
     }
 
     public void TakeDamage(int damage)
@@ -39,7 +40,7 @@ public class CharacterManager : MonoBehaviour
         UI.Instance.WriteText(this.name + " has " + currentHP + " health points left");
     }
 
-    public void RecoverShieldCharge()
+    private void RecoverShieldCharge()
     {
         if (currentShieldCharges < maxShieldCharges) currentShieldCharges += 1;
     }

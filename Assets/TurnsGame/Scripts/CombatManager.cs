@@ -128,8 +128,8 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
-        if (player.action is not Block) player.RecoverShieldCharge();
-        if (enemy.action is not Block) enemy.RecoverShieldCharge();
+        //if (player.action is not Block) player.RecoverShieldCharge();
+        //if (enemy.action is not Block) enemy.RecoverShieldCharge();
 
         RoundAction();
     }
@@ -155,8 +155,9 @@ public class CombatManager : MonoBehaviour
             clashLoser = player;
             UI.Instance.WriteText(clashWinner.name + " wins the clash!");
         }
-        //Debug.Log(clashWinner.name + " attacks " + clashLoser.name);
+        clashLoser.action = null;
         clashWinner.PerformAction(clashLoser);
+        clashLoser.PerformAction(clashWinner);
     }
 
 }
