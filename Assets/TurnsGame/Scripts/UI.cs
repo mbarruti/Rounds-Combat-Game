@@ -11,6 +11,9 @@ public class UI : MonoBehaviour
 
     private float waitTime = 1f;
 
+    public RectTransform uiPlayerOnePosition;
+    public RectTransform uiPlayerTwoPosition;
+
     private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
     private void Awake()

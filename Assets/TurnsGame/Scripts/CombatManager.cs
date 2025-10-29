@@ -41,17 +41,22 @@ public class CombatManager : MonoBehaviour
 
     CharacterManager SpawnCharacter(bool isPlayer)
     {
-        Vector2 position;
+        Vector3 screenPosition;
+        Vector3 worldPosition;
 
         if (isPlayer)
         {
-            position = new Vector2(-2.5f, 0.5f);
+            screenPosition = UI.Instance.uiPlayerOnePosition.position;
+            worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+            worldPosition.z = 0f;
         }
         else
         {
-            position = new Vector2(2.5f, 2.5f);
+            screenPosition = UI.Instance.uiPlayerTwoPosition.position;
+            worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+            worldPosition.z = 0f;
         }
-        Transform characterTransform = Instantiate(prefabCharacter, position, Quaternion.identity);
+        Transform characterTransform = Instantiate(prefabCharacter, worldPosition, Quaternion.identity);
         CharacterManager characterManager = characterTransform.GetComponent<CharacterManager>();
         characterManager.Setup(isPlayer);
 
