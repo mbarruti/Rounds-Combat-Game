@@ -29,12 +29,16 @@ public class CombatManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        SetupMatch();
+    }
+
+    void SetupMatch()
+    {
         player = SpawnCharacter(true);
         player.name = "PlayerOne";
         enemy = SpawnCharacter(false);
         enemy.name = "PlayerTwo";
 
-        //Debug.Log("Begin match!");
         UI.Instance.WriteText("Begin match!");
         RoundAction();
     }

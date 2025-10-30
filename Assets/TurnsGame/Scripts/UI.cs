@@ -7,7 +7,10 @@ using System.Linq;
 public class UI : MonoBehaviour
 {
     public static UI Instance { get; private set; }
+
     public TextMeshProUGUI panelText;
+    public TextMeshProUGUI playerHealthPoints;
+    public TextMeshProUGUI enemyHealthPoints;
 
     private float waitTime = 1f;
 
@@ -55,5 +58,15 @@ public class UI : MonoBehaviour
             panelText.text += c;
             yield return new WaitForSeconds(delay);
         }
+    }
+
+    public void UpdateHealthPointsText(CharacterManager character)
+    {
+        coroutineQueue.Enqueue(UpdateHPTextCoroutine(character));
+    }
+
+    private IEnumerator UpdateHPTextCoroutine(CharacterManager character)
+    {
+        yield return character.healthText.text = $"{character.currentHP}/{character.maxHP}";
     }
 }
