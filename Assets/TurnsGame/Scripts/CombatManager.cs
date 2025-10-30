@@ -39,7 +39,7 @@ public class CombatManager : MonoBehaviour
         enemy = SpawnCharacter(false);
         enemy.name = "PlayerTwo";
 
-        UI.Instance.WriteText("Begin match!");
+        UI.AddAnimation(UI.Instance.TypeTextCoroutine("Begin match"));
         RoundAction();
     }
 
@@ -71,8 +71,8 @@ public class CombatManager : MonoBehaviour
     {
         roundNumber++;
 
-        UI.Instance.WriteText("Round " + roundNumber);
-        UI.Instance.WriteText("Choose your action");
+        UI.AddAnimation(UI.Instance.TypeTextCoroutine("Round " + roundNumber));
+        UI.AddAnimation(UI.Instance.TypeTextCoroutine("Choose your action", waitTime: 0f));
         StartCoroutine(UI.Instance.ExecuteAnimations());
 
         //state = CombatState.CHOOSE;
@@ -119,7 +119,7 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Block, Block):
-                UI.Instance.WriteText("Both players block what the fuck");
+                UI.AddAnimation(UI.Instance.TypeTextCoroutine("Both players block what the fuck"));
                 break;
 
             case (Block, Attack):
@@ -138,7 +138,7 @@ public class CombatManager : MonoBehaviour
 
     void Clash(Attack playerAttack, Attack enemyAttack)
     {
-        UI.Instance.WriteText("A clash is happening!");
+        UI.AddAnimation(UI.Instance.TypeTextCoroutine("A clash is happening!"));
 
         CharacterManager clashWinner = null;
         CharacterManager clashLoser = null;
@@ -149,13 +149,13 @@ public class CombatManager : MonoBehaviour
         {
             clashWinner = player;
             clashLoser = enemy;
-            UI.Instance.WriteText(clashWinner.name + " wins the clash!");
+            UI.AddAnimation(UI.Instance.TypeTextCoroutine(clashWinner.name + " wins the clash!"));
         }
         else
         {
             clashWinner = enemy;
             clashLoser = player;
-            UI.Instance.WriteText(clashWinner.name + " wins the clash!");
+            UI.AddAnimation(UI.Instance.TypeTextCoroutine(clashWinner.name + " wins the clash!"));
         }
         clashLoser.action = null;
         clashWinner.PerformAction(clashLoser);
@@ -174,11 +174,11 @@ public class CombatManager : MonoBehaviour
 
     void EndCombat()
     {
-        if (player.IsDead() && enemy.IsDead()) UI.Instance.WriteText("Both players have fallen. The match ends in a draw!");
+        if (player.IsDead() && enemy.IsDead()) UI.AddAnimation(UI.Instance.TypeTextCoroutine("Both players have fallen. The match ends in a draw!"));
         else
         {
             (var winner, var loser) = player.IsDead() ? (enemy, player) : (player, enemy);
-            UI.Instance.WriteText(winner.name + " wins the match!");
+            UI.AddAnimation(UI.Instance.TypeTextCoroutine(winner.name + " wins the match!"));
         }
         StartCoroutine(UI.Instance.ExecuteAnimations());
     }

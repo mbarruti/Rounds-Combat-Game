@@ -520,8 +520,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI
   panelText: {fileID: 1139233406}
-  playerHealthPoints: {fileID: 1898059513}
-  enemyHealthPoints: {fileID: 1803758357}
+  playerHPText: {fileID: 1898059513}
+  enemyHPText: {fileID: 1803758357}
   uiPlayerOnePosition: {fileID: 2073629919}
   uiPlayerTwoPosition: {fileID: 1251385484}
 --- !u!1 &519420028

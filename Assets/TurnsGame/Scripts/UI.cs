@@ -9,15 +9,13 @@ public class UI : MonoBehaviour
     public static UI Instance { get; private set; }
 
     public TextMeshProUGUI panelText;
-    public TextMeshProUGUI playerHealthPoints;
-    public TextMeshProUGUI enemyHealthPoints;
-
-    private float waitTime = 1f;
+    public TextMeshProUGUI playerHPText;
+    public TextMeshProUGUI enemyHPText;
 
     public RectTransform uiPlayerOnePosition;
     public RectTransform uiPlayerTwoPosition;
 
-    private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
+    private static Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
     private void Awake()
     {
@@ -38,19 +36,18 @@ public class UI : MonoBehaviour
             IEnumerator enumerator = coroutineQueue.Dequeue();
             Debug.LogFormat("Dequed! {0}", i+1);
             yield return StartCoroutine(enumerator);
-            if (i < count-1) yield return new WaitForSeconds(waitTime);
         }
         if (CombatManager.GetInstance().state != CombatState.END) CombatManager.GetInstance().state = CombatState.CHOOSE;
     }
 
-    public void WriteText(string message, float delay = 0.03f)
+    public static void AddAnimation(IEnumerator animation)
     {
-        Debug.LogFormat("Enqueuing text coroutine: {0}", message);
-        coroutineQueue.Enqueue(TypeTextCoroutine(message, delay));
-        Debug.LogFormat("Num of queued texts {0}", coroutineQueue.Count());
+        Debug.LogFormat("Enqueuing animation");
+        coroutineQueue.Enqueue(animation);
+        Debug.LogFormat("Num of queued animations {0}", coroutineQueue.Count());
     }
 
-    private IEnumerator TypeTextCoroutine(string message, float delay)
+    public IEnumerator TypeTextCoroutine(string message, float delay = 0.03f, float waitTime = 1f)
     {
         panelText.text = "";
         foreach (char c in message)
@@ -58,15 +55,12 @@ public class UI : MonoBehaviour
             panelText.text += c;
             yield return new WaitForSeconds(delay);
         }
+        yield return new WaitForSeconds(waitTime);
     }
 
-    public void UpdateHealthPointsText(CharacterManager character)
-    {
-        coroutineQueue.Enqueue(UpdateHPTextCoroutine(character));
-    }
-
-    private IEnumerator UpdateHPTextCoroutine(CharacterManager character)
+    public IEnumerator UpdateHPText(CharacterManager character, float waitTime = 0f)
     {
         yield return character.healthText.text = $"{character.currentHP}/{character.maxHP}";
+        yield return new WaitForSeconds(waitTime);
     }
 }

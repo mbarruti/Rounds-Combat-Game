@@ -20,13 +20,12 @@ public class CharacterManager : MonoBehaviour
         if (isPlayer)
         {
             gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().playerMaterial;
-            healthText = UI.Instance.playerHealthPoints;
+            healthText = UI.Instance.playerHPText;
         }
         else
         {
             gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().enemyMaterial;
-            healthText = UI.Instance.enemyHealthPoints;
-            UI.Instance.UpdateHealthPointsText(this);
+            healthText = UI.Instance.enemyHPText;
         }
         healthText.text = $"{currentHP}/{maxHP}";
     }
@@ -39,12 +38,12 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        UI.Instance.WriteText(name + " loses " + damage + " health points");
+        UI.AddAnimation(UI.Instance.TypeTextCoroutine(name + " loses " + damage + " health points"));
 
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
-        UI.Instance.UpdateHealthPointsText(this);
+        UI.AddAnimation(UI.Instance.UpdateHPText(this));
     }
 
     private void RecoverShieldCharge()
