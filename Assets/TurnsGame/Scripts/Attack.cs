@@ -1,7 +1,6 @@
 using System.Xml.Linq;
 using UnityEngine;
 
-[System.Serializable]
 public class Attack : Action
 {
     int baseDamage = 20;
@@ -9,7 +8,7 @@ public class Attack : Action
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {
-        UI.AddAnimation(UI.Instance.TypeTextCoroutine(user.name + " attacks " + target.name));
+        UI.AddAnimation(UI.Instance.WriteText(user.name + " attacks " + target.name));
 
         if (target.action is not Block)
         {

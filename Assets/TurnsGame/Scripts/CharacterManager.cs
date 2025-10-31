@@ -5,7 +5,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class CharacterManager : MonoBehaviour
 {
-
     public int maxHP;
     public int currentHP;
     public TextMeshProUGUI healthText;
@@ -38,7 +37,7 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        UI.AddAnimation(UI.Instance.TypeTextCoroutine(name + " loses " + damage + " health points"));
+        UI.AddAnimation(UI.Instance.WriteText(name + " loses " + damage + " health points"));
 
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;

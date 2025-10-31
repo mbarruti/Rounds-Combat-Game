@@ -7,9 +7,9 @@ public class Block : Action
     {
         if (target.action is Attack)
         {
-            UI.AddAnimation(UI.Instance.TypeTextCoroutine(user.name + " blocks the incoming attack"));
+            UI.AddAnimation(UI.Instance.WriteText(user.name + " blocks the incoming attack"));
             user.LoseShieldCharge();
         }
-        else UI.AddAnimation(UI.Instance.TypeTextCoroutine(user.name + " blocks nothing what a donkey"));
+        else UI.AddAnimation(UI.Instance.WriteText(user.name + " blocks nothing what a donkey"));
     }
 }
