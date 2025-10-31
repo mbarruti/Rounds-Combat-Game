@@ -29,12 +29,12 @@ public class UI : MonoBehaviour
 
     public IEnumerator ExecuteAnimations()
     {
-        Debug.Log("Executing animations");
+        //Debug.Log("Executing animations");
         int count = coroutineQueue.Count();
         for (int i = 0; i < count; i++)
         {   
             IEnumerator enumerator = coroutineQueue.Dequeue();
-            Debug.LogFormat("Dequed! {0}", i+1);
+            //Debug.LogFormat("Dequed! {0}", i+1);
             yield return StartCoroutine(enumerator);
         }
         if (CombatManager.GetInstance().state != CombatState.END) CombatManager.GetInstance().state = CombatState.CHOOSE;
@@ -42,9 +42,9 @@ public class UI : MonoBehaviour
 
     public static void AddAnimation(IEnumerator animation)
     {
-        Debug.LogFormat("Enqueuing animation");
+        //Debug.LogFormat("Enqueuing animation");
         coroutineQueue.Enqueue(animation);
-        Debug.LogFormat("Num of queued animations {0}", coroutineQueue.Count());
+        //Debug.LogFormat("Num of queued animations {0}", coroutineQueue.Count());
     }
 
     public IEnumerator WriteText(string message, float delay = 0.03f, float waitTime = 1f)

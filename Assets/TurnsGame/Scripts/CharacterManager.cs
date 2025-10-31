@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
+using System.Collections.Generic;
+using System.Linq;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -10,12 +12,17 @@ public class CharacterManager : MonoBehaviour
     public TextMeshProUGUI healthText;
 
     public int maxShieldCharges;
-    public int currentShieldCharges;
+    public Stack<float> shieldCharges;
+    public List<float> chargesList;
+    //public int currentShieldCharges;
 
     public Action action;
 
     public void Setup(bool isPlayer)
     {
+        shieldCharges = new Stack<float>();
+        RefillShieldMeter();
+
         if (isPlayer)
         {
             gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().playerMaterial;
@@ -45,15 +52,70 @@ public class CharacterManager : MonoBehaviour
         UI.AddAnimation(UI.Instance.UpdateHPText(this));
     }
 
-    private void RecoverShieldCharge()
+    public void RefillShieldMeter()
     {
-        if (currentShieldCharges < maxShieldCharges) currentShieldCharges += 1;
+        for (int i = 0; i < maxShieldCharges; i++)
+        {
+            shieldCharges.Push(1f);
+        }
     }
 
-    public void LoseShieldCharge()
+    private void RecoverShieldCharge()
     {
-        if (currentShieldCharges > 0) currentShieldCharges -= 1;
+        if (GetAvailableCharges() == maxShieldCharges)
+            return;
+        if (IsHalf(shieldCharges.Peek()))
+        {
+            float charge = shieldCharges.Pop();
+            charge = 1f;
+            shieldCharges.Push(charge);
+        }
+        else
+            shieldCharges.Push(0.5f);
+        //if (currentShieldCharges < maxShieldCharges) currentShieldCharges += 1;
+        chargesList = new List<float>(shieldCharges);
+        Debug.Log("Number of charges of " + this.name + ": " + GetAvailableCharges());
     }
+
+    public void LoseShieldCharges(float shieldMeterDamage)
+    {
+        Stack<float> tempStack = new Stack<float>();
+
+        while (GetAvailableCharges() > 0 && shieldMeterDamage > 0)
+        {
+            Debug.Log("daño a shield " + shieldMeterDamage);
+            float chargeValue = shieldCharges.Pop();
+            if (IsHalf(chargeValue)) // If it's 0.5f
+            {
+                tempStack.Push(chargeValue);
+            }
+            else // If it's 1f
+            {
+                float damageLeft = shieldMeterDamage - chargeValue;
+                chargeValue -= shieldMeterDamage;
+                if (IsHalf(chargeValue))
+                    tempStack.Push(chargeValue);
+                shieldMeterDamage = damageLeft;
+            }
+        }
+        if (tempStack.Count() > 0) shieldCharges.Push(0.5f);
+        //if (currentShieldCharges > 0) currentShieldCharges -= 1;
+        chargesList = new List<float>(shieldCharges);
+        Debug.Log("Number of charges of " + this.name + ": " + GetAvailableCharges());
+    }
+
+    public int GetAvailableCharges()
+    {
+        return shieldCharges.Count(charge => !IsHalf(charge));
+    }
+
+    //bool IsChargeRecovering(float charge)
+    //{
+    //    const float epsilon = 0.0001f;
+    //    return charge < 0.5f + epsilon;
+    //}
+
+    bool IsHalf(float value) => Mathf.Abs(value - 0.5f) < 0.0001f;
 
     public bool IsDead()
     {

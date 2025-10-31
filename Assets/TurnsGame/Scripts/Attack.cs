@@ -6,6 +6,8 @@ public class Attack : Action
     int baseDamage = 20;
     int totalDamage;
 
+    float meterDamage = 1f;
+
     public override void Execute(CharacterManager user, CharacterManager target)
     {
         UI.AddAnimation(UI.Instance.WriteText(user.name + " attacks " + target.name));
@@ -14,6 +16,10 @@ public class Attack : Action
         {
             totalDamage = baseDamage + 0;
             target.TakeDamage(totalDamage);
+        }
+        else
+        {
+            target.LoseShieldCharges(meterDamage);
         }
         //user.RecoverShieldCharge();
     }
