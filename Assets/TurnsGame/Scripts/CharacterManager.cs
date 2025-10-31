@@ -64,7 +64,7 @@ public class CharacterManager : MonoBehaviour
     {
         if (GetAvailableCharges() == maxShieldCharges)
             return;
-        if (IsHalf(shieldCharges.Peek()))
+        if (shieldCharges.Count() > 0 && IsHalf(shieldCharges.Peek()))
         {
             float charge = shieldCharges.Pop();
             charge = 1f;
