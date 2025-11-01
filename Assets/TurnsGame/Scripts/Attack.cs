@@ -19,7 +19,8 @@ public class Attack : Action
         }
         else
         {
-            target.LoseShieldCharges(meterDamage);
+            target.shieldMeter.LoseCharges(meterDamage);
+            Debug.Log("Number of charges of " + target.name + ": " + target.shieldMeter.GetAvailableCharges());
         }
         //user.RecoverShieldCharge();
     }

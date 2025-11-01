@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
 
@@ -84,7 +81,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
 
-        if (randomChoice == 1 && enemy.GetAvailableCharges() > 0) enemy.action = new Block();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
         else enemy.action = new Attack();
     }
 
@@ -99,7 +96,7 @@ public class CombatManager : MonoBehaviour
 
     public void OnBlockButton()
     {
-        if (state != CombatState.CHOOSE || player.GetAvailableCharges() <= 0) return;
+        if (state != CombatState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
         state = CombatState.ACTION;
         player.action = new Block();
 
