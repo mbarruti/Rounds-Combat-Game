@@ -101,7 +101,7 @@ public class ShieldMeterUI : MonoBehaviour
     void UpdateMeterUI(List<float> currentCharges)
     {
         int i = 1;
-        while (i < chargesCopy.Count() + 1)
+        while (chargesCopy.Count >= currentCharges.Count)
         {
             if (TryGet(currentCharges, i, out float charge))
             {
@@ -113,24 +113,27 @@ public class ShieldMeterUI : MonoBehaviour
                 }
                 else if (charge == 1f)
                 {
+                    Debug.Log("entra");
                     chargesCopy.RemoveAt(chargesCopy.Count - i);
+                    Destroy(chargeBarList[chargeBarList.Count - i]);
                     chargeBarList.RemoveAt(chargeBarList.Count - i);
                 }
-                i++;
             }
             else
             {
-                for (int index = 1; index < chargesCopy.Count; i++)
+                for (int index = 1; index < chargesCopy.Count; index++)
                 {
                     if (chargesCopy[^index] == 1f)
                     {
                         chargesCopy.RemoveAt(chargesCopy.Count - index);
+                        Destroy(chargeBarList[chargeBarList.Count - index]);
                         chargeBarList.RemoveAt(chargeBarList.Count - index);
                         break;
                     }
                 }
             }
         }
+
     }
 
     public int GetAvailableCharges() => chargeBars.Count(charge => chargeBars.Peek().GetComponent<Image>().color != Color.red);
