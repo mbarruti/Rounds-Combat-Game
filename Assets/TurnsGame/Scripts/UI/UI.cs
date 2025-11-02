@@ -12,6 +12,9 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI playerHPText;
     public TextMeshProUGUI enemyHPText;
 
+    public ShieldMeterUI playerShieldMeter;
+    public ShieldMeterUI enemyShieldMeter;
+
     public RectTransform uiPlayerOnePosition;
     public RectTransform uiPlayerTwoPosition;
 

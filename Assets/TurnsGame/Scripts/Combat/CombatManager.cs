@@ -69,6 +69,9 @@ public class CombatManager : MonoBehaviour
     {
         roundNumber++;
 
+        player.shieldMeterUI.SetChargesCopy();
+        enemy.shieldMeterUI.SetChargesCopy();
+
         UI.AddAnimation(UI.Instance.WriteText("Round " + roundNumber));
         UI.AddAnimation(UI.Instance.WriteText("Choose your action", waitTime: 0f));
         StartCoroutine(UI.Instance.ExecuteAnimations());
@@ -82,7 +85,7 @@ public class CombatManager : MonoBehaviour
         int randomChoice = Random.Range(0, 2);
 
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
-        else enemy.action = new Attack();
+        else enemy.action = new Block();
     }
 
     public void OnAttackButton()
@@ -172,7 +175,8 @@ public class CombatManager : MonoBehaviour
 
     void EndCombat()
     {
-        if (player.IsDead() && enemy.IsDead()) UI.AddAnimation(UI.Instance.WriteText("Both players have fallen. The match ends in a draw!"));
+        if (player.IsDead() && enemy.IsDead()) 
+            UI.AddAnimation(UI.Instance.WriteText("Both players have fallen. The match ends in a draw!"));
         else
         {
             (var winner, var loser) = player.IsDead() ? (enemy, player) : (player, enemy);

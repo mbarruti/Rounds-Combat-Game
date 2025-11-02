@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class ShieldMeter
     [SerializeField] int maxCharges;
     Stack<float> charges;
     [SerializeField] List<float> chargesList;
+
+    public event Action<List<float>> chargesChangedEvent;
 
     public void Setup()
     {
@@ -38,6 +41,7 @@ public class ShieldMeter
         else
             charges.Push(0.5f);
         chargesList = new List<float>(charges);
+        chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
     public void LoseCharges(float shieldMeterDamage)
@@ -63,12 +67,20 @@ public class ShieldMeter
         }
         if (tempStack.Count() > 0) charges.Push(0.5f);
         chargesList = new List<float>(charges);
+        chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
-    public int GetAvailableCharges()
-    {
-        return charges.Count(charge => !IsHalf(charge));
-    }
+    public int GetAvailableCharges() => charges.Count(charge => !IsHalf(charge));
+
+    public int GetMaxCharges() => maxCharges;
+
+    public int GetCurrentCharges() => charges.Count();
+
+    public float GetLastCharge() => charges.Peek();
+
+    public int GetLastChargeIndex() => charges.Count() - 1;
+
+    public List<float> GetChargesCopy() => new List<float>(new Stack<float>(charges));
 
     bool IsHalf(float value) => Mathf.Abs(value - 0.5f) < 0.0001f;
 
