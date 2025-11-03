@@ -100,43 +100,47 @@ public class ShieldMeterUI : MonoBehaviour
 
     void UpdateMeterUI(List<float> currentCharges)
     {
-        int i = 1;
-        while (chargesCopy.Count >= currentCharges.Count)
+        int lastIndex = chargesCopy.Count - 1;
+        int aux = 0;
+        //Debug.Log("currentcharges count: " + currentCharges.Count);
+        while (chargesCopy.Count > currentCharges.Count)
         {
-            if (TryGet(currentCharges, i, out float charge))
+            if (!TryGet(currentCharges, lastIndex, out float charge))
             {
-                if (charge != chargesCopy[^i])
+                for (int i = 1; i <= chargesCopy.Count; i++)
                 {
-                    chargesCopy[^i] = charge;
-                    chargeBarList[^i].UpdateBarColor(charge);
-                    //return;
-                }
-                else if (charge == 1f)
-                {
-                    Debug.Log("entra");
-                    chargesCopy.RemoveAt(chargesCopy.Count - i);
-                    Destroy(chargeBarList[chargeBarList.Count - i]);
-                    chargeBarList.RemoveAt(chargeBarList.Count - i);
-                }
-            }
-            else
-            {
-                for (int index = 1; index < chargesCopy.Count; index++)
-                {
-                    if (chargesCopy[^index] == 1f)
+                    float value = chargesCopy[^i];
+                    if (value == 1f)
                     {
-                        chargesCopy.RemoveAt(chargesCopy.Count - index);
-                        Destroy(chargeBarList[chargeBarList.Count - index]);
-                        chargeBarList.RemoveAt(chargeBarList.Count - index);
+                        //Debug.Log("if condition satisfied");
+                        chargesCopy.RemoveAt(chargesCopy.Count - i);
+                        Destroy(chargeBarList[chargeBarList.Count - i].gameObject);
+                        chargeBarList.RemoveAt(chargeBarList.Count - i);
+                        lastIndex--;
                         break;
                     }
                 }
             }
+            else
+            {
+                chargesCopy.RemoveAt(chargesCopy.Count - 1);
+                Destroy(chargeBarList[chargeBarList.Count - 1].gameObject);
+                chargeBarList.RemoveAt(chargeBarList.Count - 1);
+                lastIndex--;
+            }
+            if (aux == 15)
+            {
+                Debug.Log("aux reached max");
+                break;
+            }
+            else aux++;
         }
-
+        if (currentCharges.Count != 0 && chargesCopy[^1] != currentCharges[^1])
+        {
+            chargesCopy[^1] = 0.5f;
+            chargeBarList[^1].UpdateBarColor(chargesCopy[^1]);
+        }
     }
-
-    public int GetAvailableCharges() => chargeBars.Count(charge => chargeBars.Peek().GetComponent<Image>().color != Color.red);
 
     public bool TryGet(List<float> list, Index index, out float value)
     {
@@ -151,6 +155,4 @@ public class ShieldMeterUI : MonoBehaviour
         value = default!;
         return false;
     }
-
-    bool IsHalf(float value) => Mathf.Abs(value - 0.5f) < 0.0001f;
 }

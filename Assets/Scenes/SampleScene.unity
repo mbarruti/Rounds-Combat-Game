@@ -561,7 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be2f1f7ca5013e4eabf50e0658dcdff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldMeterUI
-  chargeBar: {fileID: 6976894598717645896, guid: 43fafae7c108e354dbc77deac7a1de9e, type: 3}
+  chargeBar: {fileID: 8379338270283236643, guid: 43fafae7c108e354dbc77deac7a1de9e, type: 3}
 --- !u!114 &435483748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,7 +1403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be2f1f7ca5013e4eabf50e0658dcdff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldMeterUI
-  chargeBar: {fileID: 6976894598717645896, guid: 43fafae7c108e354dbc77deac7a1de9e, type: 3}
+  chargeBar: {fileID: 8379338270283236643, guid: 43fafae7c108e354dbc77deac7a1de9e, type: 3}
 --- !u!114 &1461206887
 MonoBehaviour:
   m_ObjectHideFlags: 0
