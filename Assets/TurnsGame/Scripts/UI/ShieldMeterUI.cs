@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class ShieldMeterUI : MonoBehaviour
 {
@@ -42,7 +40,7 @@ public class ShieldMeterUI : MonoBehaviour
         chargesCopy = playerMeter.GetChargesCopy();
     }
 
-    public IEnumerator RecoverChargeBars(List<float> currentCharges, float waitTime = 1f)
+    public IEnumerator RecoverChargeBars(List<float> currentCharges, float waitTime = 0f)
     {
         for (int i = 0; i < currentCharges.Count; i++)
         {

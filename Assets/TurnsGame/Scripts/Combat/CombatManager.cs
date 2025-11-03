@@ -38,7 +38,7 @@ public class CombatManager : MonoBehaviour
         enemy.name = "PlayerTwo";
 
         UI.AddAnimation(UI.Instance.WriteText("Begin match"));
-        RoundAction();
+        RoundStart();
     }
 
     CharacterManager SpawnCharacter(bool isPlayer)
@@ -65,7 +65,7 @@ public class CombatManager : MonoBehaviour
         return characterManager;
     }
 
-    public void RoundAction()
+    public void RoundStart()
     {
         roundNumber++;
 
@@ -128,12 +128,6 @@ public class CombatManager : MonoBehaviour
         RoundEnd();
     }
 
-    void RoundEnd()
-    {
-        CheckCombatState();
-        if (state != CombatState.END) RoundAction();
-    }
-
     void Clash(Attack playerAttack, Attack enemyAttack)
     {
         UI.AddAnimation(UI.Instance.WriteText("A clash is happening!"));
@@ -158,6 +152,12 @@ public class CombatManager : MonoBehaviour
         clashLoser.action = null;
         clashWinner.PerformAction(clashLoser);
         clashLoser.PerformAction(clashWinner);
+    }
+
+    void RoundEnd()
+    {
+        CheckCombatState();
+        if (state != CombatState.END) RoundStart();
     }
 
     void CheckCombatState()

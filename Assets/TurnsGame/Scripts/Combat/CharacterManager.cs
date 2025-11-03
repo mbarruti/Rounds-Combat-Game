@@ -22,14 +22,12 @@ public class CharacterManager : MonoBehaviour
             gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().playerMaterial;
             healthText = UI.Instance.playerHPText;
             shieldMeterUI = UI.Instance.playerShieldMeter;
-            //UI.Instance.playerShieldMeter.Setup(this);
         }
         else
         {
             gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().enemyMaterial;
             healthText = UI.Instance.enemyHPText;
             shieldMeterUI = UI.Instance.enemyShieldMeter;
-            //UI.Instance.enemyShieldMeter.Setup(this);
         }
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
@@ -41,7 +39,6 @@ public class CharacterManager : MonoBehaviour
         if (action is not Block)
         {
             shieldMeter.RecoverCharges();
-            //shieldMeterUI.UpdateChargeBars();
             Debug.Log("Number of charges of " + name + ": " + shieldMeter.GetAvailableCharges());
         }
         else if (shieldMeter.GetAvailableCharges() == 0)

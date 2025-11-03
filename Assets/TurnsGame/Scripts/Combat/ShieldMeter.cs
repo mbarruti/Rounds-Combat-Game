@@ -8,7 +8,6 @@ public class ShieldMeter
 {
     [SerializeField] int maxCharges;
     Stack<float> charges;
-    [SerializeField] List<float> chargesList;
 
     public event Action<List<float>> chargesChangedEvent;
 
@@ -40,7 +39,6 @@ public class ShieldMeter
         }
         else
             charges.Push(0.5f);
-        chargesList = new List<float>(charges);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -66,7 +64,6 @@ public class ShieldMeter
             }
         }
         if (tempStack.Count() > 0) charges.Push(0.5f);
-        chargesList = new List<float>(charges);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -82,6 +79,6 @@ public class ShieldMeter
 
     public List<float> GetChargesCopy() => new List<float>(new Stack<float>(charges));
 
-    bool IsHalf(float value) => Mathf.Abs(value - 0.5f) < 0.0001f;
+    bool IsHalf(float value) => Mathf.Abs(value - 0.5f) < 0.0000000000000001f;
 
 }
