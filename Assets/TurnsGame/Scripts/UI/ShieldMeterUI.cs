@@ -21,17 +21,17 @@ public class ShieldMeterUI : MonoBehaviour
     public void Setup(ShieldMeter meter)
     {
         playerMeter = meter;
+        SetChargesCopy();
 
         if (playerMeter.GetMaxCharges() > 0)
         {
-            for (int i = 0; i < playerMeter.GetAvailableCharges(); i++)
+            for (int i = 0; i < chargesCopy.Count; i++)
             {
                 var bar = Instantiate(chargeBar, transform);
-                bar.GetComponent<Image>().color = Color.blue;
+                bar.UpdateBarColor(chargesCopy[i]);
                 chargeBarList.Add(bar);
             }
         }
-        SetChargesCopy();
         playerMeter.chargesChangedEvent += UpdateMeterUI;
     }
 
