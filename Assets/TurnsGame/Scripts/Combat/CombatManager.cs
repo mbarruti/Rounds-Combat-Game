@@ -1,9 +1,14 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
 
 public class CombatManager : MonoBehaviour
 {
+    // PROVISIONAL
+    [SerializeField] CharacterManager playerOne;
+    [SerializeField] CharacterManager playerTwo;
+    //
 
     static CombatManager instance;
     public static CombatManager GetInstance() { return instance; }
@@ -32,10 +37,26 @@ public class CombatManager : MonoBehaviour
 
     void SetupMatch()
     {
-        player = SpawnCharacter(true);
-        player.name = "PlayerOne";
-        enemy = SpawnCharacter(false);
-        enemy.name = "PlayerTwo";
+        //player = SpawnCharacter(true);
+        //player.name = "PlayerOne";
+        //enemy = SpawnCharacter(false);
+        //enemy.name = "PlayerTwo";
+
+        // PROVISIONAL
+        Vector3 screenPosition = UI.Instance.uiPlayerOnePosition.position;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+        playerOne.transform.position = worldPosition;
+        playerOne.Setup(true);
+        player = playerOne;
+
+        screenPosition = UI.Instance.uiPlayerTwoPosition.position;
+        worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+        playerTwo.transform.position = worldPosition;
+        playerTwo.Setup(false);
+        enemy = playerTwo;
+        //
 
         UI.AddAnimation(UI.Instance.WriteText("Begin match"));
         RoundStart();
@@ -73,6 +94,8 @@ public class CombatManager : MonoBehaviour
         UI.AddAnimation(UI.Instance.WriteText("Choose your action", waitTime: 0f));
         StartCoroutine(UI.Instance.ExecuteAnimations());
 
+
+
         //state = CombatState.CHOOSE;
         AIAction();
     }
@@ -81,7 +104,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
 
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Attack();
         else enemy.action = new Attack();
     }
 
@@ -113,6 +136,7 @@ public class CombatManager : MonoBehaviour
 
             case (Attack, Block):
                 player.PerformAction(enemy);
+                UI.AddAnimation(UI.Instance.WriteText(player.name + " attacks " + enemy.name));
                 enemy.PerformAction(player);
                 break;
 
@@ -122,6 +146,7 @@ public class CombatManager : MonoBehaviour
 
             case (Block, Attack):
                 enemy.PerformAction(player);
+                UI.AddAnimation(UI.Instance.WriteText(enemy.name + " attacks " + player.name));
                 player.PerformAction(enemy);
                 break;
         }
@@ -149,9 +174,13 @@ public class CombatManager : MonoBehaviour
             clashLoser = player;
             UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
         }
-        clashLoser.action = null;
+        //clashLoser.action = null;
+        float loserProwess = clashLoser.prowess;
+        clashLoser.prowess -= 0.8f;
+        if (clashLoser.prowess < 0) clashLoser.prowess = 0;
         clashWinner.PerformAction(clashLoser);
         clashLoser.PerformAction(clashWinner);
+        clashLoser.prowess = loserProwess;
     }
 
     void RoundEnd()

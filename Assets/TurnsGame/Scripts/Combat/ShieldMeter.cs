@@ -31,7 +31,7 @@ public class ShieldMeter
     {
         if (GetAvailableCharges() == maxCharges)
             return;
-        if (charges.Count() > 0 && IsHalf(charges.Peek()))
+        if (charges.Count > 0 && IsHalf(charges.Peek()))
         {
             float charge = charges.Pop();
             charge = 1f;
@@ -48,7 +48,7 @@ public class ShieldMeter
 
         while (GetAvailableCharges() > 0 && shieldMeterDamage > 0)
         {
-            Debug.Log("Shield meter damage " + shieldMeterDamage);
+            Debug.Log("Shield meter damage left: " + shieldMeterDamage);
             float chargeValue = charges.Pop();
             if (IsHalf(chargeValue)) // If it's 0.5f
             {
@@ -63,7 +63,7 @@ public class ShieldMeter
                 shieldMeterDamage = damageLeft;
             }
         }
-        if (tempStack.Count() > 0) charges.Push(0.5f);
+        if (tempStack.Count > 0) charges.Push(0.5f);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -71,11 +71,11 @@ public class ShieldMeter
 
     public int GetMaxCharges() => maxCharges;
 
-    public int GetCurrentCharges() => charges.Count();
+    public int GetCurrentCharges() => charges.Count;
 
     public float GetLastCharge() => charges.Peek();
 
-    public int GetLastChargeIndex() => charges.Count() - 1;
+    public int GetLastChargeIndex() => charges.Count - 1;
 
     public List<float> GetChargesCopy() => new List<float>(new Stack<float>(charges));
 

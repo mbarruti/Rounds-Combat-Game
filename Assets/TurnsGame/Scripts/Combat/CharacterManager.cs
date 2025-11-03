@@ -1,24 +1,32 @@
+using NUnit.Framework.Internal.Execution;
 using TMPro;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    public int maxHP;
-    public int currentHP;
+    public float maxHP;
+    public float currentHP;
     public TextMeshProUGUI healthText;
 
     public ShieldMeter shieldMeter;
     public ShieldMeterUI shieldMeterUI;
 
-    public int baseDamage;
+    [SerializeField] WeaponSO weapon;
+
+    // Weapon data
+    public float baseDamage;
     public float meterDamage;
+    public float accuracy;
+    public float prowess;
 
     public Action action;
 
     public void Setup(bool isPlayer)
     {
-        baseDamage = 20;
-        meterDamage = 1f;
+        baseDamage = weapon.BaseDamage;
+        meterDamage = weapon.MeterDamage;
+        accuracy = weapon.Accuracy;
+        prowess = weapon.Prowess;
 
         shieldMeter = new ShieldMeter();
         shieldMeter.Setup();
@@ -51,10 +59,9 @@ public class CharacterManager : MonoBehaviour
             action = null;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        UI.AddAnimation(UI.Instance.WriteText(name + " loses " + damage + " health points"));
-
+        //UI.AddAnimation(UI.Instance.WriteText(name + " loses " + damage + " health points"));
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 

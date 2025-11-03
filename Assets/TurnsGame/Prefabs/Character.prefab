@@ -126,5 +126,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterManager
   maxHP: 100
   currentHP: 100
-  maxShieldCharges: 3
-  currentShieldCharges: 3
+  healthText: {fileID: 0}
+  shieldMeter:
+    maxCharges: 0
+  shieldMeterUI: {fileID: 0}
+  weapon: {fileID: 0}
+  baseDamage: 0
+  meterDamage: 0
+  accuracy: 0
+  prowess: 0
