@@ -10,10 +10,16 @@ public class CharacterManager : MonoBehaviour
     public ShieldMeter shieldMeter;
     public ShieldMeterUI shieldMeterUI;
 
+    public int baseDamage;
+    public float meterDamage;
+
     public Action action;
 
     public void Setup(bool isPlayer)
     {
+        baseDamage = 20;
+        meterDamage = 1f;
+
         shieldMeter = new ShieldMeter();
         shieldMeter.Setup();
 
