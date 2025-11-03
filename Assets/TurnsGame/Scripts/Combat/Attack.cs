@@ -1,4 +1,3 @@
-using System.Xml.Linq;
 using UnityEngine;
 
 public class Attack : Action
@@ -19,7 +18,9 @@ public class Attack : Action
         }
         else
         {
-            target.LoseShieldCharges(meterDamage);
+            target.shieldMeter.LoseCharges(meterDamage);
+            //UI.AddAnimation(target.shieldMeterUI.LoseChargeBars(meterDamage));
+            Debug.Log("Number of charges of " + target.name + ": " + target.shieldMeter.GetAvailableCharges());
         }
         //user.RecoverShieldCharge();
     }

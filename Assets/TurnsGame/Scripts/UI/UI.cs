@@ -12,6 +12,9 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI playerHPText;
     public TextMeshProUGUI enemyHPText;
 
+    public ShieldMeterUI playerShieldMeter;
+    public ShieldMeterUI enemyShieldMeter;
+
     public RectTransform uiPlayerOnePosition;
     public RectTransform uiPlayerTwoPosition;
 
@@ -47,7 +50,7 @@ public class UI : MonoBehaviour
         //Debug.LogFormat("Num of queued animations {0}", coroutineQueue.Count());
     }
 
-    public IEnumerator WriteText(string message, float delay = 0.03f, float waitTime = 1f)
+    public IEnumerator WriteText(string message, float delay = 0.01f, float waitTime = 0f)
     {
         panelText.text = "";
         foreach (char c in message)
