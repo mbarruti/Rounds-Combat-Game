@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Attack : Action
@@ -10,9 +11,15 @@ public class Attack : Action
 
         if (target.action is not Block)
         {
-            totalDamage = user.baseDamage + 0;
+            totalDamage = user.baseDamage + BonusDamage(user.baseDamage);
             target.TakeDamage(totalDamage);
         }
         //user.RecoverShieldCharge();
+    }
+
+    int BonusDamage(int baseDamage)
+    {
+        int bonusDamage = 0;
+        return bonusDamage;
     }
 }
