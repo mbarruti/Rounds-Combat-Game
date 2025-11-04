@@ -18,6 +18,7 @@ public class CharacterManager : MonoBehaviour
     public float meterDamage;
     public float accuracy;
     public float prowess;
+    public float counterChance;
 
     public Action action;
 
@@ -27,6 +28,7 @@ public class CharacterManager : MonoBehaviour
         meterDamage = weapon.MeterDamage;
         accuracy = weapon.Accuracy;
         prowess = weapon.Prowess;
+        counterChance = weapon.CounterChance;
 
         shieldMeter = new ShieldMeter();
         shieldMeter.Setup();

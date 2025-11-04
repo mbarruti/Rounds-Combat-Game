@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using static UnityEngine.GraphicsBuffer;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
@@ -139,8 +140,8 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Attack, Block):
-                player.PerformAction(enemy);
                 UI.AddAnimation(UI.Instance.WriteText(player.name + " attacks " + enemy.name));
+                player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
 
@@ -149,8 +150,8 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Block, Attack):
-                enemy.PerformAction(player);
                 UI.AddAnimation(UI.Instance.WriteText(enemy.name + " attacks " + player.name));
+                enemy.PerformAction(player);
                 player.PerformAction(enemy);
                 break;
         }
@@ -170,21 +171,17 @@ public class CombatManager : MonoBehaviour
         {
             clashWinner = player;
             clashLoser = enemy;
-            UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
+            enemyAttack.prowessBonus -= 0.8f;
         }
         else
         {
             clashWinner = enemy;
             clashLoser = player;
-            UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
+            playerAttack.prowessBonus -= 0.8f;
         }
-        //clashLoser.action = null;
-        float loserProwess = clashLoser.prowess;
-        clashLoser.prowess -= 0.8f;
-        if (clashLoser.prowess < 0) clashLoser.prowess = 0;
+        UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
         clashWinner.PerformAction(clashLoser);
         clashLoser.PerformAction(clashWinner);
-        clashLoser.prowess = loserProwess;
     }
 
     void RoundEnd()
