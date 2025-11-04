@@ -41,7 +41,6 @@ public class ShieldMeterUI : MonoBehaviour
 
     public IEnumerator RecoverChargeBars(List<float> currentCharges, float waitTime = 0f)
     {
-        Debug.Log("recover charge");
         for (int i = 0; i < currentCharges.Count; i++)
         {
             if (TryGet(chargesCopy, i, out float charge))

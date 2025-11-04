@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Block : Action
+public class Block : CharacterAction
 {
+    public Block() {}
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {

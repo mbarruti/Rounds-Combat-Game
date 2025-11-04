@@ -7,9 +7,13 @@ using UnityEngine;
 //}
 
 [System.Serializable]
-public class Action
+public class CharacterAction
 {
-    public CharacterManager user;
+
+    public CharacterAction()
+    {
+
+    }
 
     public virtual void Execute(CharacterManager user, CharacterManager target)
     {

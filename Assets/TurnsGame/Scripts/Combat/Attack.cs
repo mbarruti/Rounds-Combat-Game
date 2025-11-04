@@ -1,10 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Attack : Action
+public class Attack : CharacterAction
 {
     float totalDamage = 0;
     public float prowessBonus = 0;
+
+    public Attack() {}
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {

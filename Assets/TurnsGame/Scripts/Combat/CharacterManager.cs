@@ -20,12 +20,15 @@ public class CharacterManager : MonoBehaviour
     public float prowess;
     public float counterChance;
 
-    public Action action = new Action();
+    public CharacterAction action;
+
+    private void Awake()
+    {
+        action = new CharacterAction(this);
+    }
 
     public void Setup(bool isPlayer)
     {
-        action.user = this;
-
         baseDamage = weapon.BaseDamage;
         meterDamage = weapon.MeterDamage;
         accuracy = weapon.Accuracy;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
@@ -54,6 +55,7 @@ public class CombatManager : MonoBehaviour
         playerOne.transform.position = worldPosition;
         playerOne.Setup(true);
         player = playerOne;
+        Debug.Log(player.name);
 
         screenPosition = UI.Instance.uiPlayerTwoPosition.position;
         worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
@@ -99,8 +101,6 @@ public class CombatManager : MonoBehaviour
         UI.AddAnimation(UI.Instance.WriteText("Choose your action", waitTime: 0f));
         StartCoroutine(UI.Instance.ExecuteAnimations());
 
-
-
         //state = CombatState.CHOOSE;
         AIAction();
     }
@@ -109,7 +109,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
 
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Attack();
         else enemy.action = new Attack();
     }
 
@@ -133,9 +133,11 @@ public class CombatManager : MonoBehaviour
 
     void PerformRound()
     {
+        Debug.Log(player.action.user.name);
         switch ((player.action, enemy.action))
         {
             case (Attack playerAttack, Attack enemyAttack):
+                Debug.Log(playerAttack.user.name);
                 Clash(playerAttack, enemyAttack);
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
@@ -176,19 +178,26 @@ public class CombatManager : MonoBehaviour
                             playerChance < enemyChance ? (enemyAttack, playerAttack) :
                 (Random.value < 0.5f ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack));
                 winner.prowessBonus += 0.2f;
-                loser.prowessBonus -= 0.8f;
+                loser.prowessBonus -= 1;
+                UI.AddAnimation(UI.Instance.WriteText($"{winner.user.name} gets a counter!"));
                 break;
             }
             else if (IsCounter(playerChance) || IsCounter(enemyChance))
             {
                 (Attack winner, Attack loser) =
                     IsCounter(playerChance) ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack);
+                Debug.Log(winner.prowessBonus);
+                Debug.Log(playerAttack.prowessBonus);
+                Debug.Log(playerAttack.user.name);
                 winner.prowessBonus += 0.2f;
                 loser.prowessBonus -= 1;
+                UI.AddAnimation(UI.Instance.WriteText($"{winner.user.name} gets a counter!"));
                 break;
             }
-            playerAttack.prowessBonus -= Random.Range(0, 4);
-            enemyAttack.prowessBonus -= Random.Range(0, 4);
+            playerAttack.prowessBonus -= Random.Range(0, 5) / 100f;
+            enemyAttack.prowessBonus -= Random.Range(0, 5) / 100f;
+            Debug.Log("player prowess bonus " + playerAttack.prowessBonus);
+            Debug.Log("enemy prowess bonus " + enemyAttack.prowessBonus);
         }
     }
 
