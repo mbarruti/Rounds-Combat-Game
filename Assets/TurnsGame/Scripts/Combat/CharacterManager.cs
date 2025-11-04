@@ -1,9 +1,13 @@
 using NUnit.Framework.Internal.Execution;
+using System;
 using TMPro;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    [SerializeField] User user;
+    public string username => user.Name;
+
     public float maxHP;
     public float currentHP;
     public TextMeshProUGUI healthText;
@@ -22,11 +26,6 @@ public class CharacterManager : MonoBehaviour
 
     public CharacterAction action;
 
-    private void Awake()
-    {
-        action = new CharacterAction(this);
-    }
-
     public void Setup(bool isPlayer)
     {
         baseDamage = weapon.BaseDamage;
@@ -40,12 +39,14 @@ public class CharacterManager : MonoBehaviour
 
         if (isPlayer)
         {
+            user.Name = "Player One";
             gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
             healthText = UI.Instance.playerHPText;
             shieldMeterUI = UI.Instance.playerShieldMeter;
         }
         else
         {
+            user.Name = "Player Two";
             gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
             healthText = UI.Instance.enemyHPText;
             shieldMeterUI = UI.Instance.enemyShieldMeter;

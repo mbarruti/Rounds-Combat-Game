@@ -1,6 +1,7 @@
 using UnityEngine;
 
+[System.Serializable]
 public class User
 {
-    public string Name { get; set; }
+    public string Name;
 }
