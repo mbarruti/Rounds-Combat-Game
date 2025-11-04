@@ -137,6 +137,8 @@ public class CombatManager : MonoBehaviour
         {
             case (Attack playerAttack, Attack enemyAttack):
                 Clash(playerAttack, enemyAttack);
+                player.PerformAction(enemy);
+                enemy.PerformAction(player);
                 break;
 
             case (Attack, Block):
@@ -162,26 +164,38 @@ public class CombatManager : MonoBehaviour
     {
         UI.AddAnimation(UI.Instance.WriteText("A clash is happening!"));
 
-        CharacterManager clashWinner = null;
-        CharacterManager clashLoser = null;
+        float playerChance = player.counterChance;
+        float enemyChance = enemy.counterChance;
 
-        int randomChoice = Random.Range(0, 2);
+        for (int i = 1; i <= 5; i++)
+        {
+            if (IsCounter(playerChance) && IsCounter(enemyChance))
+            {
+                (Attack winner, Attack loser) =
+                            playerChance > enemyChance ? (playerAttack, enemyAttack) :
+                            playerChance < enemyChance ? (enemyAttack, playerAttack) :
+                (Random.value < 0.5f ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack));
+                winner.prowessBonus += 0.2f;
+                loser.prowessBonus -= 0.8f;
+                break;
+            }
+            else if (IsCounter(playerChance) || IsCounter(enemyChance))
+            {
+                (Attack winner, Attack loser) =
+                    IsCounter(playerChance) ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack);
+                winner.prowessBonus += 0.2f;
+                loser.prowessBonus -= 1;
+                break;
+            }
+            playerAttack.prowessBonus -= Random.Range(0, 4);
+            enemyAttack.prowessBonus -= Random.Range(0, 4);
+        }
+    }
 
-        if (randomChoice == 0)
-        {
-            clashWinner = player;
-            clashLoser = enemy;
-            enemyAttack.prowessBonus -= 0.8f;
-        }
-        else
-        {
-            clashWinner = enemy;
-            clashLoser = player;
-            playerAttack.prowessBonus -= 0.8f;
-        }
-        UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
-        clashWinner.PerformAction(clashLoser);
-        clashLoser.PerformAction(clashWinner);
+    bool IsCounter(float chance)
+    {
+        float randomValue = Random.Range(0, 11) / 10f;
+        return chance >= randomValue;
     }
 
     void RoundEnd()

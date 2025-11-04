@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Attack : Action
@@ -32,6 +33,7 @@ public class Attack : Action
     {
         float totalProwess = prowess + prowessBonus;
         if (totalProwess < 0) totalProwess = 0;
+        else if (totalProwess > 1) totalProwess = 1;
         return totalProwess;
     }
 

@@ -9,7 +9,8 @@ using UnityEngine;
 [System.Serializable]
 public class Action
 {
-    Action lastAction;
+    public CharacterManager user;
+
     public virtual void Execute(CharacterManager user, CharacterManager target)
     {
         Debug.Log("HOLA TONTO");
