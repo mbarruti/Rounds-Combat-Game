@@ -33,13 +33,13 @@ public class CharacterManager : MonoBehaviour
 
         if (isPlayer)
         {
-            gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().playerMaterial;
+            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
             healthText = UI.Instance.playerHPText;
             shieldMeterUI = UI.Instance.playerShieldMeter;
         }
         else
         {
-            gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().enemyMaterial;
+            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
             healthText = UI.Instance.enemyHPText;
             shieldMeterUI = UI.Instance.enemyShieldMeter;
         }

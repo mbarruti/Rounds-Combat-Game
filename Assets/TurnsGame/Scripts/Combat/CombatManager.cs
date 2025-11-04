@@ -10,8 +10,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] CharacterManager playerTwo;
     //
 
-    static CombatManager instance;
-    public static CombatManager GetInstance() { return instance; }
+    public static CombatManager Instance { get; private set; }
 
     public CombatState state;
 
@@ -26,7 +25,12 @@ public class CombatManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -104,7 +108,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
 
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Attack();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
         else enemy.action = new Attack();
     }
 
