@@ -174,20 +174,20 @@ public class CombatManager : MonoBehaviour
                 (float playerGain, float enemyGain) =
                             playerChance > enemyChance ? (0.2f, -1f) :
                             playerChance < enemyChance ? (-1f, 0.2f) :
-                (Random.value < 0.5f ? (0.2f, -1f) : (-1f, 0.2f));
+                    (Random.value < 0.5f ? (0.2f, -1f) : (-1f, 0.2f));
                 
                 playerAttack.prowessBonus += playerGain;
                 enemyAttack.prowessBonus += enemyGain;
 
                 string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
-
                 UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
                 break;
             }
             else if (IsCounter(playerChance) || IsCounter(enemyChance))
             {
-                (float playerGain, float enemyGain) =
-                    IsCounter(playerChance) ? (0.2f, -1f) : (-1f, 0.2f);
+                (float playerGain, float enemyGain) = IsCounter(playerChance) ? (0.2f, -1f) : (-1f, 0.2f);
+                playerAttack.prowessBonus += playerGain;
+                enemyAttack.prowessBonus += enemyGain;
                 string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
                 UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
                 break;
