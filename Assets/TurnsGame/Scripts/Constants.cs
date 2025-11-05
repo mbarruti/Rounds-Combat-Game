@@ -9,8 +9,6 @@ public static class Constants
 
     public const float COUNTER_PROWESS_LOSS = 1.0f;
 
-    // PLAYER
-
     public const float HALF_CHARGE = 0.5f;
 
     public const float FULL_CHARGE = 1.0f;

@@ -65,7 +65,7 @@ public class ShieldMeterUI : MonoBehaviour
             for (int i = 1; i <= chargesCopy.Count; i++)
             {
                 float value = chargesCopy[^i];
-                if (value == 1f)
+                if (value == Constants.FULL_CHARGE)
                 {
                     chargesCopy.RemoveAt(chargesCopy.Count - i);
                     Destroy(chargeBarList[chargeBarList.Count - i].gameObject);
@@ -83,7 +83,7 @@ public class ShieldMeterUI : MonoBehaviour
         }
         if (currentCharges.Count != 0 && chargesCopy[^1] != currentCharges[^1])
         {
-            chargesCopy[^1] = 0.5f;
+            chargesCopy[^1] = Constants.HALF_CHARGE;
             chargeBarList[^1].UpdateBarColor(chargesCopy[^1]);
         }
         yield return new WaitForSeconds(waitTime);
@@ -95,9 +95,9 @@ public class ShieldMeterUI : MonoBehaviour
             UI.AddAnimation(LoseChargeBars(currentCharges));
         else if (chargesCopy.Count < currentCharges.Count)
             UI.AddAnimation(RecoverChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != 1f)
+        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != Constants.FULL_CHARGE)
             UI.AddAnimation(LoseChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == 1f)
+        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == Constants.FULL_CHARGE)
             UI.AddAnimation(RecoverChargeBars(currentCharges));
     }
 
