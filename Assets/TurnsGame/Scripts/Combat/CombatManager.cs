@@ -167,41 +167,37 @@ public class CombatManager : MonoBehaviour
         float playerChance = player.counterChance;
         float enemyChance = enemy.counterChance;
 
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i <= 3; i++)
         {
-            if (IsCounter(playerChance) && IsCounter(enemyChance))
-            {
-                (float playerGain, float enemyGain) =
-                            playerChance > enemyChance ? (0.2f, -1f) :
-                            playerChance < enemyChance ? (-1f, 0.2f) :
-                    (Random.value < 0.5f ? (0.2f, -1f) : (-1f, 0.2f));
-                
-                playerAttack.prowessBonus += playerGain;
-                enemyAttack.prowessBonus += enemyGain;
-
-                string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
-                UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
-                break;
-            }
-            else if (IsCounter(playerChance) || IsCounter(enemyChance))
-            {
-                (float playerGain, float enemyGain) = IsCounter(playerChance) ? (0.2f, -1f) : (-1f, 0.2f);
-                playerAttack.prowessBonus += playerGain;
-                enemyAttack.prowessBonus += enemyGain;
-                string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
-                UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
-                break;
-            }
-            playerAttack.prowessBonus -= Random.Range(0, 5) / 100f;
-            enemyAttack.prowessBonus -= Random.Range(0, 5) / 100f;
-            Debug.Log("player prowess bonus " + playerAttack.prowessBonus);
-            Debug.Log("enemy prowess bonus " + enemyAttack.prowessBonus);
+            playerAttack.prowessBonus -= Random.Range(0, 4) / 10f;
+            enemyAttack.prowessBonus -= Random.Range(0, 4) / 10f;
         }
+        if (IsCounter(playerChance) && IsCounter(enemyChance))
+        {
+            (float playerGain, float enemyGain) =
+                        playerChance > enemyChance ? (0.2f, -1f) :
+                        playerChance < enemyChance ? (-1f, 0.2f) :
+                (Random.value < 0.5f ? (0.2f, -1f) : (-1f, 0.2f));
+            playerAttack.prowessBonus += playerGain;
+            enemyAttack.prowessBonus += enemyGain;
+            string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
+            UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
+        }
+        else if (IsCounter(playerChance) || IsCounter(enemyChance))
+        {
+            (float playerGain, float enemyGain) = IsCounter(playerChance) ? (0.2f, -1f) : (-1f, 0.2f);
+            playerAttack.prowessBonus += playerGain;
+            enemyAttack.prowessBonus += enemyGain;
+            string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
+            UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
+        }
+        Debug.Log(playerAttack.prowessBonus);
+        Debug.Log(enemyAttack.prowessBonus);
     }
 
     bool IsCounter(float chance)
     {
-        float randomValue = Random.Range(0, 11) / 10f;
+        float randomValue = Random.Range(0f, 1f);
         return chance >= randomValue;
     }
 
