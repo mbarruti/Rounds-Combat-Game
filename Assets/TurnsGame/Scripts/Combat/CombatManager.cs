@@ -133,11 +133,9 @@ public class CombatManager : MonoBehaviour
 
     void PerformRound()
     {
-        Debug.Log(player.action.user.name);
         switch ((player.action, enemy.action))
         {
             case (Attack playerAttack, Attack enemyAttack):
-                Debug.Log(playerAttack.user.name);
                 Clash(playerAttack, enemyAttack);
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
@@ -173,25 +171,25 @@ public class CombatManager : MonoBehaviour
         {
             if (IsCounter(playerChance) && IsCounter(enemyChance))
             {
-                (Attack winner, Attack loser) =
-                            playerChance > enemyChance ? (playerAttack, enemyAttack) :
-                            playerChance < enemyChance ? (enemyAttack, playerAttack) :
-                (Random.value < 0.5f ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack));
-                winner.prowessBonus += 0.2f;
-                loser.prowessBonus -= 1;
-                UI.AddAnimation(UI.Instance.WriteText($"{winner.user.name} gets a counter!"));
+                (float playerGain, float enemyGain) =
+                            playerChance > enemyChance ? (0.2f, -1f) :
+                            playerChance < enemyChance ? (-1f, 0.2f) :
+                (Random.value < 0.5f ? (0.2f, -1f) : (-1f, 0.2f));
+                
+                playerAttack.prowessBonus += playerGain;
+                enemyAttack.prowessBonus += enemyGain;
+
+                string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
+
+                UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
                 break;
             }
             else if (IsCounter(playerChance) || IsCounter(enemyChance))
             {
-                (Attack winner, Attack loser) =
-                    IsCounter(playerChance) ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack);
-                Debug.Log(winner.prowessBonus);
-                Debug.Log(playerAttack.prowessBonus);
-                Debug.Log(playerAttack.user.name);
-                winner.prowessBonus += 0.2f;
-                loser.prowessBonus -= 1;
-                UI.AddAnimation(UI.Instance.WriteText($"{winner.user.name} gets a counter!"));
+                (float playerGain, float enemyGain) =
+                    IsCounter(playerChance) ? (0.2f, -1f) : (-1f, 0.2f);
+                string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
+                UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
                 break;
             }
             playerAttack.prowessBonus -= Random.Range(0, 5) / 100f;
