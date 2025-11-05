@@ -40,7 +40,7 @@ public class UI : MonoBehaviour
             //Debug.LogFormat("Dequed! {0}", i+1);
             yield return StartCoroutine(enumerator);
         }
-        if (CombatManager.GetInstance().state != CombatState.END) CombatManager.GetInstance().state = CombatState.CHOOSE;
+        if (CombatManager.Instance.state != CombatState.END) CombatManager.Instance.state = CombatState.CHOOSE;
     }
 
     public static void AddAnimation(IEnumerator animation)
@@ -50,7 +50,7 @@ public class UI : MonoBehaviour
         //Debug.LogFormat("Num of queued animations {0}", coroutineQueue.Count());
     }
 
-    public IEnumerator WriteText(string message, float delay = 0.01f, float waitTime = 0f)
+    public IEnumerator WriteText(string message, float delay = 0.03f, float waitTime = 1f)
     {
         panelText.text = "";
         foreach (char c in message)
@@ -63,7 +63,7 @@ public class UI : MonoBehaviour
 
     public IEnumerator UpdateHPText(CharacterManager character, float waitTime = 0f)
     {
-        yield return character.healthText.text = $"{character.currentHP}/{character.maxHP}";
+        yield return character.healthText.text = $"{Mathf.CeilToInt(character.currentHP)}/{(int)character.maxHP}";
         yield return new WaitForSeconds(waitTime);
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShieldMeterUI : MonoBehaviour
 {
@@ -63,7 +62,7 @@ public class ShieldMeterUI : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
     }
 
-    public IEnumerator LoseChargeBars(List<float> currentCharges, float waitTime = 1f)
+    public IEnumerator LoseChargeBars(List<float> currentCharges, float waitTime = 0f)
     {
         int lastIndex = chargesCopy.Count - 1;
         int aux = 0;

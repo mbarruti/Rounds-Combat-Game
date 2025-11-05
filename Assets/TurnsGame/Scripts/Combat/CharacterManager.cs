@@ -1,37 +1,53 @@
+using NUnit.Framework.Internal.Execution;
+using System;
 using TMPro;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    public int maxHP;
-    public int currentHP;
+    [SerializeField] User user;
+    public string username => user.Name;
+
+    public float maxHP;
+    public float currentHP;
     public TextMeshProUGUI healthText;
 
     public ShieldMeter shieldMeter;
     public ShieldMeterUI shieldMeterUI;
 
-    public int baseDamage;
-    public float meterDamage;
+    [SerializeField] WeaponSO weapon;
 
-    public Action action;
+    // Weapon data
+    public float baseDamage;
+    public float meterDamage;
+    public float accuracy;
+    public float prowess;
+    public float counterChance;
+
+    public CharacterAction action;
 
     public void Setup(bool isPlayer)
     {
-        baseDamage = 20;
-        meterDamage = 1f;
+        baseDamage = weapon.BaseDamage;
+        meterDamage = weapon.MeterDamage;
+        accuracy = weapon.Accuracy;
+        prowess = weapon.Prowess;
+        counterChance = weapon.CounterChance;
 
         shieldMeter = new ShieldMeter();
         shieldMeter.Setup();
 
         if (isPlayer)
         {
-            gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().playerMaterial;
+            user.Name = "Player One";
+            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
             healthText = UI.Instance.playerHPText;
             shieldMeterUI = UI.Instance.playerShieldMeter;
         }
         else
         {
-            gameObject.GetComponent<Renderer>().material = CombatManager.GetInstance().enemyMaterial;
+            user.Name = "Player Two";
+            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
             healthText = UI.Instance.enemyHPText;
             shieldMeterUI = UI.Instance.enemyShieldMeter;
         }
@@ -51,10 +67,9 @@ public class CharacterManager : MonoBehaviour
             action = null;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        UI.AddAnimation(UI.Instance.WriteText(name + " loses " + damage + " health points"));
-
+        //UI.AddAnimation(UI.Instance.WriteText(name + " loses " + damage + " health points"));
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 

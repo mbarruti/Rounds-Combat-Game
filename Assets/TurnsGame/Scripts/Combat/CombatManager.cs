@@ -1,12 +1,18 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
+using UnityEngine.TextCore.Text;
+using static UnityEngine.GraphicsBuffer;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
 
 public class CombatManager : MonoBehaviour
 {
+    // PROVISIONAL
+    [SerializeField] CharacterManager playerOne;
+    [SerializeField] CharacterManager playerTwo;
+    //
 
-    static CombatManager instance;
-    public static CombatManager GetInstance() { return instance; }
+    public static CombatManager Instance { get; private set; }
 
     public CombatState state;
 
@@ -21,7 +27,12 @@ public class CombatManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,10 +43,27 @@ public class CombatManager : MonoBehaviour
 
     void SetupMatch()
     {
-        player = SpawnCharacter(true);
-        player.name = "PlayerOne";
-        enemy = SpawnCharacter(false);
-        enemy.name = "PlayerTwo";
+        //player = SpawnCharacter(true);
+        //player.name = "PlayerOne";
+        //enemy = SpawnCharacter(false);
+        //enemy.name = "PlayerTwo";
+
+        // PROVISIONAL
+        Vector3 screenPosition = UI.Instance.uiPlayerOnePosition.position;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+        playerOne.transform.position = worldPosition;
+        playerOne.Setup(true);
+        player = playerOne;
+        Debug.Log(player.name);
+
+        screenPosition = UI.Instance.uiPlayerTwoPosition.position;
+        worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+        playerTwo.transform.position = worldPosition;
+        playerTwo.Setup(false);
+        enemy = playerTwo;
+        //
 
         UI.AddAnimation(UI.Instance.WriteText("Begin match"));
         RoundStart();
@@ -81,7 +109,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
 
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Attack();
         else enemy.action = new Attack();
     }
 
@@ -105,13 +133,18 @@ public class CombatManager : MonoBehaviour
 
     void PerformRound()
     {
+        Debug.Log(player.action.user.name);
         switch ((player.action, enemy.action))
         {
             case (Attack playerAttack, Attack enemyAttack):
+                Debug.Log(playerAttack.user.name);
                 Clash(playerAttack, enemyAttack);
+                player.PerformAction(enemy);
+                enemy.PerformAction(player);
                 break;
 
             case (Attack, Block):
+                UI.AddAnimation(UI.Instance.WriteText(player.name + " attacks " + enemy.name));
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
@@ -121,6 +154,7 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Block, Attack):
+                UI.AddAnimation(UI.Instance.WriteText(enemy.name + " attacks " + player.name));
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
                 break;
@@ -132,26 +166,45 @@ public class CombatManager : MonoBehaviour
     {
         UI.AddAnimation(UI.Instance.WriteText("A clash is happening!"));
 
-        CharacterManager clashWinner = null;
-        CharacterManager clashLoser = null;
+        float playerChance = player.counterChance;
+        float enemyChance = enemy.counterChance;
 
-        int randomChoice = Random.Range(0, 2);
+        for (int i = 1; i <= 5; i++)
+        {
+            if (IsCounter(playerChance) && IsCounter(enemyChance))
+            {
+                (Attack winner, Attack loser) =
+                            playerChance > enemyChance ? (playerAttack, enemyAttack) :
+                            playerChance < enemyChance ? (enemyAttack, playerAttack) :
+                (Random.value < 0.5f ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack));
+                winner.prowessBonus += 0.2f;
+                loser.prowessBonus -= 1;
+                UI.AddAnimation(UI.Instance.WriteText($"{winner.user.name} gets a counter!"));
+                break;
+            }
+            else if (IsCounter(playerChance) || IsCounter(enemyChance))
+            {
+                (Attack winner, Attack loser) =
+                    IsCounter(playerChance) ? (playerAttack, enemyAttack) : (enemyAttack, playerAttack);
+                Debug.Log(winner.prowessBonus);
+                Debug.Log(playerAttack.prowessBonus);
+                Debug.Log(playerAttack.user.name);
+                winner.prowessBonus += 0.2f;
+                loser.prowessBonus -= 1;
+                UI.AddAnimation(UI.Instance.WriteText($"{winner.user.name} gets a counter!"));
+                break;
+            }
+            playerAttack.prowessBonus -= Random.Range(0, 5) / 100f;
+            enemyAttack.prowessBonus -= Random.Range(0, 5) / 100f;
+            Debug.Log("player prowess bonus " + playerAttack.prowessBonus);
+            Debug.Log("enemy prowess bonus " + enemyAttack.prowessBonus);
+        }
+    }
 
-        if (randomChoice == 0)
-        {
-            clashWinner = player;
-            clashLoser = enemy;
-            UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
-        }
-        else
-        {
-            clashWinner = enemy;
-            clashLoser = player;
-            UI.AddAnimation(UI.Instance.WriteText(clashWinner.name + " wins the clash!"));
-        }
-        clashLoser.action = null;
-        clashWinner.PerformAction(clashLoser);
-        clashLoser.PerformAction(clashWinner);
+    bool IsCounter(float chance)
+    {
+        float randomValue = Random.Range(0, 11) / 10f;
+        return chance >= randomValue;
     }
 
     void RoundEnd()

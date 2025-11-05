@@ -1,25 +1,47 @@
-using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Attack : Action
+public class Attack : CharacterAction
 {
-    int totalDamage;
+    float totalDamage = 0;
+    public float prowessBonus = 0;
+
+    public Attack() {}
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {
-        UI.AddAnimation(UI.Instance.WriteText(user.name + " attacks " + target.name));
-
         if (target.action is not Block)
         {
-            totalDamage = user.baseDamage + BonusDamage(user.baseDamage);
-            target.TakeDamage(totalDamage);
+            totalDamage = (user.baseDamage + BonusDamage(user.baseDamage)) * ProwessValue(user.prowess);
+            if (totalDamage > 0 && AttackHits(user.accuracy))
+            {
+                target.TakeDamage(totalDamage);
+            }
+            else
+            {
+                UI.AddAnimation(UI.Instance.WriteText(user.name + " misses"));
+            }
         }
         //user.RecoverShieldCharge();
     }
 
-    int BonusDamage(int baseDamage)
+    float BonusDamage(float baseDamage)
     {
-        int bonusDamage = 0;
+        float bonusDamage = 0;
         return bonusDamage;
+    }
+
+    float ProwessValue(float prowess)
+    {
+        float totalProwess = prowess + prowessBonus;
+        if (totalProwess < 0) totalProwess = 0;
+        else if (totalProwess > 1) totalProwess = 1;
+        return totalProwess;
+    }
+
+    bool AttackHits(float accuracy)
+    {
+        float randomValue = Random.Range(0, 11) / 10f;
+        return randomValue <= accuracy;
     }
 }
