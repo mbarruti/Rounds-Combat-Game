@@ -11,12 +11,6 @@ public class ShieldMeterUI : MonoBehaviour
     List<ChargeUI> chargeBarList = new();
     List<float> chargesCopy = new();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
     public void Setup(ShieldMeter meter)
     {
         playerMeter = meter;

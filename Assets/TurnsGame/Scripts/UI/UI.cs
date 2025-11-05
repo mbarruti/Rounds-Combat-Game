@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 public class UI : MonoBehaviour
 {
@@ -33,7 +32,7 @@ public class UI : MonoBehaviour
     public IEnumerator ExecuteAnimations()
     {
         //Debug.Log("Executing animations");
-        int count = coroutineQueue.Count();
+        int count = coroutineQueue.Count;
         for (int i = 0; i < count; i++)
         {   
             IEnumerator enumerator = coroutineQueue.Dequeue();

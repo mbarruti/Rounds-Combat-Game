@@ -13,7 +13,7 @@ public class ChargeUI : MonoBehaviour
 
     public void UpdateBarColor(float value)
     {
-        if (value == 0.5f)
+        if (value == Constants.HALF_CHARGE)
             barColor.color = Color.red;
         else
             barColor.color = Color.blue;

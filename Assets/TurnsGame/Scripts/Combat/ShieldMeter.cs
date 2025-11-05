@@ -23,7 +23,7 @@ public class ShieldMeter
         charges.Clear();
         for (int i = 0; i < maxCharges; i++)
         {
-            charges.Push(1f);
+            charges.Push(Constants.FULL_CHARGE);
         }
     }
 
@@ -34,11 +34,11 @@ public class ShieldMeter
         if (charges.Count > 0 && IsHalf(charges.Peek()))
         {
             float charge = charges.Pop();
-            charge = 1f;
+            charge = Constants.FULL_CHARGE;
             charges.Push(charge);
         }
         else
-            charges.Push(0.5f);
+            charges.Push(Constants.HALF_CHARGE);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -50,11 +50,11 @@ public class ShieldMeter
         {
             Debug.Log("Shield meter damage left: " + shieldMeterDamage);
             float chargeValue = charges.Pop();
-            if (IsHalf(chargeValue)) // If it's 0.5f
+            if (IsHalf(chargeValue)) // If charge is recovering
             {
                 tempStack.Push(chargeValue);
             }
-            else // If it's 1f
+            else // If charge is available
             {
                 float damageLeft = shieldMeterDamage - chargeValue;
                 chargeValue -= shieldMeterDamage;
@@ -63,7 +63,7 @@ public class ShieldMeter
                 shieldMeterDamage = damageLeft;
             }
         }
-        if (tempStack.Count > 0) charges.Push(0.5f);
+        if (tempStack.Count > 0) charges.Push(Constants.HALF_CHARGE);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -79,6 +79,6 @@ public class ShieldMeter
 
     public List<float> GetChargesCopy() => new List<float>(new Stack<float>(charges));
 
-    bool IsHalf(float value) => Mathf.Abs(value - 0.5f) < 0.0000000000000001f;
+    bool IsHalf(float value) => Mathf.Abs(value - Constants.HALF_CHARGE) < 0.0000000000000001f;
 
 }

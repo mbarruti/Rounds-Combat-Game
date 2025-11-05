@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.GraphicsBuffer;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
 
@@ -43,9 +40,9 @@ public class CombatManager : MonoBehaviour
 
     void SetupMatch()
     {
-        //player = SpawnCharacter(true);
+        //player = SpawnCharacter(Constants.IS_PLAYER_ONE);
         //player.name = "PlayerOne";
-        //enemy = SpawnCharacter(false);
+        //enemy = SpawnCharacter(!Constants.IS_PLAYER_ONE);
         //enemy.name = "PlayerTwo";
 
         // PROVISIONAL
@@ -53,15 +50,14 @@ public class CombatManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
         playerOne.transform.position = worldPosition;
-        playerOne.Setup(true);
+        playerOne.Setup(Constants.IS_PLAYER_ONE);
         player = playerOne;
-        Debug.Log(player.name);
 
         screenPosition = UI.Instance.uiPlayerTwoPosition.position;
         worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
         playerTwo.transform.position = worldPosition;
-        playerTwo.Setup(false);
+        playerTwo.Setup(!Constants.IS_PLAYER_ONE);
         enemy = playerTwo;
         //
 
@@ -109,7 +105,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
 
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Attack();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
         else enemy.action = new Attack();
     }
 
@@ -175,19 +171,26 @@ public class CombatManager : MonoBehaviour
         if (IsCounter(playerChance) && IsCounter(enemyChance))
         {
             (float playerGain, float enemyGain) =
-                        playerChance > enemyChance ? (0.2f, -1f) :
-                        playerChance < enemyChance ? (-1f, 0.2f) :
-                (Random.value < 0.5f ? (0.2f, -1f) : (-1f, 0.2f));
+                    playerChance > enemyChance ? (Constants.COUNTER_PROWESS_GAIN, Constants.COUNTER_PROWESS_LOSS) :
+                    playerChance < enemyChance ? (Constants.COUNTER_PROWESS_LOSS, Constants.COUNTER_PROWESS_GAIN) :
+                    (Random.value < 0.5f ? (Constants.COUNTER_PROWESS_GAIN, Constants.COUNTER_PROWESS_LOSS) :
+                                            (Constants.COUNTER_PROWESS_LOSS, Constants.COUNTER_PROWESS_GAIN));
+
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
+
             string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
             UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
         }
         else if (IsCounter(playerChance) || IsCounter(enemyChance))
         {
-            (float playerGain, float enemyGain) = IsCounter(playerChance) ? (0.2f, -1f) : (-1f, 0.2f);
+            (float playerGain, float enemyGain) = IsCounter(playerChance) ? 
+                (Constants.COUNTER_PROWESS_GAIN, Constants.COUNTER_PROWESS_LOSS) : 
+                (Constants.COUNTER_PROWESS_LOSS, Constants.COUNTER_PROWESS_GAIN);
+
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
+
             string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
             UI.AddAnimation(UI.Instance.WriteText($"{counterWinner} gets a counter!"));
         }
