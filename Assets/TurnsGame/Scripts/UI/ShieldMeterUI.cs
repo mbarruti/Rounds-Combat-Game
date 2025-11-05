@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MyProject.Constants;
 
 public class ShieldMeterUI : MonoBehaviour
 {
@@ -65,7 +66,7 @@ public class ShieldMeterUI : MonoBehaviour
             for (int i = 1; i <= chargesCopy.Count; i++)
             {
                 float value = chargesCopy[^i];
-                if (value == Constants.FULL_CHARGE)
+                if (value == FULL_CHARGE)
                 {
                     chargesCopy.RemoveAt(chargesCopy.Count - i);
                     Destroy(chargeBarList[chargeBarList.Count - i].gameObject);
@@ -83,7 +84,7 @@ public class ShieldMeterUI : MonoBehaviour
         }
         if (currentCharges.Count != 0 && chargesCopy[^1] != currentCharges[^1])
         {
-            chargesCopy[^1] = Constants.HALF_CHARGE;
+            chargesCopy[^1] = HALF_CHARGE;
             chargeBarList[^1].UpdateBarColor(chargesCopy[^1]);
         }
         yield return new WaitForSeconds(waitTime);
@@ -95,9 +96,9 @@ public class ShieldMeterUI : MonoBehaviour
             UI.AddAnimation(LoseChargeBars(currentCharges));
         else if (chargesCopy.Count < currentCharges.Count)
             UI.AddAnimation(RecoverChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != Constants.FULL_CHARGE)
+        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != FULL_CHARGE)
             UI.AddAnimation(LoseChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == Constants.FULL_CHARGE)
+        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == FULL_CHARGE)
             UI.AddAnimation(RecoverChargeBars(currentCharges));
     }
 

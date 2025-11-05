@@ -1,10 +1,11 @@
 using UnityEngine;
+using static MyProject.Constants;
 
 public enum CombatState { START, CHOOSE, ACTION, END }
 
 public class CombatManager : MonoBehaviour
 {
-    // PROVISIONAL
+    // PROVISIONAL (WHEN USELESS, PLAYER AND ENEMY WILL GET THESE NAMES)
     [SerializeField] CharacterManager playerOne;
     [SerializeField] CharacterManager playerTwo;
     //
@@ -40,9 +41,9 @@ public class CombatManager : MonoBehaviour
 
     void SetupMatch()
     {
-        //player = SpawnCharacter(Constants.IS_PLAYER_ONE);
+        //player = SpawnCharacter(IS_PLAYER_ONE);
         //player.name = "PlayerOne";
-        //enemy = SpawnCharacter(!Constants.IS_PLAYER_ONE);
+        //enemy = SpawnCharacter(!IS_PLAYER_ONE);
         //enemy.name = "PlayerTwo";
 
         // PROVISIONAL
@@ -50,14 +51,14 @@ public class CombatManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
         playerOne.transform.position = worldPosition;
-        playerOne.Setup(Constants.IS_PLAYER_ONE);
+        playerOne.Setup(IS_PLAYER_ONE);
         player = playerOne;
 
         screenPosition = UI.Instance.uiPlayerTwoPosition.position;
         worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
         playerTwo.transform.position = worldPosition;
-        playerTwo.Setup(!Constants.IS_PLAYER_ONE);
+        playerTwo.Setup(!IS_PLAYER_ONE);
         enemy = playerTwo;
         //
 
@@ -171,10 +172,10 @@ public class CombatManager : MonoBehaviour
         if (IsCounter(playerChance) && IsCounter(enemyChance))
         {
             (float playerGain, float enemyGain) =
-                    playerChance > enemyChance ? (Constants.COUNTER_PROWESS_GAIN, Constants.COUNTER_PROWESS_LOSS) :
-                    playerChance < enemyChance ? (Constants.COUNTER_PROWESS_LOSS, Constants.COUNTER_PROWESS_GAIN) :
-                    (Random.value < 0.5f ? (Constants.COUNTER_PROWESS_GAIN, Constants.COUNTER_PROWESS_LOSS) :
-                                            (Constants.COUNTER_PROWESS_LOSS, Constants.COUNTER_PROWESS_GAIN));
+                    playerChance > enemyChance ? (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) :
+                    playerChance < enemyChance ? (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN) :
+                    (Random.value < 0.5f ? (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) :
+                                            (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN));
 
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
@@ -185,8 +186,8 @@ public class CombatManager : MonoBehaviour
         else if (IsCounter(playerChance) || IsCounter(enemyChance))
         {
             (float playerGain, float enemyGain) = IsCounter(playerChance) ? 
-                (Constants.COUNTER_PROWESS_GAIN, Constants.COUNTER_PROWESS_LOSS) : 
-                (Constants.COUNTER_PROWESS_LOSS, Constants.COUNTER_PROWESS_GAIN);
+                (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) : 
+                (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN);
 
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;

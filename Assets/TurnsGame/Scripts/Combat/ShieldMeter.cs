@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static MyProject.Constants;
 
 [System.Serializable]
 public class ShieldMeter
@@ -23,7 +24,7 @@ public class ShieldMeter
         charges.Clear();
         for (int i = 0; i < maxCharges; i++)
         {
-            charges.Push(Constants.FULL_CHARGE);
+            charges.Push(FULL_CHARGE);
         }
     }
 
@@ -34,11 +35,11 @@ public class ShieldMeter
         if (charges.Count > 0 && IsHalf(charges.Peek()))
         {
             float charge = charges.Pop();
-            charge = Constants.FULL_CHARGE;
+            charge = FULL_CHARGE;
             charges.Push(charge);
         }
         else
-            charges.Push(Constants.HALF_CHARGE);
+            charges.Push(HALF_CHARGE);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -63,7 +64,7 @@ public class ShieldMeter
                 shieldMeterDamage = damageLeft;
             }
         }
-        if (tempStack.Count > 0) charges.Push(Constants.HALF_CHARGE);
+        if (tempStack.Count > 0) charges.Push(HALF_CHARGE);
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
@@ -79,6 +80,6 @@ public class ShieldMeter
 
     public List<float> GetChargesCopy() => new List<float>(new Stack<float>(charges));
 
-    bool IsHalf(float value) => Mathf.Abs(value - Constants.HALF_CHARGE) < 0.0000000000000001f;
+    bool IsHalf(float value) => Mathf.Abs(value - HALF_CHARGE) < 0.0000000000000001f;
 
 }
