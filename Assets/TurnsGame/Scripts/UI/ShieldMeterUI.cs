@@ -93,13 +93,13 @@ public class ShieldMeterUI : MonoBehaviour
     void UpdateMeterUI(List<float> currentCharges)
     {
         if (chargesCopy.Count > currentCharges.Count)
-            UI.AddAnimation(LoseChargeBars(currentCharges));
+            CombatUI.AddAnimation(LoseChargeBars(currentCharges));
         else if (chargesCopy.Count < currentCharges.Count)
-            UI.AddAnimation(RecoverChargeBars(currentCharges));
+            CombatUI.AddAnimation(RecoverChargeBars(currentCharges));
         else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != FULL_CHARGE)
-            UI.AddAnimation(LoseChargeBars(currentCharges));
+            CombatUI.AddAnimation(LoseChargeBars(currentCharges));
         else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == FULL_CHARGE)
-            UI.AddAnimation(RecoverChargeBars(currentCharges));
+            CombatUI.AddAnimation(RecoverChargeBars(currentCharges));
     }
 
     public bool TryGet(List<float> list, Index index, out float value)

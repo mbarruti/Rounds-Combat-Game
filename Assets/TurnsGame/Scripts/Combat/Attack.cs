@@ -18,7 +18,7 @@ public class Attack : CharacterAction
             }
             else
             {
-                UI.AddAnimation(UI.Instance.WriteText(user.name + " misses"));
+                CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " misses"));
             }
         }
         //user.RecoverShieldCharge();

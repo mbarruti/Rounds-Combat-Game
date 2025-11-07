@@ -3,9 +3,9 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UI : MonoBehaviour
+public class CombatUI : MonoBehaviour
 {
-    public static UI Instance { get; private set; }
+    public static CombatUI Instance { get; private set; }
 
     public TextMeshProUGUI panelText;
     public TextMeshProUGUI playerHPText;

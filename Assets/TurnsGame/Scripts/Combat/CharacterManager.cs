@@ -24,6 +24,13 @@ public class CharacterManager : MonoBehaviour
 
     public CharacterAction action;
 
+    CombatManager combatManager;
+
+    private void Awake()
+    {
+        combatManager = CombatManager.Instance;
+    }
+
     public void Setup(bool isPlayer)
     {
         baseDamage = weapon.BaseDamage;
@@ -38,16 +45,16 @@ public class CharacterManager : MonoBehaviour
         if (isPlayer)
         {
             user.Name = "Player One";
-            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
-            healthText = UI.Instance.playerHPText;
-            shieldMeterUI = UI.Instance.playerShieldMeter;
+            gameObject.GetComponent<Renderer>().material = combatManager.playerMaterial;
+            healthText = CombatUI.Instance.playerHPText;
+            shieldMeterUI = CombatUI.Instance.playerShieldMeter;
         }
         else
         {
             user.Name = "Player Two";
-            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
-            healthText = UI.Instance.enemyHPText;
-            shieldMeterUI = UI.Instance.enemyShieldMeter;
+            gameObject.GetComponent<Renderer>().material = combatManager.enemyMaterial;
+            healthText = CombatUI.Instance.enemyHPText;
+            shieldMeterUI = CombatUI.Instance.enemyShieldMeter;
         }
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
@@ -71,7 +78,7 @@ public class CharacterManager : MonoBehaviour
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
-        UI.AddAnimation(UI.Instance.UpdateHPText(this));
+        CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this));
     }
 
     public bool IsDead()
