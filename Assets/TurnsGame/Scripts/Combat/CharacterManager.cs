@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class CharacterManager : MonoBehaviour
 
     public CharacterAction action;
 
-    //List<IEffect> effects = new List<IEffect>;
+    List<IEffect> effects = new();
 
     public PlayerState state;
 
@@ -92,7 +93,27 @@ public class CharacterManager : MonoBehaviour
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
             // TO-DO: crushed state or leftover damage
+            IEffect crushedEffect = new Crushed();
+            AddEffect(crushedEffect);
         }
+    }
+
+    public void AddEffect(IEffect effect)
+    {
+        effects.Add(effect);
+    }
+
+    public void ApplyEffects()
+    {
+        foreach (var effect in effects)
+        {
+            effect.Apply(this);
+        }
+    }
+
+    public void RemoveEffect(IEffect effect)
+    {
+        effects.Remove(effect);
     }
 
     public bool IsDead()

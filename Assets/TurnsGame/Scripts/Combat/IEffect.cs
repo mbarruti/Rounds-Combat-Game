@@ -6,3 +6,10 @@ public interface IEffect
     int Duration { get; }
     void Apply(CharacterManager target);
 }
+
+public enum EffectTrigger
+{
+    RoundStart,
+    PerformAction,
+    RoundEnd
+}

@@ -7,6 +7,8 @@ public class Crushed : IEffect
 
     public void Apply(CharacterManager target)
     {
-        target.action = null;
+        Duration--;
+        target.state = PlayerState.WAIT;
+        if (Duration == 0) target.RemoveEffect(this);
     }
 }

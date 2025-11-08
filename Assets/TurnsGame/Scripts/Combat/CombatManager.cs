@@ -92,17 +92,27 @@ public class CombatManager : MonoBehaviour
 
     public void RoundStart()
     {
-        state = CombatState.CHOOSE;
-        // TO-DO: activate attack and block buttons
         player.state = PlayerState.CHOOSE;
         enemy.state = PlayerState.CHOOSE;
+
+        player.ApplyEffects();
+        enemy.ApplyEffects();
+
+        state = CombatState.CHOOSE;
+        // TO-DO: activate attack and block buttons
+
         AIAction();
+        if (player.state == PlayerState.WAIT)
+        {
+            state = CombatState.ACTION;
+            PerformRound();
+        }
     }
 
     void AIAction()
     {
         int randomChoice = Random.Range(0, 2);
-
+        if (enemy.state == PlayerState.WAIT) return;
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
         else enemy.action = new Attack();
     }
