@@ -39,7 +39,7 @@ public class CombatUI : MonoBehaviour
             //Debug.LogFormat("Dequed! {0}", i+1);
             yield return StartCoroutine(enumerator);
         }
-        if (CombatManager.Instance.state != CombatState.END) CombatManager.Instance.state = CombatState.CHOOSE;
+        if (CombatManager.Instance.state != CombatState.END) CombatManager.Instance.RoundStart();
     }
 
     public static void AddAnimation(IEnumerator animation)

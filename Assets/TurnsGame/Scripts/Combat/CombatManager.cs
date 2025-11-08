@@ -92,13 +92,10 @@ public class CombatManager : MonoBehaviour
 
     public void RoundStart()
     {
-        roundNumber++;
-
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Choose your action", waitTime: 0f));
-        StartCoroutine(CombatUI.Instance.ExecuteAnimations());
-
-        //state = CombatState.CHOOSE;
+        state = CombatState.CHOOSE;
+        // TO-DO: activate attack and block buttons
+        player.state = PlayerState.CHOOSE;
+        enemy.state = PlayerState.CHOOSE;
         AIAction();
     }
 
@@ -112,7 +109,8 @@ public class CombatManager : MonoBehaviour
 
     public void OnAttackButton()
     {
-        if (state != CombatState.CHOOSE) return;
+        if (player.state != PlayerState.CHOOSE) return;
+        player.state = PlayerState.WAIT;
         state = CombatState.ACTION;
         player.action = new Attack();
 
@@ -121,7 +119,8 @@ public class CombatManager : MonoBehaviour
 
     public void OnBlockButton()
     {
-        if (state != CombatState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
+        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
+        player.state = PlayerState.WAIT;
         state = CombatState.ACTION;
         player.action = new Block();
 
@@ -208,7 +207,14 @@ public class CombatManager : MonoBehaviour
     void RoundEnd()
     {
         CheckCombatState();
-        if (state != CombatState.END) RoundStart();
+        if (state != CombatState.END)
+        {
+            roundNumber++;
+
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText("Choose your action", waitTime: 0f));
+            StartCoroutine(CombatUI.Instance.ExecuteAnimations());
+        }
     }
 
     void CheckCombatState()

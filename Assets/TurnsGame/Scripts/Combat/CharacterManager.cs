@@ -1,5 +1,8 @@
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+
+public enum PlayerState { CHOOSE, WAIT }
 
 public class CharacterManager : MonoBehaviour
 {
@@ -23,6 +26,10 @@ public class CharacterManager : MonoBehaviour
     public float counterChance;
 
     public CharacterAction action;
+
+    //List<IEffect> effects = new List<IEffect>;
+
+    public PlayerState state;
 
     CombatManager combatManager;
 
@@ -68,8 +75,6 @@ public class CharacterManager : MonoBehaviour
             shieldMeter.RecoverCharges();
             Debug.Log("Number of charges of " + name + ": " + shieldMeter.GetAvailableCharges());
         }
-        else if (shieldMeter.GetAvailableCharges() == 0)
-            action = null;
     }
 
     public void TakeDamage(float damage)
@@ -79,6 +84,15 @@ public class CharacterManager : MonoBehaviour
         else currentHP -= damage;
 
         CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this));
+    }
+
+    public void TakeMeterDamage(float meterDamage)
+    {
+        shieldMeter.LoseCharges(meterDamage);
+        if (shieldMeter.GetCurrentCharges() <= 0)
+        {
+            // TO-DO: crushed state or leftover damage
+        }
     }
 
     public bool IsDead()
