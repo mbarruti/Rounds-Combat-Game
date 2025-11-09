@@ -9,6 +9,7 @@ public class Crushed : IEffect
     {
         Duration--;
         target.state = PlayerState.WAIT;
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.name} can't do anything"));
         if (Duration == 0) target.RemoveEffect(this);
     }
 }
