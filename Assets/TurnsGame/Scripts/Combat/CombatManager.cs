@@ -100,8 +100,8 @@ public class CombatManager : MonoBehaviour
         enemy.state = PlayerState.CHOOSE;
         player.action = new();
         enemy.action = new();
-        player.ApplyEffects();
-        enemy.ApplyEffects();
+        player.ApplyEffects(EffectTrigger.RoundStart);
+        enemy.ApplyEffects(EffectTrigger.RoundStart);
         
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
     }

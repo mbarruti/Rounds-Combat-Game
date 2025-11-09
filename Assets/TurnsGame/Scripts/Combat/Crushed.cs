@@ -6,6 +6,8 @@ public class Crushed : IEffect
     public string Name => "Crushed";
     public int Duration { get; private set; } = 1;
 
+    public EffectTrigger Trigger { get; private set; } = EffectTrigger.RoundStart;
+
     public void GetAdded(CharacterManager target)
     {
         target.AddEffect(this);

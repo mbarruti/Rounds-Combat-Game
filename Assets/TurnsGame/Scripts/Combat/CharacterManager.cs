@@ -102,13 +102,13 @@ public class CharacterManager : MonoBehaviour
         effects.Add(effect);
     }
 
-    public void ApplyEffects()
+    public void ApplyEffects(EffectTrigger trigger)
     {
         if (effects.Count == 0) return;
         var effectsCopy = new List<IEffect>(effects);
         foreach (var effect in effectsCopy)
         {
-            effect.Apply(this);
+             if (effect.Trigger == trigger) effect.Apply(this);
             //if (effect.Duration == 0) RemoveEffect(effect);
         }
     }
