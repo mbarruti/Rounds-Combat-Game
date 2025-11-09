@@ -1,9 +1,16 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Crushed : IEffect
 {
     public string Name => "Crushed";
     public int Duration { get; private set; } = 1;
+
+    public void GetAdded(CharacterManager target)
+    {
+        target.AddEffect(this);
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.name} got crushed!"));
+    }
 
     public void Apply(CharacterManager target)
     {

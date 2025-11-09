@@ -4,6 +4,7 @@ public interface IEffect
 {
     string Name { get; }
     int Duration { get; }
+    void GetAdded(CharacterManager target);
     void Apply(CharacterManager target);
 }
 

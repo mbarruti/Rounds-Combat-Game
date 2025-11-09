@@ -93,8 +93,7 @@ public class CharacterManager : MonoBehaviour
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
             IEffect crushedEffect = new Crushed();
-            AddEffect(crushedEffect);
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{this.name} got crushed!"));
+            crushedEffect.GetAdded(this);
         }
     }
 
