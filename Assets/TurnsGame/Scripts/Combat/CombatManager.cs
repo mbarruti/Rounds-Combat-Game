@@ -118,7 +118,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0) enemy.action = new Block();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Attack();
         else enemy.action = new Attack();
     }
 
@@ -153,7 +153,6 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Attack, Block):
-                CombatUI.AddAnimation(CombatUI.Instance.WriteText(player.name + " attacks " + enemy.name));
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
@@ -163,9 +162,12 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Block, Attack):
-                CombatUI.AddAnimation(CombatUI.Instance.WriteText(enemy.name + " attacks " + player.name));
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
+                break;
+            case (_, _):
+                player.PerformAction(enemy);
+                enemy.PerformAction(player);
                 break;
         }
         RoundEnd();
