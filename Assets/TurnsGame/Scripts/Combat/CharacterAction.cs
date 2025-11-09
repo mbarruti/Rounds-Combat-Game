@@ -17,6 +17,5 @@ public class CharacterAction
 
     public virtual void Execute(CharacterManager user, CharacterManager target)
     {
-        Debug.Log("HOLA TONTO");
     }
 }
