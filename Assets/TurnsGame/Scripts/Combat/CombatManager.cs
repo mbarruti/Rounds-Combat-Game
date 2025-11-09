@@ -63,11 +63,7 @@ public class CombatManager : MonoBehaviour
         //
 
         CombatUI.AddAnimation(CombatUI.Instance.WriteText("Begin match"));
-        roundNumber++;
-
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Choose your action", waitTime: 0f));
-        StartCoroutine(CombatUI.Instance.ExecuteAnimations());
+        PreRound();
     }
 
     CharacterManager SpawnCharacter(bool isPlayer)
@@ -94,15 +90,24 @@ public class CombatManager : MonoBehaviour
         return characterManager;
     }
 
-    public void RoundStart()
+    void PreRound()
     {
+        roundNumber++;
+
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
+
         player.state = PlayerState.CHOOSE;
         enemy.state = PlayerState.CHOOSE;
         player.action = new();
         enemy.action = new();
         player.ApplyEffects();
         enemy.ApplyEffects();
+        
+        StartCoroutine(CombatUI.Instance.ExecuteAnimations());
+    }
 
+    public void RoundStart()
+    {
         state = CombatState.CHOOSE;
         // TO-DO: activate attack and block buttons
 
@@ -226,11 +231,7 @@ public class CombatManager : MonoBehaviour
         CheckCombatState();
         if (state != CombatState.END)
         {
-            roundNumber++;
-
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText("Choose your action", waitTime: 0f));
-            StartCoroutine(CombatUI.Instance.ExecuteAnimations());
+            PreRound();
         }
     }
 
