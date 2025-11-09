@@ -11,7 +11,7 @@ namespace MyProject
 
         public const float COUNTER_PROWESS_GAIN = 0.2f; // PROWESS GAINED FROM GETTING A COUNTER
 
-        public const float COUNTER_PROWESS_LOSS = 1.0f; // PROWESS LOST WHEN BEING COUNTERED
+        public const float COUNTER_PROWESS_LOSS = -1.0f; // PROWESS LOST WHEN BEING COUNTERED
 
         public const float HALF_CHARGE = 0.5f; // CHARGE IN RECOVERY
 
