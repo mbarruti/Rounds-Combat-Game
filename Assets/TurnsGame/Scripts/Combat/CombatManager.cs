@@ -94,7 +94,8 @@ public class CombatManager : MonoBehaviour
     {
         player.state = PlayerState.CHOOSE;
         enemy.state = PlayerState.CHOOSE;
-
+        player.action = new();
+        enemy.action = new();
         player.ApplyEffects();
         enemy.ApplyEffects();
 

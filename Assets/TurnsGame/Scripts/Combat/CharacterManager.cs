@@ -105,6 +105,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ApplyEffects()
     {
+        if (effects.Count == 0) return;
         foreach (var effect in effects)
         {
             effect.Apply(this);
