@@ -92,9 +92,9 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            // TO-DO: crushed state or leftover damage
             IEffect crushedEffect = new Crushed();
             AddEffect(crushedEffect);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{this.name} got crushed!"));
         }
     }
 
