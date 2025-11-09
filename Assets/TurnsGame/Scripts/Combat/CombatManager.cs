@@ -63,7 +63,11 @@ public class CombatManager : MonoBehaviour
         //
 
         CombatUI.AddAnimation(CombatUI.Instance.WriteText("Begin match"));
-        RoundStart();
+        roundNumber++;
+
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Choose your action", waitTime: 0f));
+        StartCoroutine(CombatUI.Instance.ExecuteAnimations());
     }
 
     CharacterManager SpawnCharacter(bool isPlayer)
