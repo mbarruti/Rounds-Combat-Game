@@ -674,6 +674,8 @@ MonoBehaviour:
   enemyShieldMeter: {fileID: 435483747}
   uiPlayerOnePosition: {fileID: 2073629919}
   uiPlayerTwoPosition: {fileID: 1251385484}
+  attackButton: {fileID: 1477051277}
+  blockButton: {fileID: 2108652799}
 --- !u!1 &435483746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,7 +1594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1477051278
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2336,7 +2338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2108652800
 RectTransform:
   m_ObjectHideFlags: 0

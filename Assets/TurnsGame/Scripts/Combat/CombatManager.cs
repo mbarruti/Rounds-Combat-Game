@@ -94,7 +94,7 @@ public class CombatManager : MonoBehaviour
     {
         roundNumber++;
 
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber, waitTime: 0));
 
         player.state = PlayerState.CHOOSE;
         enemy.state = PlayerState.CHOOSE;
@@ -103,6 +103,8 @@ public class CombatManager : MonoBehaviour
         player.ApplyEffects(EffectTrigger.RoundStart);
         enemy.ApplyEffects(EffectTrigger.RoundStart);
         
+        CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons());
+
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
     }
 
@@ -123,7 +125,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Attack();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Block();
         else enemy.action = new Attack();
     }
 
@@ -149,6 +151,8 @@ public class CombatManager : MonoBehaviour
 
     void PerformRound()
     {
+        CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
+
         switch ((player.action, enemy.action))
         {
             case (Attack playerAttack, Attack enemyAttack):

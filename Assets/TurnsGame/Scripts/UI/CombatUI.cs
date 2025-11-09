@@ -19,6 +19,9 @@ public class CombatUI : MonoBehaviour
 
     private static Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
+    [SerializeField] GameObject attackButton;
+    [SerializeField] GameObject blockButton;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -63,6 +66,20 @@ public class CombatUI : MonoBehaviour
     public IEnumerator UpdateHPText(CharacterManager character, float waitTime = 0f)
     {
         yield return character.healthText.text = $"{Mathf.CeilToInt(character.currentHP)}/{(int)character.maxHP}";
+        yield return new WaitForSeconds(waitTime);
+    }
+
+    public IEnumerator ShowActionButtons(float waitTime = 0f)
+    {
+        attackButton.SetActive(true);
+        blockButton.SetActive(true);
+        yield return new WaitForSeconds(waitTime);
+    }
+    
+    public IEnumerator HideActionButtons(float waitTime = 0f)
+    {
+        attackButton.SetActive(false);
+        blockButton.SetActive(false);
         yield return new WaitForSeconds(waitTime);
     }
 }
