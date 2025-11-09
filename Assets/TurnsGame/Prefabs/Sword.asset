@@ -16,3 +16,4 @@ MonoBehaviour:
   <MeterDamage>k__BackingField: 1
   <Accuracy>k__BackingField: 1
   <Prowess>k__BackingField: 1
+  <CounterChance>k__BackingField: 0.05

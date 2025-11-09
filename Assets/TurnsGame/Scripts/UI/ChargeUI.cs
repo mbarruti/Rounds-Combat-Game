@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static MyProject.Constants;
 
 public class ChargeUI : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ChargeUI : MonoBehaviour
 
     public void UpdateBarColor(float value)
     {
-        if (value == 0.5f)
+        if (value == HALF_CHARGE)
             barColor.color = Color.red;
         else
             barColor.color = Color.blue;

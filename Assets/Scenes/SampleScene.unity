@@ -558,7 +558,7 @@ GameObject:
   - component: {fileID: 407857582}
   - component: {fileID: 407857586}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: CombatUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -664,7 +664,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 407857581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30cc94a8073e4cb49b8308a2ce33b273, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f9f258ac93b0bb448f5b7e07bcf986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI
   panelText: {fileID: 1139233406}

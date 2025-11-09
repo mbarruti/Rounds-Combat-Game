@@ -2,11 +2,10 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
-public class UI : MonoBehaviour
+public class CombatUI : MonoBehaviour
 {
-    public static UI Instance { get; private set; }
+    public static CombatUI Instance { get; private set; }
 
     public TextMeshProUGUI panelText;
     public TextMeshProUGUI playerHPText;
@@ -33,14 +32,14 @@ public class UI : MonoBehaviour
     public IEnumerator ExecuteAnimations()
     {
         //Debug.Log("Executing animations");
-        int count = coroutineQueue.Count();
+        int count = coroutineQueue.Count;
         for (int i = 0; i < count; i++)
         {   
             IEnumerator enumerator = coroutineQueue.Dequeue();
             //Debug.LogFormat("Dequed! {0}", i+1);
             yield return StartCoroutine(enumerator);
         }
-        if (CombatManager.Instance.state != CombatState.END) CombatManager.Instance.state = CombatState.CHOOSE;
+        if (CombatManager.Instance.state != CombatState.END) CombatManager.Instance.RoundStart();
     }
 
     public static void AddAnimation(IEnumerator animation)

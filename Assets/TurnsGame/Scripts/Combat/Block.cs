@@ -8,10 +8,10 @@ public class Block : CharacterAction
     {
         if (target.action is Attack)
         {
-            UI.AddAnimation(UI.Instance.WriteText(user.name + " blocks the incoming attack"));
-            user.shieldMeter.LoseCharges(target.meterDamage);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " blocks the incoming attack"));
+            user.TakeMeterDamage(target.meterDamage);
             Debug.Log("Number of charges of " + user.name + ": " + user.shieldMeter.GetAvailableCharges());
         }
-        else UI.AddAnimation(UI.Instance.WriteText(user.name + " blocks nothing what a donkey"));
+        else CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " blocks nothing what a donkey"));
     }
 }

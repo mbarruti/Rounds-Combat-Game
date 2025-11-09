@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MyProject.Constants;
 
 public class ShieldMeterUI : MonoBehaviour
 {
@@ -10,12 +11,6 @@ public class ShieldMeterUI : MonoBehaviour
     [SerializeField] ChargeUI chargeBar;
     List<ChargeUI> chargeBarList = new();
     List<float> chargesCopy = new();
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
 
     public void Setup(ShieldMeter meter)
     {
@@ -71,7 +66,7 @@ public class ShieldMeterUI : MonoBehaviour
             for (int i = 1; i <= chargesCopy.Count; i++)
             {
                 float value = chargesCopy[^i];
-                if (value == 1f)
+                if (value == FULL_CHARGE)
                 {
                     chargesCopy.RemoveAt(chargesCopy.Count - i);
                     Destroy(chargeBarList[chargeBarList.Count - i].gameObject);
@@ -89,7 +84,7 @@ public class ShieldMeterUI : MonoBehaviour
         }
         if (currentCharges.Count != 0 && chargesCopy[^1] != currentCharges[^1])
         {
-            chargesCopy[^1] = 0.5f;
+            chargesCopy[^1] = HALF_CHARGE;
             chargeBarList[^1].UpdateBarColor(chargesCopy[^1]);
         }
         yield return new WaitForSeconds(waitTime);
@@ -98,13 +93,13 @@ public class ShieldMeterUI : MonoBehaviour
     void UpdateMeterUI(List<float> currentCharges)
     {
         if (chargesCopy.Count > currentCharges.Count)
-            UI.AddAnimation(LoseChargeBars(currentCharges));
+            CombatUI.AddAnimation(LoseChargeBars(currentCharges));
         else if (chargesCopy.Count < currentCharges.Count)
-            UI.AddAnimation(RecoverChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != 1f)
-            UI.AddAnimation(LoseChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == 1f)
-            UI.AddAnimation(RecoverChargeBars(currentCharges));
+            CombatUI.AddAnimation(RecoverChargeBars(currentCharges));
+        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != FULL_CHARGE)
+            CombatUI.AddAnimation(LoseChargeBars(currentCharges));
+        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == FULL_CHARGE)
+            CombatUI.AddAnimation(RecoverChargeBars(currentCharges));
     }
 
     public bool TryGet(List<float> list, Index index, out float value)
