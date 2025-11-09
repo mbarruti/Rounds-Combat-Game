@@ -106,9 +106,11 @@ public class CharacterManager : MonoBehaviour
     public void ApplyEffects()
     {
         if (effects.Count == 0) return;
-        foreach (var effect in effects)
+        var effectsCopy = new List<IEffect>(effects);
+        foreach (var effect in effectsCopy)
         {
             effect.Apply(this);
+            //if (effect.Duration == 0) RemoveEffect(effect);
         }
     }
 
