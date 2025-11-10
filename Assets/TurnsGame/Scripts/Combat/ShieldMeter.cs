@@ -12,10 +12,10 @@ public class ShieldMeter
 
     public event Action<List<float>> chargesChangedEvent;
 
-    public void Setup()
+    public void Setup(int shieldMaxCharges)
     {
         charges = new Stack<float>();
-        maxCharges = 3;
+        maxCharges = shieldMaxCharges;
         Refill();
     }
 

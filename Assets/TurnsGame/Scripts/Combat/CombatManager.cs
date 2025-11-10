@@ -111,7 +111,6 @@ public class CombatManager : MonoBehaviour
     public void RoundStart()
     {
         state = CombatState.CHOOSE;
-        // TO-DO: activate attack and block buttons
 
         AIAction();
         if (player.state == PlayerState.WAIT)
