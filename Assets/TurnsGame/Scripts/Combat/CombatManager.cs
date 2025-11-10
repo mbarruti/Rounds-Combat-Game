@@ -221,6 +221,11 @@ public class CombatManager : MonoBehaviour
             counterWinner.PerformAction(enemy);
             counterLoser.PerformAction(player);
         }
+        else
+        {
+            player.PerformAction(enemy);
+            enemy.PerformAction(player);
+        }
         Debug.Log(playerAttack.prowessBonus);
         Debug.Log(enemyAttack.prowessBonus);
     }
