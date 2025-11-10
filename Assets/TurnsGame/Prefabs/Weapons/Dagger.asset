@@ -18,4 +18,4 @@ MonoBehaviour:
   <Accuracy>k__BackingField: 1
   <Prowess>k__BackingField: 1
   <CounterChance>k__BackingField: 0.05
-  <numHits>k__BackingField: 3
+  <NumHits>k__BackingField: 3
