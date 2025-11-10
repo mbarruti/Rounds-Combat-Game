@@ -222,8 +222,8 @@ public class CombatManager : MonoBehaviour
 
             (var counterWinner, var counterLoser) = playerGain > enemyGain ? (player, enemy) : (enemy, player);
             CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
-            counterWinner.PerformAction(enemy);
-            counterLoser.PerformAction(player);
+            counterWinner.PerformAction(counterLoser);
+            counterLoser.PerformAction(counterWinner);
         }
         else
         {
