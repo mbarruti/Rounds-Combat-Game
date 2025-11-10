@@ -9,4 +9,5 @@ public class WeaponSO : ScriptableObject
     [field: SerializeField] public float Accuracy { get; private set; } = 1;
     [field: SerializeField] public float Prowess { get; private set; } = 1;
     [field: SerializeField] public float CounterChance { get; private set; } = 0.05f;
+    [field: SerializeField] public int NumHits { get; private set; } = 1;
 }

@@ -26,6 +26,8 @@ public class CharacterManager : MonoBehaviour
     public float accuracy;
     public float prowess;
     public float counterChance;
+    public int maxNumHits;
+    public int numHits;
 
     // Shield data
     public float parryChance;
@@ -50,6 +52,7 @@ public class CharacterManager : MonoBehaviour
         accuracy = weapon.Accuracy;
         prowess = weapon.Prowess;
         counterChance = weapon.CounterChance;
+        maxNumHits = weapon.NumHits;
 
         parryChance = shield.ParryChance;
         shieldMeter = new ShieldMeter();
@@ -71,6 +74,13 @@ public class CharacterManager : MonoBehaviour
         }
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
+    }
+
+    public void Reset()
+    {
+        action = new();
+        numHits = maxNumHits;
+        state = PlayerState.CHOOSE;
     }
 
     public void PerformAction(CharacterManager target)
