@@ -223,10 +223,10 @@ public class CombatManager : MonoBehaviour
         Debug.Log(enemyAttack.prowessBonus);
     }
 
-    bool IsCounter(float chance)
+    bool IsCounter(float counterChance)
     {
         float randomValue = Random.Range(0f, 1f);
-        return chance >= randomValue;
+        return counterChance >= randomValue;
     }
 
     void RoundEnd()

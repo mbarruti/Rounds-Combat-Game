@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61994a943f252e249be861900052070d, type: 3}
-  m_Name: Warhammer
+  m_Name: Staff
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
-  <BaseDamage>k__BackingField: 50
-  <MeterDamage>k__BackingField: 2.5
-  <Accuracy>k__BackingField: 0.6
-  <Prowess>k__BackingField: 0.8
+  <Name>k__BackingField: Staff
+  <BaseDamage>k__BackingField: 15
+  <MeterDamage>k__BackingField: 1.5
+  <Accuracy>k__BackingField: 1
+  <Prowess>k__BackingField: 1
+  <CounterChance>k__BackingField: 0.1
