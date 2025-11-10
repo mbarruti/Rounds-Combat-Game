@@ -42,9 +42,9 @@ public class CombatManager : MonoBehaviour
     void SetupMatch()
     {
         //player = SpawnCharacter(IS_PLAYER_ONE);
-        //player.name = "PlayerOne";
+        //player.username = "PlayerOne";
         //enemy = SpawnCharacter(!IS_PLAYER_ONE);
-        //enemy.name = "PlayerTwo";
+        //enemy.username = "PlayerTwo";
 
         // PROVISIONAL
         Vector3 screenPosition = CombatUI.Instance.uiPlayerOnePosition.position;
@@ -156,8 +156,6 @@ public class CombatManager : MonoBehaviour
         {
             case (Attack playerAttack, Attack enemyAttack):
                 Clash(playerAttack, enemyAttack);
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
                 break;
 
             case (Attack, Block):
@@ -204,8 +202,10 @@ public class CombatManager : MonoBehaviour
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
 
-            string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner} gets a counter!"));
+            (var counterWinner, var counterLoser ) = playerGain > enemyGain ? (player, enemy) : (enemy, player);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
+            counterWinner.PerformAction(enemy);
+            counterLoser.PerformAction(player);
         }
         else if (IsCounter(playerChance) || IsCounter(enemyChance))
         {
@@ -216,8 +216,10 @@ public class CombatManager : MonoBehaviour
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
 
-            string counterWinner = playerGain > enemyGain ? player.username : enemy.username;
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner} gets a counter!"));
+            (var counterWinner, var counterLoser ) = playerGain > enemyGain ? (player, enemy) : (enemy, player);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
+            counterWinner.PerformAction(enemy);
+            counterLoser.PerformAction(player);
         }
         Debug.Log(playerAttack.prowessBonus);
         Debug.Log(enemyAttack.prowessBonus);
