@@ -9,13 +9,14 @@ public class Attack : CharacterAction
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {
+        totalDamage = (user.baseDamage + BonusDamage(user.baseDamage)) * ProwessValue(user.prowess);
+        if (totalDamage <= 0) return;
         CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " attacks " + target.name));
         if (target.action is not Block)
         {
             for (int hitNumber = 0; hitNumber < user.numHits; hitNumber++)
             {
-                totalDamage = (user.baseDamage + BonusDamage(user.baseDamage)) * ProwessValue(user.prowess);
-                if (/*totalDamage > 0 && */AttackHits(user.accuracy))
+                if (AttackHits(user.accuracy))
                 {
                     target.TakeDamage(totalDamage);
                 }
