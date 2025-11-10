@@ -9,9 +9,21 @@ public class Block : CharacterAction
         if (target.action is Attack)
         {
             CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " blocks the incoming attack"));
-            user.TakeMeterDamage(target.meterDamage);
-            Debug.Log("Number of charges of " + user.name + ": " + user.shieldMeter.GetAvailableCharges());
+            if (IsParry(user.parryChance))
+            {
+                CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.name} parries {target.name}!"));
+                nextAction = new Attack();
+                nextAction.Execute(user, target);
+            }
+            else user.TakeMeterDamage(target.meterDamage);
+            //Debug.Log("Number of charges of " + user.name + ": " + user.shieldMeter.GetAvailableCharges());
         }
         else CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " blocks nothing what a donkey"));
+    }
+
+    bool IsParry(float parryChance)
+    {
+        float randomValue = Random.Range(0f, 1f);
+        return parryChance >= randomValue;
     }
 }

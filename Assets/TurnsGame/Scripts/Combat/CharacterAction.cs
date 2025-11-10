@@ -9,6 +9,7 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterAction
 {
+    protected CharacterAction nextAction;
 
     public CharacterAction()
     {

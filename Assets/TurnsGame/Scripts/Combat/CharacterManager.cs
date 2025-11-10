@@ -18,6 +18,7 @@ public class CharacterManager : MonoBehaviour
     public ShieldMeterUI shieldMeterUI;
 
     [SerializeField] WeaponSO weapon;
+    [SerializeField] ShieldSO shield;
 
     // Weapon data
     public float baseDamage;
@@ -25,6 +26,11 @@ public class CharacterManager : MonoBehaviour
     public float accuracy;
     public float prowess;
     public float counterChance;
+    public int maxNumHits;
+    public int numHits;
+
+    // Shield data
+    public float parryChance;
 
     public CharacterAction action;
 
@@ -46,9 +52,11 @@ public class CharacterManager : MonoBehaviour
         accuracy = weapon.Accuracy;
         prowess = weapon.Prowess;
         counterChance = weapon.CounterChance;
+        maxNumHits = weapon.NumHits;
 
+        parryChance = shield.ParryChance;
         shieldMeter = new ShieldMeter();
-        shieldMeter.Setup();
+        shieldMeter.Setup(shield.MaxCharges);
 
         if (isPlayer)
         {
@@ -66,6 +74,13 @@ public class CharacterManager : MonoBehaviour
         }
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
+    }
+
+    public void Reset()
+    {
+        action = new();
+        numHits = maxNumHits;
+        state = PlayerState.CHOOSE;
     }
 
     public void PerformAction(CharacterManager target)
