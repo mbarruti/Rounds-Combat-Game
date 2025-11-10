@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Dagger
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   <Name>k__BackingField: Dagger
-  <BaseDamage>k__BackingField: 12
+  <BaseDamage>k__BackingField: 6
   <MeterDamage>k__BackingField: 0.5
   <Accuracy>k__BackingField: 1
   <Prowess>k__BackingField: 1
   <CounterChance>k__BackingField: 0.05
+  <numHits>k__BackingField: 3
