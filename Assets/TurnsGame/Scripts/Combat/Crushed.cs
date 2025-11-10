@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -11,14 +12,14 @@ public class Crushed : IEffect
     public void GetAdded(CharacterManager target)
     {
         target.AddEffect(this);
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.name} got crushed!"));
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.username} got crushed!"));
     }
 
     public void Apply(CharacterManager target)
     {
         Duration--;
         target.state = PlayerState.WAIT;
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.name} can't do anything"));
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.username} can't do anything", waitTime: 0));
         if (Duration == 0) target.RemoveEffect(this);
     }
 }

@@ -11,7 +11,7 @@ public class Attack : CharacterAction
     {
         totalDamage = (user.baseDamage + BonusDamage(user.baseDamage)) * ProwessValue(user.prowess);
         if (totalDamage <= 0) return;
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " attacks " + target.name));
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.username + " attacks " + target.username));
         if (target.action is not Block)
         {
             for (int hitNumber = 0; hitNumber < user.numHits; hitNumber++)
@@ -22,7 +22,7 @@ public class Attack : CharacterAction
                 }
                 else
                 {
-                    CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.name + " misses"));
+                    CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.username + " misses"));
                 }
             }
         }
