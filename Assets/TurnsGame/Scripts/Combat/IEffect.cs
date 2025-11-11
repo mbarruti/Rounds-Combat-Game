@@ -13,5 +13,6 @@ public enum EffectTrigger
 {
     RoundStart,
     PerformAction,
-    RoundEnd
+    RoundEnd,
+    Other
 }

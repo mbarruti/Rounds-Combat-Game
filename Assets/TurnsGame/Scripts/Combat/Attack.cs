@@ -1,4 +1,5 @@
 using UnityEngine;
+using static MyProject.Constants;
 
 public class Attack : CharacterAction
 {
@@ -9,7 +10,7 @@ public class Attack : CharacterAction
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {
-        totalDamage = (user.baseDamage + BonusDamage(user.baseDamage)) * ProwessValue(user.prowess);
+        totalDamage = user.baseDamage * BonusDamage(user) * ProwessValue(user.prowess);
         if (totalDamage <= 0) return;
         CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.username + " attacks " + target.username));
         if (target.action is not Block)
@@ -29,9 +30,9 @@ public class Attack : CharacterAction
         //user.RecoverShieldCharge();
     }
 
-    float BonusDamage(float baseDamage)
+    float BonusDamage(CharacterManager user)
     {
-        float bonusDamage = 0;
+        float bonusDamage = (float)user.activeBuffs[DAMAGE].Use(user);
         return bonusDamage;
     }
 

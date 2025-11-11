@@ -131,7 +131,6 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        state = CombatState.ACTION;
         player.action = new Attack();
 
         PerformRound();
@@ -141,7 +140,6 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
         player.state = PlayerState.WAIT;
-        state = CombatState.ACTION;
         player.action = new Block();
 
         PerformRound();
@@ -149,6 +147,7 @@ public class CombatManager : MonoBehaviour
 
     void PerformRound()
     {
+        state = CombatState.ACTION;
         CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
 
         switch ((player.action, enemy.action))

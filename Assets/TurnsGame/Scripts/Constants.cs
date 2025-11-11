@@ -16,5 +16,11 @@ namespace MyProject
         public const float HALF_CHARGE = 0.5f; // CHARGE IN RECOVERY
 
         public const float FULL_CHARGE = 1.0f; // CHARGE AVAILABLE
+
+        public const float CHARGE_BUFF = 0.2f; // BUFF TO CHARGED ATTACK
+
+        // BUFF TYPES
+
+        public static readonly BuffType DAMAGE = BuffType.BonusDamage;
     }
 }
