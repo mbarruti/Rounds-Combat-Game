@@ -182,11 +182,8 @@ public class CombatManager : MonoBehaviour
     {
         CombatUI.AddAnimation(CombatUI.Instance.WriteText("A clash is happening!"));
 
-        for (int i = 1; i <= 3; i++)
-        {
-            playerAttack.prowessBonus -= Random.Range(0, 4) / 10f;
-            enemyAttack.prowessBonus -= Random.Range(0, 4) / 10f;
-        }
+        playerAttack.prowessBonus -= Random.Range(0, 8) / 10f;
+        enemyAttack.prowessBonus -= Random.Range(0, 8) / 10f;
 
         float playerChance = player.counterChance;
         float enemyChance = enemy.counterChance;
@@ -230,8 +227,6 @@ public class CombatManager : MonoBehaviour
             player.PerformAction(enemy);
             enemy.PerformAction(player);
         }
-        Debug.Log(playerAttack.prowessBonus);
-        Debug.Log(enemyAttack.prowessBonus);
     }
 
     (bool, int) IsCounter(float counterChance, int numHits)
@@ -241,7 +236,8 @@ public class CombatManager : MonoBehaviour
             float randomValue = Random.Range(0f, 1f);
             if (counterChance >= randomValue)
             {
-                return (true, hitsLeft);
+                //return (true, hitsLeft);
+                return (true, numHits);
             }
         }
         return (false, numHits);
