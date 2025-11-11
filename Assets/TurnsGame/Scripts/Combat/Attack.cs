@@ -10,7 +10,7 @@ public class Attack : CharacterAction
 
     public override void Execute(CharacterManager user, CharacterManager target)
     {
-        totalDamage = user.baseDamage * BonusDamage(user) * ProwessValue(user.prowess);
+        totalDamage = (user.baseDamage + BonusDamage(user)) * ProwessValue(user.prowess);
         if (totalDamage <= 0) return;
         CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.username + " attacks " + target.username));
         if (target.action is not Block)
@@ -32,7 +32,7 @@ public class Attack : CharacterAction
 
     float BonusDamage(CharacterManager user)
     {
-        float bonusDamage = (float)user.activeBuffs[DAMAGE].Use(user);
+        float bonusDamage = user.baseDamage * (float)user.activeBuffs[DAMAGE].Use(user);
         return bonusDamage;
     }
 

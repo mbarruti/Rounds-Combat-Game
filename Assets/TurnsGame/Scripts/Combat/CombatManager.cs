@@ -136,6 +136,15 @@ public class CombatManager : MonoBehaviour
         PerformRound();
     }
 
+    public void OnChargeButton()
+    {
+        if (player.state != PlayerState.CHOOSE) return;
+        player.state = PlayerState.WAIT;
+        player.action = new Charge();
+
+        PerformRound();
+    }
+
     public void OnBlockButton()
     {
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;

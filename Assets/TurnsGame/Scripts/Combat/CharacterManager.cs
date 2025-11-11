@@ -42,7 +42,7 @@ public class CharacterManager : MonoBehaviour
     };
 
     // Effects
-    List<IEffect> effects;
+    List<IEffect> effects = new();
 
     public CharacterAction action;
     public PlayerState state;

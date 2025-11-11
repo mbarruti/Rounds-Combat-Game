@@ -21,6 +21,7 @@ public class CombatUI : MonoBehaviour
 
     [SerializeField] GameObject attackButton;
     [SerializeField] GameObject blockButton;
+    [SerializeField] GameObject chargeButton;
 
     private void Awake()
     {
@@ -74,6 +75,7 @@ public class CombatUI : MonoBehaviour
     {
         attackButton.SetActive(true);
         blockButton.SetActive(true);
+        chargeButton.SetActive(true);
         yield return new WaitForSeconds(waitTime);
     }
     
@@ -81,6 +83,7 @@ public class CombatUI : MonoBehaviour
     {
         attackButton.SetActive(false);
         blockButton.SetActive(false);
+        chargeButton.SetActive(false);
         yield return new WaitForSeconds(waitTime);
     }
 }

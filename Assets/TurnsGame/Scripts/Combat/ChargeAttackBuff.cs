@@ -8,16 +8,16 @@ public class ChargeAttackBuff : IEffect
 
     public EffectTrigger Trigger { get; private set; } = EffectTrigger.Other;
 
-    public void GetAdded(CharacterManager target)
+    public void GetAdded(CharacterManager user)
     {
-        target.activeBuffs[DAMAGE].Add(this);
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{target.username} gets more damage"));
+        user.activeBuffs[DAMAGE].Add(this);
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} gets more damage"));
     }
 
-    public void Apply(CharacterManager target)
+    public void Apply(CharacterManager user)
     {
         Duration--;
-        target.activeBuffs[DAMAGE].damageBuff += CHARGE_BUFF;
-        if (Duration == 0) target.activeBuffs[DAMAGE].Remove(this);
+        user.activeBuffs[DAMAGE].damageBuff += CHARGE_BUFF;
+        if (Duration == 0) user.activeBuffs[DAMAGE].Remove(this);
     }
 }
