@@ -21,6 +21,12 @@ namespace MyProject
 
         // BUFF TYPES
 
+        public static readonly BuffType BASE_DAMAGE = BuffType.BaseDamage;
+        public static readonly BuffType METER_DAMAGE = BuffType.MeterDamage;
+        public static readonly BuffType ACCURACY = BuffType.Accuracy;
+        public static readonly BuffType PROWESS = BuffType.Prowess;
+        public static readonly BuffType COUNTER_CHANCE = BuffType.CounterChance;
+        public static readonly BuffType NUM_HITS = BuffType.NumHits;
         public static readonly BuffType DAMAGE = BuffType.BonusDamage;
     }
 }
