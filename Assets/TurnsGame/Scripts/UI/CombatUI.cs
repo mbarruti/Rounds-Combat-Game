@@ -21,6 +21,7 @@ public class CombatUI : MonoBehaviour
 
     [SerializeField] GameObject attackButton;
     [SerializeField] GameObject blockButton;
+    [SerializeField] GameObject chargeButton;
 
     private void Awake()
     {
@@ -54,6 +55,7 @@ public class CombatUI : MonoBehaviour
 
     public IEnumerator WriteText(string message, float delay = 0.03f, float waitTime = 1f)
     {
+        //TO-DO: make dialogue animation and HP update when taking damange happen at the same time
         panelText.text = "";
         foreach (char c in message)
         {
@@ -63,9 +65,9 @@ public class CombatUI : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
     }
 
-    public IEnumerator UpdateHPText(CharacterManager character, float waitTime = 0f)
+    public IEnumerator UpdateHPText(CharacterManager character, float currentHP, float waitTime = 0.5f)
     {
-        yield return character.healthText.text = $"{Mathf.CeilToInt(character.currentHP)}/{(int)character.maxHP}";
+        yield return character.healthText.text = $"{Mathf.CeilToInt(currentHP)}/{(int)character.maxHP}";
         yield return new WaitForSeconds(waitTime);
     }
 
@@ -73,6 +75,7 @@ public class CombatUI : MonoBehaviour
     {
         attackButton.SetActive(true);
         blockButton.SetActive(true);
+        chargeButton.SetActive(true);
         yield return new WaitForSeconds(waitTime);
     }
     
@@ -80,6 +83,7 @@ public class CombatUI : MonoBehaviour
     {
         attackButton.SetActive(false);
         blockButton.SetActive(false);
+        chargeButton.SetActive(false);
         yield return new WaitForSeconds(waitTime);
     }
 }

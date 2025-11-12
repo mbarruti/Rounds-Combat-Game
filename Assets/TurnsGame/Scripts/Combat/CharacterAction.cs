@@ -9,14 +9,15 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterAction
 {
-    protected CharacterAction nextAction;
+    protected CharacterManager User { get; set; }
+    protected CharacterAction LastAction { get; set; }
+    protected CharacterAction NextAction { get; set; }
 
-    public CharacterAction()
+    public CharacterAction(CharacterManager user, CharacterAction lastAction)
     {
-
+        User = user;
+        LastAction = lastAction;
     }
 
-    public virtual void Execute(CharacterManager user, CharacterManager target)
-    {
-    }
+    public virtual void Execute(CharacterManager target){}
 }

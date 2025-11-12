@@ -123,16 +123,24 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Block();
-        else enemy.action = new Attack();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Block(enemy, enemy.action);
+        else enemy.action = new Attack(enemy, enemy.action);
     }
 
     public void OnAttackButton()
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        state = CombatState.ACTION;
-        player.action = new Attack();
+        player.action = new Attack(player, player.action);
+
+        PerformRound();
+    }
+
+    public void OnChargeButton()
+    {
+        if (player.state != PlayerState.CHOOSE) return;
+        player.state = PlayerState.WAIT;
+        player.action = new Charge(player, player.action);
 
         PerformRound();
     }
@@ -141,14 +149,14 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
         player.state = PlayerState.WAIT;
-        state = CombatState.ACTION;
-        player.action = new Block();
+        player.action = new Block(player, player.action);
 
         PerformRound();
     }
 
     void PerformRound()
     {
+        state = CombatState.ACTION;
         CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
 
         switch ((player.action, enemy.action))
@@ -182,11 +190,8 @@ public class CombatManager : MonoBehaviour
     {
         CombatUI.AddAnimation(CombatUI.Instance.WriteText("A clash is happening!"));
 
-        for (int i = 1; i <= 3; i++)
-        {
-            playerAttack.prowessBonus -= Random.Range(0, 4) / 10f;
-            enemyAttack.prowessBonus -= Random.Range(0, 4) / 10f;
-        }
+        playerAttack.prowessBonus -= Random.Range(0, 8) / 10f;
+        enemyAttack.prowessBonus -= Random.Range(0, 8) / 10f;
 
         float playerChance = player.counterChance;
         float enemyChance = enemy.counterChance;
@@ -222,16 +227,14 @@ public class CombatManager : MonoBehaviour
 
             (var counterWinner, var counterLoser) = playerGain > enemyGain ? (player, enemy) : (enemy, player);
             CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
-            counterWinner.PerformAction(enemy);
-            counterLoser.PerformAction(player);
+            counterWinner.PerformAction(counterLoser);
+            counterLoser.PerformAction(counterWinner);
         }
         else
         {
             player.PerformAction(enemy);
             enemy.PerformAction(player);
         }
-        Debug.Log(playerAttack.prowessBonus);
-        Debug.Log(enemyAttack.prowessBonus);
     }
 
     (bool, int) IsCounter(float counterChance, int numHits)
@@ -241,7 +244,8 @@ public class CombatManager : MonoBehaviour
             float randomValue = Random.Range(0f, 1f);
             if (counterChance >= randomValue)
             {
-                return (true, hitsLeft);
+                //return (true, hitsLeft);
+                return (true, numHits);
             }
         }
         return (false, numHits);

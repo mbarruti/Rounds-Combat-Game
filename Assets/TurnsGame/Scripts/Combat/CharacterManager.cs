@@ -2,23 +2,26 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static MyProject.Constants;
 
 public enum PlayerState { CHOOSE, WAIT }
 
 public class CharacterManager : MonoBehaviour
 {
     [SerializeField] User user;
+    [SerializeField] WeaponSO weapon;
+    [SerializeField] ShieldSO shield;
+
     public string username => user.Name;
 
+    // HP data
     public float maxHP;
     public float currentHP;
     public TextMeshProUGUI healthText;
 
+    // Meter data
     public ShieldMeter shieldMeter;
     public ShieldMeterUI shieldMeterUI;
-
-    [SerializeField] WeaponSO weapon;
-    [SerializeField] ShieldSO shield;
 
     // Weapon data
     public float baseDamage;
@@ -32,16 +35,25 @@ public class CharacterManager : MonoBehaviour
     // Shield data
     public float parryChance;
 
+    // Buff data
+    public Dictionary<BuffType, Buff> activeBuffs;
+
+    // Effects
+    List<IEffect> effects;
+
     public CharacterAction action;
-
-    List<IEffect> effects = new();
-
     public PlayerState state;
 
     CombatManager combatManager;
 
-    private void Awake()
+    void Awake()
     {
+        action = new(this, null);
+        activeBuffs = new()
+        {
+            { DAMAGE, new DamageBuff() }
+        };
+        effects = new();
         combatManager = CombatManager.Instance;
     }
 
@@ -78,14 +90,15 @@ public class CharacterManager : MonoBehaviour
 
     public void Reset()
     {
-        action = new();
+        // CharacterAction newAction = new(this, action);
+        // action = newAction;
         numHits = maxNumHits;
         state = PlayerState.CHOOSE;
     }
 
     public void PerformAction(CharacterManager target)
     {
-        action?.Execute(this, target);
+        action?.Execute(target);
         if (action is not Block)
         {
             shieldMeter.RecoverCharges();
@@ -99,7 +112,7 @@ public class CharacterManager : MonoBehaviour
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
-        CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this));
+        CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
     }
 
     public void TakeMeterDamage(float meterDamage)
@@ -107,8 +120,8 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            IEffect crushedEffect = new Crushed();
-            crushedEffect.GetAdded(this);
+            IEffect crushedEffect = new Crushed(this);
+            crushedEffect.GetAdded();
         }
     }
 
@@ -123,7 +136,7 @@ public class CharacterManager : MonoBehaviour
         var effectsCopy = new List<IEffect>(effects);
         foreach (var effect in effectsCopy)
         {
-             if (effect.Trigger == trigger) effect.Apply(this);
+            if (effect.Trigger == trigger) effect.Apply();
             //if (effect.Duration == 0) RemoveEffect(effect);
         }
     }
