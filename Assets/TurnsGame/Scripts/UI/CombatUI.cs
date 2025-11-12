@@ -17,7 +17,7 @@ public class CombatUI : MonoBehaviour
     public RectTransform uiPlayerOnePosition;
     public RectTransform uiPlayerTwoPosition;
 
-    private static Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
+    private static readonly Queue<IEnumerator> coroutineQueue = new();
 
     [SerializeField] GameObject attackButton;
     [SerializeField] GameObject blockButton;
@@ -38,7 +38,7 @@ public class CombatUI : MonoBehaviour
         //Debug.Log("Executing animations");
         int count = coroutineQueue.Count;
         for (int i = 0; i < count; i++)
-        {   
+        {
             IEnumerator enumerator = coroutineQueue.Dequeue();
             //Debug.LogFormat("Dequed! {0}", i+1);
             yield return StartCoroutine(enumerator);
@@ -55,7 +55,7 @@ public class CombatUI : MonoBehaviour
 
     public IEnumerator WriteText(string message, float delay = 0.03f, float waitTime = 1f)
     {
-        //TO-DO: make dialogue animation and HP update when taking damange happen at the same time
+        //TO-DO: make dialogue animation and HP update when taking damage happen at the same time
         panelText.text = "";
         foreach (char c in message)
         {
@@ -65,7 +65,8 @@ public class CombatUI : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
     }
 
-    public IEnumerator UpdateHPText(CharacterManager character, float currentHP, float waitTime = 0.5f)
+    public IEnumerator UpdateHPText(CharacterManager character, float currentHP,
+    float waitTime = 0.5f)
     {
         yield return character.healthText.text = $"{Mathf.CeilToInt(currentHP)}/{(int)character.maxHP}";
         yield return new WaitForSeconds(waitTime);
@@ -78,7 +79,7 @@ public class CombatUI : MonoBehaviour
         chargeButton.SetActive(true);
         yield return new WaitForSeconds(waitTime);
     }
-    
+
     public IEnumerator HideActionButtons(float waitTime = 0f)
     {
         attackButton.SetActive(false);
