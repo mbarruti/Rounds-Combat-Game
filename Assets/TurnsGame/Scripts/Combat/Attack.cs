@@ -32,7 +32,7 @@ public class Attack : CharacterAction
 
     float BonusDamage(CharacterManager user)
     {
-        float bonusDamage = user.baseDamage * (float)user.activeBuffs[DAMAGE].Use(user);
+        float bonusDamage = user.baseDamage * (float)user.activeBuffs[DAMAGE].Use();
         return bonusDamage;
     }
 

@@ -116,8 +116,8 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            IEffect crushedEffect = new Crushed();
-            crushedEffect.GetAdded(this);
+            IEffect crushedEffect = new Crushed(this);
+            crushedEffect.GetAdded();
         }
     }
 
@@ -132,7 +132,7 @@ public class CharacterManager : MonoBehaviour
         var effectsCopy = new List<IEffect>(effects);
         foreach (var effect in effectsCopy)
         {
-            if (effect.Trigger == trigger) effect.Apply(this);
+            if (effect.Trigger == trigger) effect.Apply();
             //if (effect.Duration == 0) RemoveEffect(effect);
         }
     }

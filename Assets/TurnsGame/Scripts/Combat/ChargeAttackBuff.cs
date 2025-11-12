@@ -1,23 +1,31 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static MyProject.Constants;
 
 public class ChargeAttackBuff : IEffect
 {
+    public CharacterManager Target { get; private set; }
+
+    public ChargeAttackBuff(CharacterManager target)
+    {
+        Target = target;
+    }
+
     public string Name => "Charged Attack";
     public int Duration { get; private set; } = 1;
 
     public EffectTrigger Trigger { get; private set; } = EffectTrigger.Other;
 
-    public void GetAdded(CharacterManager user)
+    public void GetAdded()
     {
-        user.activeBuffs[DAMAGE].Add(this);
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} gets more damage"));
+        Target.activeBuffs[DAMAGE].Add(this);
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Target.username} gets more damage"));
     }
 
-    public void Apply(CharacterManager user)
+    public void Apply()
     {
         Duration--;
-        user.activeBuffs[DAMAGE].damageBuff += CHARGE_BUFF;
-        if (Duration == 0) user.activeBuffs[DAMAGE].Remove(this);
+        Target.activeBuffs[DAMAGE].Apply(CHARGE_BUFF);
+        if (Duration == 0) Target.activeBuffs[DAMAGE].Remove(this);
     }
 }

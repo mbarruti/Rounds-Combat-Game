@@ -4,29 +4,33 @@ using UnityEngine;
 
 public class DamageBuff : Buff
 {
-    //public float damageBuff;
+    public float value;
+    List<IEffect> effectList = new();
 
-    List<IEffect> buffList = new();
-
-    public override object Use(CharacterManager user)
+    public override object Use()
     {
-        damageBuff = 0;
-        List<IEffect> copy = new(buffList);
-        foreach (var buff in copy)
+        value = 0;
+        List<IEffect> copy = new(effectList);
+        foreach (var effect in copy)
         {
-            buff.Apply(user);
+            effect.Apply();
         }
 
-        return damageBuff;
+        return value;
+    }
+
+    public override void Apply(object valueT)
+    {
+        value = (float)valueT;
     }
 
     public override void Add(IEffect damageEffect)
     {
-        buffList.Add(damageEffect);
+        effectList.Add(damageEffect);
     }
 
     public override void Remove(IEffect damageEffect)
     {
-        buffList.Remove(damageEffect);
+        effectList.Remove(damageEffect);
     }
 }
