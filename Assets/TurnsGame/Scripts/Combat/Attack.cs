@@ -6,33 +6,33 @@ public class Attack : CharacterAction
     float totalDamage = 0;
     public float prowessBonus = 0;
 
-    public Attack() {}
+    public Attack(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
 
-    public override void Execute(CharacterManager user, CharacterManager target)
+    public override void Execute(CharacterManager target)
     {
-        totalDamage = (user.baseDamage + BonusDamage(user)) * ProwessValue(user.prowess);
+        totalDamage = (User.baseDamage + BonusDamage()) * ProwessValue(User.prowess);
         if (totalDamage <= 0) return;
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.username + " attacks " + target.username));
+        CombatUI.AddAnimation(CombatUI.Instance.WriteText(User.username + " attacks " + target.username));
         if (target.action is not Block)
         {
-            for (int hitNumber = 0; hitNumber < user.numHits; hitNumber++)
+            for (int hitNumber = 0; hitNumber < User.numHits; hitNumber++)
             {
-                if (AttackHits(user.accuracy))
+                if (AttackHits(User.accuracy))
                 {
                     target.TakeDamage(totalDamage);
                 }
                 else
                 {
-                    CombatUI.AddAnimation(CombatUI.Instance.WriteText(user.username + " misses"));
+                    CombatUI.AddAnimation(CombatUI.Instance.WriteText(User.username + " misses"));
                 }
             }
         }
         //user.RecoverShieldCharge();
     }
 
-    float BonusDamage(CharacterManager user)
+    float BonusDamage()
     {
-        float bonusDamage = user.baseDamage * (float)user.activeBuffs[DAMAGE].Use();
+        float bonusDamage = User.baseDamage * (float)User.activeBuffs[DAMAGE].Use();
         return bonusDamage;
     }
 

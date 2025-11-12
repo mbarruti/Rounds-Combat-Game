@@ -123,15 +123,15 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Block();
-        else enemy.action = new Attack();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 && player.state != PlayerState.WAIT) enemy.action = new Block(enemy, enemy.action);
+        else enemy.action = new Attack(enemy, enemy.action);
     }
 
     public void OnAttackButton()
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = new Attack();
+        player.action = new Attack(player, player.action);
 
         PerformRound();
     }
@@ -140,7 +140,7 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = new Charge();
+        player.action = new Charge(player, player.action);
 
         PerformRound();
     }
@@ -149,7 +149,7 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
         player.state = PlayerState.WAIT;
-        player.action = new Block();
+        player.action = new Block(player, player.action);
 
         PerformRound();
     }

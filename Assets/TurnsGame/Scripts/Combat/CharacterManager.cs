@@ -36,21 +36,24 @@ public class CharacterManager : MonoBehaviour
     public float parryChance;
 
     // Buff data
-    public Dictionary<BuffType, Buff> activeBuffs = new()
-    {
-        { DAMAGE, new DamageBuff() }
-    };
+    public Dictionary<BuffType, Buff> activeBuffs;
 
     // Effects
-    List<IEffect> effects = new();
+    List<IEffect> effects;
 
     public CharacterAction action;
     public PlayerState state;
 
     CombatManager combatManager;
 
-    private void Awake()
+    void Awake()
     {
+        action = new(this, null);
+        activeBuffs = new()
+        {
+            { DAMAGE, new DamageBuff() }
+        };
+        effects = new();
         combatManager = CombatManager.Instance;
     }
 
@@ -87,14 +90,15 @@ public class CharacterManager : MonoBehaviour
 
     public void Reset()
     {
-        action = new();
+        // CharacterAction newAction = new(this, action);
+        // action = newAction;
         numHits = maxNumHits;
         state = PlayerState.CHOOSE;
     }
 
     public void PerformAction(CharacterManager target)
     {
-        action?.Execute(this, target);
+        action?.Execute(target);
         if (action is not Block)
         {
             shieldMeter.RecoverCharges();
