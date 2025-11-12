@@ -10,7 +10,7 @@ public enum BuffType
     Prowess,
     CounterChance,
     NumHits,
-    BonusDamage,
+    BonusDamage
 }
 
 public abstract class Buff

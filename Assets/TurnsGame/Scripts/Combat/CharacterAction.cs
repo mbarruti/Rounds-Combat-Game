@@ -19,5 +19,5 @@ public class CharacterAction
         LastAction = lastAction;
     }
 
-    public virtual void Execute(CharacterManager target) { }
+    public virtual void Execute(CharacterManager target){}
 }

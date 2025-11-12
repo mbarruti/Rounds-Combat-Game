@@ -2,21 +2,17 @@ using UnityEngine;
 
 public class Block : CharacterAction
 {
-    public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) { }
+    public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
 
     public override void Execute(CharacterManager target)
     {
         if (target.action is Attack)
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText(User.username + " blocks the incoming attack")
-            );
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText(User.username + " blocks the incoming attack"));
 
             if (IsParry(User.parryChance))
             {
-                CombatUI.AddAnimation(
-                    CombatUI.Instance.WriteText($"{User.username} parries {target.username}!")
-                );
+                CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{User.username} parries {target.username}!"));
                 NextAction = new Attack(User, this);
                 NextAction.Execute(target);
             }
@@ -24,12 +20,7 @@ public class Block : CharacterAction
             
             //Debug.Log("Number of charges of " + user.name + ": " + user.shieldMeter.GetAvailableCharges());
         }
-        else
-        {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{User.username} blocks nothing what a donkey")
-            );
-        }
+        else CombatUI.AddAnimation(CombatUI.Instance.WriteText(User.username + " blocks nothing what a donkey"));
     }
 
     bool IsParry(float parryChance)

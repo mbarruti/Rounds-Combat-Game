@@ -1,23 +1,13 @@
 using UnityEngine;
 using static MyProject.Constants;
 
-public enum CombatState
-{
-    START,
-    CHOOSE,
-    ACTION,
-    END,
-}
+public enum CombatState { START, CHOOSE, ACTION, END }
 
 public class CombatManager : MonoBehaviour
 {
     // PROVISIONAL (WHEN USELESS, PLAYER AND ENEMY WILL GET THESE NAMES)
-    [SerializeField]
-    CharacterManager playerOne;
-
-    [SerializeField]
-    CharacterManager playerTwo;
-
+    [SerializeField] CharacterManager playerOne;
+    [SerializeField] CharacterManager playerTwo;
     //
 
     public static CombatManager Instance { get; private set; }
@@ -93,11 +83,7 @@ public class CombatManager : MonoBehaviour
             worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
             worldPosition.z = 0f;
         }
-        Transform characterTransform = Instantiate(
-            prefabCharacter,
-            worldPosition,
-            Quaternion.identity
-        );
+        Transform characterTransform = Instantiate(prefabCharacter, worldPosition, Quaternion.identity);
         CharacterManager characterManager = characterTransform.GetComponent<CharacterManager>();
         characterManager.Setup(isPlayer);
 
@@ -115,7 +101,7 @@ public class CombatManager : MonoBehaviour
 
         player.ApplyEffects(EffectTrigger.RoundStart);
         enemy.ApplyEffects(EffectTrigger.RoundStart);
-
+        
         CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons());
 
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
@@ -161,8 +147,7 @@ public class CombatManager : MonoBehaviour
 
     public void OnBlockButton()
     {
-        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
-            return;
+        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0) return;
         player.state = PlayerState.WAIT;
         player.action = new Block(player, player.action);
 
@@ -186,9 +171,7 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (Block, Block):
-                CombatUI.AddAnimation(
-                    CombatUI.Instance.WriteText("Both players block what the fuck")
-                );
+                CombatUI.AddAnimation(CombatUI.Instance.WriteText("Both players block what the fuck"));
                 break;
 
             case (Block, Attack):
@@ -220,19 +203,16 @@ public class CombatManager : MonoBehaviour
         if (playerOneCounters && playerTwoCounters)
         {
             (float playerGain, float enemyGain) =
-                playerChance > enemyChance ? (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) :
-                playerChance < enemyChance ? (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN) :
-                (Random.value < 0.5f ? (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) :
-                                        (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN));
+                    playerChance > enemyChance ? (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) :
+                    playerChance < enemyChance ? (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN) :
+                    (Random.value < 0.5f ? (COUNTER_PROWESS_GAIN, COUNTER_PROWESS_LOSS) :
+                                            (COUNTER_PROWESS_LOSS, COUNTER_PROWESS_GAIN));
 
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
 
-            (var counterWinner, var counterLoser) =
-                playerGain > enemyGain ? (player, enemy) : (enemy, player);
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!")
-            );
+            (var counterWinner, var counterLoser) = playerGain > enemyGain ? (player, enemy) : (enemy, player);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
             counterWinner.PerformAction(enemy);
             counterLoser.PerformAction(player);
         }
@@ -245,11 +225,8 @@ public class CombatManager : MonoBehaviour
             playerAttack.prowessBonus += playerGain;
             enemyAttack.prowessBonus += enemyGain;
 
-            (var counterWinner, var counterLoser) =
-                playerGain > enemyGain ? (player, enemy) : (enemy, player);
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!")
-            );
+            (var counterWinner, var counterLoser) = playerGain > enemyGain ? (player, enemy) : (enemy, player);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
             counterWinner.PerformAction(counterLoser);
             counterLoser.PerformAction(counterWinner);
         }
@@ -296,9 +273,7 @@ public class CombatManager : MonoBehaviour
     void EndCombat()
     {
         if (player.IsDead() && enemy.IsDead()) 
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText("Both players have fallen. The match ends in a draw!")
-            );
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText("Both players have fallen. The match ends in a draw!"));
         else
         {
             (var winner, var loser) = player.IsDead() ? (enemy, player) : (player, enemy);

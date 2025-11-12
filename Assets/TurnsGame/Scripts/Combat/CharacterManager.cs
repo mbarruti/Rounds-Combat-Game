@@ -51,7 +51,7 @@ public class CharacterManager : MonoBehaviour
         action = new(this, null);
         activeBuffs = new()
         {
-            { DAMAGE, new DamageBuff() },
+            { DAMAGE, new DamageBuff() }
         };
         effects = new();
         combatManager = CombatManager.Instance;
