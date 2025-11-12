@@ -6,13 +6,15 @@ public class Attack : CharacterAction
     float totalDamage = 0;
     public float prowessBonus = 0;
 
-    public Attack(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
+    public Attack(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) { }
 
     public override void Execute(CharacterManager target)
     {
         totalDamage = (User.baseDamage + BonusDamage()) * ProwessValue(User.prowess);
         if (totalDamage <= 0) return;
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText(User.username + " attacks " + target.username));
+        CombatUI.AddAnimation(
+            CombatUI.Instance.WriteText(User.username + " attacks " + target.username)
+        );
         if (target.action is not Block)
         {
             for (int hitNumber = 0; hitNumber < User.numHits; hitNumber++)
