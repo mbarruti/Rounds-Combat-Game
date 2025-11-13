@@ -99,8 +99,8 @@ public class CombatManager : MonoBehaviour
         player.Reset();
         enemy.Reset();
 
-        player.ApplyEffects(EffectTrigger.RoundStart);
-        enemy.ApplyEffects(EffectTrigger.RoundStart);
+        player.ApplyEffects(ROUND_START);
+        enemy.ApplyEffects(ROUND_START);
 
         CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons());
 

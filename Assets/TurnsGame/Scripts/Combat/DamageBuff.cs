@@ -13,7 +13,7 @@ public class DamageBuff : IEffect
 
     public string Name => "Damage Buff";
     public int Duration { get; private set; } = 1;
-    public EffectTrigger Trigger { get; private set; } = EffectTrigger.Attack;
+    public EffectTrigger Trigger { get; private set; } = ATTACK;
 
     public void GetAdded(CharacterManager user, CharacterManager target)
     {
