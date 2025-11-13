@@ -1,4 +1,3 @@
-
 using System;
 
 namespace MyProject
@@ -19,7 +18,7 @@ namespace MyProject
 
         public const float CHARGE_BUFF = 0.2f; // BUFF TO CHARGED ATTACK
 
-        public const int INFINITE = -1;
+        public const int INFINITE = -1; // EFFECT HAS INFINITE DURATION
 
         // BUFF TYPES
 

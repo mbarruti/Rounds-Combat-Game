@@ -36,7 +36,6 @@ public class CharacterManager : MonoBehaviour
     public float parryChance;
 
     // Buff data
-    //public Dictionary<BuffType, BuffsController> activeBuffs;
     public BuffsController activeBuffs;
 
     // Effects
@@ -50,11 +49,6 @@ public class CharacterManager : MonoBehaviour
     void Awake()
     {
         action = new(this, null);
-        // activeBuffs = new()
-        // {
-        //     { DAMAGE, new DamageBuffs(this) }
-        //     //{ NUM_HITS, new HitsBuff() }
-        // };
         activeBuffs = new(this);
         effects = new();
         combatManager = CombatManager.Instance;

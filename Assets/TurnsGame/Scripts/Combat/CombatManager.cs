@@ -125,7 +125,7 @@ public class CombatManager : MonoBehaviour
         if (enemy.state == PlayerState.WAIT) return;
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 &&
             player.state != PlayerState.WAIT) enemy.action = new Block(enemy, enemy.action);
-        else enemy.action = new Block(enemy, enemy.action);
+        else enemy.action = new Attack(enemy, enemy.action);
     }
 
     public void OnAttackButton()
