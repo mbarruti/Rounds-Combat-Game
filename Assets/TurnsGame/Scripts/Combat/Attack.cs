@@ -34,8 +34,8 @@ public class Attack : CharacterAction
 
     float BonusDamage()
     {
-        User.activeBuffs[DAMAGE].ApplyAll();
-        float bonusDamage = User.baseDamage * User.activeBuffs[DAMAGE].BonusDamage;
+        User.activeBuffs.Consume(DAMAGE);
+        float bonusDamage = User.baseDamage * User.activeBuffs.BonusDamage;
         return bonusDamage;
     }
 

@@ -19,14 +19,16 @@ namespace MyProject
 
         public const float CHARGE_BUFF = 0.2f; // BUFF TO CHARGED ATTACK
 
+        public const int INFINITE = -1;
+
         // BUFF TYPES
 
-        public static readonly BuffType BASE_DAMAGE = BuffType.BaseDamage;
-        public static readonly BuffType METER_DAMAGE = BuffType.MeterDamage;
-        public static readonly BuffType ACCURACY = BuffType.Accuracy;
-        public static readonly BuffType PROWESS = BuffType.Prowess;
-        public static readonly BuffType COUNTER_CHANCE = BuffType.CounterChance;
-        public static readonly BuffType NUM_HITS = BuffType.NumHits;
-        public static readonly BuffType DAMAGE = BuffType.BonusDamage;
+        public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
+        public const BuffType METER_DAMAGE = BuffType.MeterDamage;
+        public const BuffType ACCURACY = BuffType.Accuracy;
+        public const BuffType PROWESS = BuffType.Prowess;
+        public const BuffType COUNTER_CHANCE = BuffType.CounterChance;
+        public const BuffType NUM_HITS = BuffType.NumHits;
+        public const BuffType DAMAGE = BuffType.BonusDamage;
     }
 }

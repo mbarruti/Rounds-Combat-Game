@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static MyProject.Constants;
 
 public enum BuffType
 {
@@ -13,9 +14,9 @@ public enum BuffType
     BonusDamage
 }
 
-public abstract class BuffsController
+public class BuffsController
 {
-    protected CharacterManager User { get; set; }
+    CharacterManager User { get; set; }
 
     public BuffsController (CharacterManager user)
     {
@@ -30,8 +31,43 @@ public abstract class BuffsController
     public int NumHits { get; set; }
     public float BonusDamage { get; set; }
 
-    public abstract void ApplyAll();
-    //public abstract void Apply(object value);
-    public abstract void Add(IEffect buffEffect);
-    public abstract void Remove(IEffect buffEffect);
+    List<IEffect> baseDamageBuffs = new();
+    List<IEffect> meterDamageBuffs = new();
+    List<IEffect> accuracyBuffs = new();
+    List<IEffect> prowessBuffs = new();
+    List<IEffect> counterChanceBuffs = new();
+    List<IEffect> numHitsBuffs = new();
+    List<IEffect> damageBuffs = new();
+
+    public void Consume(BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case DAMAGE:
+                BonusDamage = 0;
+                List<IEffect> copy = new(damageBuffs);
+                foreach (var buff in copy) buff.Apply(User, null);
+                break;
+        }
+    }
+
+    public void Add(IEffect buff, BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case DAMAGE:
+                damageBuffs.Add(buff);
+                break;
+        }
+    }
+
+    public void Remove(IEffect buff, BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case DAMAGE:
+                damageBuffs.Remove(buff);
+                break;
+        }
+    }
 }

@@ -13,19 +13,18 @@ public class DamageBuff : IEffect
 
     public string Name => "Damage Buff";
     public int Duration { get; private set; } = 1;
-
     public EffectTrigger Trigger { get; private set; } = EffectTrigger.Other;
 
     public void GetAdded(CharacterManager user, CharacterManager target)
     {
-        user.activeBuffs[DAMAGE].Add(this);
+        user.activeBuffs.Add(this, DAMAGE);
         CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} gets more damage"));
     }
 
     public void Apply(CharacterManager user, CharacterManager target)
     {
         Duration--;
-        user.activeBuffs[DAMAGE].BonusDamage += Value;
-        if (Duration == 0) user.activeBuffs[DAMAGE].Remove(this);
+        user.activeBuffs.BonusDamage += Value;
+        if (Duration == 0) user.activeBuffs.Remove(this, DAMAGE);
     }
 }

@@ -111,7 +111,7 @@ public class CombatManager : MonoBehaviour
     {
         state = CombatState.CHOOSE;
 
-        AIAction();
+        //AIAction();
         if (player.state == PlayerState.WAIT)
         {
             state = CombatState.ACTION;
