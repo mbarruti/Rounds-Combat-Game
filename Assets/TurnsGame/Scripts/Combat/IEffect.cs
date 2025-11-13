@@ -5,8 +5,8 @@ public interface IEffect
     string Name { get; }
     int Duration { get; }
     EffectTrigger Trigger { get; }
-    void GetAdded();
-    void Apply();
+    void GetAdded(CharacterManager user, CharacterManager target);
+    void Apply(CharacterManager user, CharacterManager target);
 }
 
 public enum EffectTrigger

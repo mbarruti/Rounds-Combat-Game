@@ -1,3 +1,4 @@
+using MyProject;
 using UnityEngine;
 using static MyProject.Constants;
 
@@ -33,7 +34,8 @@ public class Attack : CharacterAction
 
     float BonusDamage()
     {
-        float bonusDamage = User.baseDamage * (float)User.activeBuffs[DAMAGE].Use();
+        User.activeBuffs[DAMAGE].ApplyAll();
+        float bonusDamage = User.baseDamage * User.activeBuffs[DAMAGE].BonusDamage;
         return bonusDamage;
     }
 

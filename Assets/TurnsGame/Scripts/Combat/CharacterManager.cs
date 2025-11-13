@@ -36,7 +36,7 @@ public class CharacterManager : MonoBehaviour
     public float parryChance;
 
     // Buff data
-    public Dictionary<BuffType, Buff> activeBuffs;
+    public Dictionary<BuffType, BuffsController> activeBuffs;
 
     // Effects
     List<IEffect> effects;
@@ -51,7 +51,8 @@ public class CharacterManager : MonoBehaviour
         action = new(this, null);
         activeBuffs = new()
         {
-            { DAMAGE, new DamageBuff() }
+            { DAMAGE, new DamageBuffs(this) }
+            //{ NUM_HITS, new HitsBuff() }
         };
         effects = new();
         combatManager = CombatManager.Instance;
@@ -120,8 +121,8 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            IEffect crushedEffect = new Crushed(this);
-            crushedEffect.GetAdded();
+            IEffect crushedEffect = new Crushed();
+            crushedEffect.GetAdded(this, null);
         }
     }
 
@@ -136,7 +137,7 @@ public class CharacterManager : MonoBehaviour
         var effectsCopy = new List<IEffect>(effects);
         foreach (var effect in effectsCopy)
         {
-            if (effect.Trigger == trigger) effect.Apply();
+            if (effect.Trigger == trigger) effect.Apply(this, null);
             //if (effect.Duration == 0) RemoveEffect(effect);
         }
     }
