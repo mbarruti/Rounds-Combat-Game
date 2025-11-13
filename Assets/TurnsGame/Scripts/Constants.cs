@@ -22,12 +22,17 @@ namespace MyProject
 
         // BUFF TYPES
 
-        public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
-        public const BuffType METER_DAMAGE = BuffType.MeterDamage;
-        public const BuffType ACCURACY = BuffType.Accuracy;
-        public const BuffType PROWESS = BuffType.Prowess;
-        public const BuffType COUNTER_CHANCE = BuffType.CounterChance;
-        public const BuffType NUM_HITS = BuffType.NumHits;
-        public const BuffType DAMAGE = BuffType.BonusDamage;
+        public const EffectTrigger ROUND_START = EffectTrigger.RoundStart;
+        public const EffectTrigger ANY_ACTION = EffectTrigger.PerformAction;
+        public const EffectTrigger ROUND_END = EffectTrigger.RoundEnd;
+        public const EffectTrigger ATTACK = EffectTrigger.Attack;
+
+        // public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
+        // public const BuffType METER_DAMAGE = BuffType.MeterDamage;
+        // public const BuffType ACCURACY = BuffType.Accuracy;
+        // public const BuffType PROWESS = BuffType.Prowess;
+        // public const BuffType COUNTER_CHANCE = BuffType.CounterChance;
+        // public const BuffType NUM_HITS = BuffType.NumHits;
+        // public const BuffType DAMAGE = BuffType.BonusDamage;
     }
 }

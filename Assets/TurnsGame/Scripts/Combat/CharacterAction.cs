@@ -9,13 +9,13 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterAction
 {
-    protected CharacterManager User { get; set; }
+    protected CharacterManager Player { get; set; }
     protected CharacterAction LastAction { get; set; }
     protected CharacterAction NextAction { get; set; }
 
     public CharacterAction(CharacterManager user, CharacterAction lastAction)
     {
-        User = user;
+        Player = user;
         LastAction = lastAction;
     }
 

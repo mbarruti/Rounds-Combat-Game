@@ -9,10 +9,10 @@ public class Charge : CharacterAction
     public override void Execute(CharacterManager target)
     {
         CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText($"{User.username} is charging an attack"));
+            CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));
         if (LastAction is not Charge)
         {
-            chargeBuff.GetAdded(User, target);
+            chargeBuff.GetAdded(Player, target);
         }
     }
 }
