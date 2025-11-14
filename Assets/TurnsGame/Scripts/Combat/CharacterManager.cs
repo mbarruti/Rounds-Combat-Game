@@ -23,6 +23,9 @@ public class CharacterManager : MonoBehaviour
     public ShieldMeter shieldMeter;
     public ShieldMeterUI shieldMeterUI;
 
+    // Weapon setup
+    [SerializeField] bool isDual;
+
     // Weapon data
     public float baseDamage;
     public float meterDamage;
@@ -51,21 +54,36 @@ public class CharacterManager : MonoBehaviour
         action = new(this, null);
         activeBuffs = new(this);
         effects = new();
+        shieldMeter = new();
         combatManager = CombatManager.Instance;
+
     }
 
     public void Setup(bool isPlayer)
     {
-        baseDamage = weapon.BaseDamage;
-        meterDamage = weapon.MeterDamage;
-        accuracy = weapon.Accuracy;
-        prowess = weapon.Prowess;
-        counterChance = weapon.CounterChance;
-        maxNumHits = weapon.NumHits;
+        if (isDual)
+        {
+            baseDamage = weapon.DualBaseDamage;
+            meterDamage = weapon.DualMeterDamage;
+            accuracy = weapon.DualAccuracy;
+            prowess = weapon.DualProwess;
+            counterChance = weapon.DualCounterChance;
+            maxNumHits = weapon.DualNumHits;
 
-        parryChance = shield.ParryChance;
-        shieldMeter = new ShieldMeter();
-        shieldMeter.Setup(shield.MaxCharges);
+            shieldMeter.Setup(1);
+        }
+        else
+        {
+            baseDamage = weapon.BaseDamage;
+            meterDamage = weapon.MeterDamage;
+            accuracy = weapon.Accuracy;
+            prowess = weapon.Prowess;
+            counterChance = weapon.CounterChance;
+            maxNumHits = weapon.NumHits;
+
+            parryChance = shield.ParryChance;
+            shieldMeter.Setup(shield.MaxCharges);
+        }
 
         if (isPlayer)
         {

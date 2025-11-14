@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61994a943f252e249be861900052070d, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
+  <Name>k__BackingField: Sword
   <BaseDamage>k__BackingField: 20
   <MeterDamage>k__BackingField: 1
   <Accuracy>k__BackingField: 1
   <Prowess>k__BackingField: 1
   <CounterChance>k__BackingField: 0.05
+  <NumHits>k__BackingField: 1
+  <DualBaseDamage>k__BackingField: 30
+  <DualMeterDamage>k__BackingField: 1
+  <DualAccuracy>k__BackingField: 1
+  <DualProwess>k__BackingField: 1
+  <DualCounterChance>k__BackingField: 0.1
+  <DualNumHits>k__BackingField: 1
