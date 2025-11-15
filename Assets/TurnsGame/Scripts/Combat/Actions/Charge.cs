@@ -11,7 +11,6 @@ public class Charge : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));
             ChargeBuffEffect chargeBuff = new();
-            Debug.Log(chargeBuff.GetType());
             chargeBuff.GetAdded(Player, target);
         }
         else
@@ -19,7 +18,6 @@ public class Charge : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} keeps charging"));
             DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
-            Debug.Log(damageBuff.GetType());
             damageBuff.GetAdded(Player, target);
         }
     }
