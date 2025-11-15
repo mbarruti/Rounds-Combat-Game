@@ -12,12 +12,16 @@ public class Attack : CharacterAction
 
     public override void Execute(CharacterManager target)
     {
-        Player.activeBuffs.Consume(ATTACK);
+        Player.ApplyEffects(ATTACK);
+        Player.ApplyEffects(CHARGED_ATTACK);
+
         totalBaseDamage = BonusBaseDamage();
         totalDamage = (totalBaseDamage + BonusDamage()) * ProwessValue(Player.prowess);
         if (totalDamage <= 0) return;
+
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
+
         if (target.action is not Block)
         {
             for (int hitNumber = 0; hitNumber < Player.numHits; hitNumber++)

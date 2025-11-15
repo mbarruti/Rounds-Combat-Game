@@ -12,8 +12,6 @@ public class BuffsController
         User = user;
     }
 
-    List<IEffect> buffs = new();
-
     // Weapon buffs
     public float BaseDamage { get; set; }
     public float MeterDamage { get; set; }
@@ -25,25 +23,4 @@ public class BuffsController
 
     // Shield buffs
     public float ParryChance { get; set; }
-
-    public void Consume(EffectTrigger trigger)
-    {
-        List<IEffect> copy = new(buffs);
-
-        foreach (var buff in copy)
-        {
-            if (buff.Trigger == trigger)
-                buff.Apply(User, null);
-        }
-    }
-
-    public void Add(IEffect buff)
-    {
-        buffs.Add(buff);
-    }
-
-    public void Remove(IEffect buff)
-    {
-        buffs.Remove(buff);
-    }
 }

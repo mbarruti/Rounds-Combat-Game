@@ -42,7 +42,7 @@ public class CharacterManager : MonoBehaviour
     public BuffsController activeBuffs;
 
     // Effects
-    List<IEffect> effects;
+    public Dictionary<EffectTrigger, List<IEffect>> effects;
 
     public CharacterAction action;
     public PlayerState state;
@@ -135,30 +135,40 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            IEffect crushedEffect = new Crushed();
+            Crushed crushedEffect = new Crushed();
             crushedEffect.GetAdded(this, null);
         }
     }
 
     public void AddEffect(IEffect effect)
     {
-        effects.Add(effect);
+        if (!effects.TryGetValue(effect.Trigger, out var list))
+        {
+            list = new List<IEffect>();
+            effects.Add(effect.Trigger, list);
+        }
+        list.Add(effect);
     }
 
     public void ApplyEffects(EffectTrigger trigger)
     {
-        if (effects.Count == 0) return;
-        var effectsCopy = new List<IEffect>(effects);
-        foreach (var effect in effectsCopy)
+        if (effects.TryGetValue(trigger, out var list))
         {
-            if (effect.Trigger == trigger) effect.Apply(this, null);
-            //if (effect.Duration == 0) RemoveEffect(effect);
+            foreach (var effect in list)
+            {
+                effect.Apply(this, null);
+            }
         }
     }
 
     public void RemoveEffect(IEffect effect)
     {
-        effects.Remove(effect);
+        if (effects.TryGetValue(effect.Trigger, out var list))
+        {
+            list.Remove(effect);
+            // if (list.Count == 0)
+            //     effects.Remove(effect.Trigger);
+        }
     }
 
     public bool IsDead()
