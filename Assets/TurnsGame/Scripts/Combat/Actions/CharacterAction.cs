@@ -10,7 +10,7 @@ using UnityEngine;
 public class CharacterAction
 {
     protected CharacterManager Player { get; set; }
-    protected CharacterAction LastAction { get; set; }
+    public CharacterAction LastAction { get; protected set; }
     protected CharacterAction NextAction { get; set; }
 
     public CharacterAction(CharacterManager user, CharacterAction lastAction)

@@ -45,6 +45,8 @@ public class CharacterManager : MonoBehaviour
     public Dictionary<EffectTrigger, List<IEffect>> effects;
 
     public CharacterAction action;
+    public CharacterActionController actionController = new();
+
     public PlayerState state;
 
     CombatManager combatManager;

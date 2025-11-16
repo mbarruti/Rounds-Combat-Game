@@ -102,7 +102,10 @@ public class CombatManager : MonoBehaviour
         player.ApplyEffects(ROUND_START);
         enemy.ApplyEffects(ROUND_START);
 
-        CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons());
+        player.actionController.SetAvailableActions(player.action);
+        enemy.actionController.SetAvailableActions(enemy.action);
+
+        CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons(player.actionController));
 
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
     }
@@ -142,6 +145,15 @@ public class CombatManager : MonoBehaviour
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
         player.action = new Charge(player, player.action);
+
+        PerformRound();
+    }
+
+    public void OnTackleButton()
+    {
+        if (player.state != PlayerState.CHOOSE) return;
+        player.state = PlayerState.WAIT;
+        player.action = new Tackle(player, player.action);
 
         PerformRound();
     }
