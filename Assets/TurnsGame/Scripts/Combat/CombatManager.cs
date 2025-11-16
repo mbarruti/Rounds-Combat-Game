@@ -114,7 +114,7 @@ public class CombatManager : MonoBehaviour
     {
         state = CombatState.CHOOSE;
 
-        //AIAction();
+        AIAction();
         if (player.state == PlayerState.WAIT)
         {
             state = CombatState.ACTION;
@@ -127,7 +127,7 @@ public class CombatManager : MonoBehaviour
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 &&
-            player.state != PlayerState.WAIT) enemy.action = new Block(enemy, enemy.action);
+            player.state != PlayerState.WAIT) enemy.action = new Attack(enemy, enemy.action);
         else enemy.action = new Attack(enemy, enemy.action);
     }
 
@@ -179,7 +179,7 @@ public class CombatManager : MonoBehaviour
                 Clash(playerAttack, enemyAttack);
                 break;
 
-            case (Attack, Block):
+            case (Attack, Block or Tackle):
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
@@ -189,10 +189,11 @@ public class CombatManager : MonoBehaviour
                     CombatUI.Instance.WriteText("Both players block what the fuck"));
                 break;
 
-            case (Block, Attack):
+            case (Block or Tackle, Attack):
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
                 break;
+
             case (_, _):
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
