@@ -16,6 +16,7 @@ public class Tackle : CharacterAction
         else
         {
             Player.action = null;
+            Player.effects[CHARGED_ATTACK].Clear();
         }
     }
 }
