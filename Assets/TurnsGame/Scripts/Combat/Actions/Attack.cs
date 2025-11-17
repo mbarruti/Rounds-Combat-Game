@@ -37,6 +37,7 @@ public class Attack : CharacterAction
             }
         }
         //user.RecoverShieldCharge();
+        CompleteAction();
     }
 
     float BonusDamage()

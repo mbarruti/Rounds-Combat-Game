@@ -20,5 +20,6 @@ public class Charge : CharacterAction
             DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
             damageBuff.GetAdded(Player, target);
         }
+        CompleteAction();
     }
 }

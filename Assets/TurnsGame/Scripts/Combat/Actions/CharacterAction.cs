@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 //[System.Serializable]
@@ -13,6 +14,9 @@ public class CharacterAction
     public CharacterAction LastAction { get; protected set; }
     protected CharacterAction NextAction { get; set; }
 
+    protected bool Completed { get; set; } = false;
+    public event Action OnCompleted;
+
     public CharacterAction(CharacterManager user, CharacterAction lastAction)
     {
         Player = user;
@@ -20,4 +24,10 @@ public class CharacterAction
     }
 
     public virtual void Execute(CharacterManager target){}
+
+    protected void CompleteAction()
+    {
+        Completed = true;
+        OnCompleted?.Invoke();   // avisar a quienes están escuchando
+    }
 }

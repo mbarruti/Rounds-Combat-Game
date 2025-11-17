@@ -179,7 +179,7 @@ public class CombatManager : MonoBehaviour
                 Clash(playerAttack, enemyAttack);
                 break;
 
-            case (Attack, Block or Tackle):
+            case (Attack, Block):
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
@@ -189,14 +189,18 @@ public class CombatManager : MonoBehaviour
                     CombatUI.Instance.WriteText("Both players block what the fuck"));
                 break;
 
-            case (Block or Tackle, Attack):
+            case (Block, Attack):
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
                 break;
 
-            case (_, _):
+            case (Tackle or Charge, _):
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
+                break;
+            case (_, Tackle or Charge):
+                enemy.PerformAction(player);
+                player.PerformAction(enemy);
                 break;
         }
         RoundEnd();

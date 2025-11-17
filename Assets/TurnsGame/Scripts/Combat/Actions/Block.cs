@@ -25,6 +25,7 @@ public class Block : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
         }
+        CompleteAction();
     }
 
     bool IsParry(float parryChance)
