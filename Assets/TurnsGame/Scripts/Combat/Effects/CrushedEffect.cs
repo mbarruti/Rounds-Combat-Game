@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static MyProject.Constants;
 
-public class Crushed : IEffect
+public class CrushedEffect : IEffect
 {
     public string Name => "Crushed";
     public int MaxUses { get; private set; } = 1;

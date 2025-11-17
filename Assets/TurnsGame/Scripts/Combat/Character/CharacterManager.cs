@@ -125,7 +125,10 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        //UI.AddAnimation(UI.Instance.WriteText(name + " loses " + damage + " health points"));
+        if (action is Block) return;
+
+        damage -= damage * activeBuffs.DmgReduction;
+
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
@@ -137,7 +140,7 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            Crushed crushedEffect = new Crushed();
+            CrushedEffect crushedEffect = new CrushedEffect();
             crushedEffect.GetAdded(this, null);
         }
     }

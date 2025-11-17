@@ -28,12 +28,7 @@ public class Attack : CharacterAction
             {
                 if (AttackHits(Player.accuracy))
                 {
-                    if (target.action is not Tackle) target.TakeDamage(totalDamage);
-                    else
-                    {
-                        totalDamage -= totalDamage * 0.8f;
-                        target.TakeDamage(totalDamage);
-                    }
+                    target.TakeDamage(totalDamage);
                 }
                 else
                 {

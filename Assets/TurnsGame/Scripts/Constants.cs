@@ -18,16 +18,25 @@ namespace MyProject
 
         public const float CHARGE_DAMAGE_BUFF = 0.2f; // BUFF TO CHARGED ATTACK
 
+        public const float TACKLE_DMG_REDUCTION = 0.8f;
+
         public const int INFINITE = -1; // EFFECT HAS INFINITE DURATION
 
-        // BUFF TYPES
+        // EFFECT TRIGGERS
 
         public const EffectTrigger INSTANT = EffectTrigger.Instant;
+
         public const EffectTrigger ROUND_START = EffectTrigger.RoundStart;
+
         public const EffectTrigger ROUND_END = EffectTrigger.RoundEnd;
+
         public const EffectTrigger ANY_ACTION = EffectTrigger.PerformAction;
+
         public const EffectTrigger ATTACK = EffectTrigger.Attack;
+
         public const EffectTrigger CHARGED_ATTACK = EffectTrigger.ChargedAttack;
+
+        public const EffectTrigger TACKLE = EffectTrigger.Tackle;
 
         // public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
         // public const BuffType METER_DAMAGE = BuffType.MeterDamage;

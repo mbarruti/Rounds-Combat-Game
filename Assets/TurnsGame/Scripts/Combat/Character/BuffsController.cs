@@ -23,4 +23,7 @@ public class BuffsController
 
     // Shield buffs
     public float ParryChance { get; set; }
+
+    // Other stats
+    public float DmgReduction { get; set; }
 }
