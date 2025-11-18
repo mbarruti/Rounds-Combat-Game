@@ -70,11 +70,13 @@ public class CombatUI : MonoBehaviour
     public IEnumerator UpdateHPText(CharacterManager character, float currentHP,
     float waitTime = 0.5f)
     {
-        yield return character.healthText.text = $"{Mathf.CeilToInt(currentHP)}/{(int)character.maxHP}";
+        yield return character.healthText.text =
+            $"{Mathf.CeilToInt(currentHP)}/{(int)character.maxHP}";
         yield return new WaitForSeconds(waitTime);
     }
 
-    public IEnumerator ShowActionButtons(CharacterActionController actionController, float waitTime = 0f)
+    public IEnumerator ShowActionButtons(CharacterActionController actionController,
+    float waitTime = 0f)
     {
         if (actionController.canUseAttack) attackButton.SetActive(true);
         if (actionController.canUseBlock) blockButton.SetActive(true);
