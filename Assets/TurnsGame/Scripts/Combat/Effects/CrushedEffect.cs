@@ -19,11 +19,11 @@ public class CrushedEffect : IEffect
 
     public void Apply(CharacterManager user, CharacterManager target)
     {
-        Uses++;
         user.state = PlayerState.WAIT;
         user.action = null;
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0));
+        Uses++;
         if (Uses == MaxUses) user.RemoveEffect(this);
     }
 
