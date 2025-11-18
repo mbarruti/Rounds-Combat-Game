@@ -4,6 +4,7 @@ using static MyProject.Constants;
 
 public class Tackle : CharacterAction
 {
+    Attack targetAttack;
     public Tackle(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
     public override void Execute(CharacterManager target)
     {
@@ -13,8 +14,9 @@ public class Tackle : CharacterAction
         reduction.GetAdded(Player, null);
         Player.ApplyEffects(TACKLE);
 
-        if (target.action is Attack targetAttack)
+        if (target.action is Attack auxAttack)
         {
+            targetAttack = auxAttack;
             targetAttack.OnCompleted -= OnTargetAttackCompleted;
             targetAttack.OnCompleted += OnTargetAttackCompleted;
         }
@@ -30,6 +32,7 @@ public class Tackle : CharacterAction
     {
         DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
         damageBuff.GetAdded(Player, null);
+        targetAttack.OnCompleted -= OnTargetAttackCompleted;
     }
 
 }
