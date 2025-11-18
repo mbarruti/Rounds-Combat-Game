@@ -112,12 +112,14 @@ public class CharacterManager : MonoBehaviour
         numHits = maxNumHits;
         activeBuffs = new(this);
         state = PlayerState.CHOOSE;
+
+        shieldMeterUI.SetChargesCopy();
     }
 
     public void PerformAction(CharacterManager target)
     {
         action?.Execute(target);
-        if (action is not Block) shieldMeter.RecoverCharges();
+        if (action is not (Block or Tackle)) shieldMeter.RecoverCharges();
         if (action == null) return;
         // ...
     }
