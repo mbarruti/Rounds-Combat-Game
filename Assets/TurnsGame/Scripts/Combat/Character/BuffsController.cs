@@ -13,17 +13,17 @@ public class BuffsController
     }
 
     // Weapon buffs
-    public float BaseDamage { get; set; }
-    public float MeterDamage { get; set; }
-    public float Accuracy { get; set; }
-    public float Prowess { get; set; }
-    public float CounterChance { get; set; }
-    public int NumHits { get; set; }
-    public float BonusDamage { get; set; }
+    public float BaseDamage { get; set; } = 0;
+    public float MeterDamage { get; set; } = 0;
+    public float Accuracy { get; set; } = 0;
+    public float Prowess { get; set; } = 0;
+    public float CounterChance { get; set; } = 0;
+    public int NumHits { get; set; } = 0;
+    public float BonusDamage { get; set; } = 0;
 
     // Shield buffs
-    public float ParryChance { get; set; }
+    public float ParryChance { get; set; } = 0;
 
     // Other stats
-    public float DmgReduction { get; set; }
+    public float DmgReduction { get; set; } = 0;
 }

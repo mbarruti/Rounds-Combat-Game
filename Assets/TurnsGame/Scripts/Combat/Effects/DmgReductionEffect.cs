@@ -16,13 +16,13 @@ public class DmgReductionEffect : IEffect
 
     public void Apply(CharacterManager user, CharacterManager target)
     {
-        if (Uses == MaxUses)
-        {
-            GetRemoved(user,target);
-            return;
-        }
         if (Uses == 0) user.activeBuffs.DmgReduction += Value;
         Uses++;
+        if (Uses == MaxUses)
+        {
+            user.RemoveEffect(this);
+            return;
+        }
     }
 
     public void GetAdded(CharacterManager user, CharacterManager target)

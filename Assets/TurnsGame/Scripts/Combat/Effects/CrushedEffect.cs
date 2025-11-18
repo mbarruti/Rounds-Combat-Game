@@ -24,7 +24,7 @@ public class CrushedEffect : IEffect
         user.action = null;
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0));
-        if (Uses == MaxUses) GetRemoved(user, target);
+        if (Uses == MaxUses) user.RemoveEffect(this);
     }
 
     public void GetRemoved(CharacterManager user, CharacterManager target)

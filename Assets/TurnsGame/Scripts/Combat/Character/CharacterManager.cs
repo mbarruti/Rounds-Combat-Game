@@ -110,6 +110,7 @@ public class CharacterManager : MonoBehaviour
         // CharacterAction newAction = new(this, action);
         // action = newAction;
         numHits = maxNumHits;
+        activeBuffs = new(this);
         state = PlayerState.CHOOSE;
     }
 
@@ -159,7 +160,8 @@ public class CharacterManager : MonoBehaviour
     {
         if (effects.TryGetValue(trigger, out var list))
         {
-            foreach (var effect in list)
+            List<IEffect> copy = new(list);
+            foreach (var effect in copy)
             {
                 effect.Apply(this, null);
             }

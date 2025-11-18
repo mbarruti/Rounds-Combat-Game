@@ -17,14 +17,14 @@ public class ChargeBuffEffect : IEffect
     public void Apply(CharacterManager user, CharacterManager target)
     {
         // TO-DO: make charged buffs depend on weapon
-        if (Uses == MaxUses)
-        {
-            GetRemoved(user, target);
-            return;
-        }
         user.activeBuffs.BonusDamage += 0.4f;
         user.activeBuffs.Accuracy += 0.2f;
         Uses++;
+        if (Uses == MaxUses)
+        {
+            user.RemoveEffect(this);
+            return;
+        }
     }
 
     public void GetRemoved(CharacterManager user, CharacterManager target)

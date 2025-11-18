@@ -28,6 +28,6 @@ public class CharacterAction
     protected void CompleteAction()
     {
         Completed = true;
-        OnCompleted?.Invoke();   // avisar a quienes están escuchando
+        OnCompleted?.Invoke();
     }
 }
