@@ -151,7 +151,8 @@ public class CombatManager : MonoBehaviour
 
     public void OnTackleButton()
     {
-        if (player.state != PlayerState.CHOOSE) return;
+        if (player.state != PlayerState.CHOOSE ||
+            player.shieldMeter.GetAvailableCharges() == 0) return;
         player.state = PlayerState.WAIT;
         player.action = new Tackle(player, player.action);
 
