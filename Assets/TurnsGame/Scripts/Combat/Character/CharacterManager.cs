@@ -117,11 +117,9 @@ public class CharacterManager : MonoBehaviour
     public void PerformAction(CharacterManager target)
     {
         action?.Execute(target);
-        if (action is not Block)
-        {
-            shieldMeter.RecoverCharges();
-            Debug.Log("Number of charges of " + name + ": " + shieldMeter.GetAvailableCharges());
-        }
+        if (action is not Block) shieldMeter.RecoverCharges();
+        if (action == null) return;
+        // ...
     }
 
     public void TakeDamage(float damage)

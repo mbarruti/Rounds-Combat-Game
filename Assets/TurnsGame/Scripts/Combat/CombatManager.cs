@@ -168,6 +168,17 @@ public class CombatManager : MonoBehaviour
         PerformRound();
     }
 
+    public void OnNothingButton()
+    {
+        if (player.state != PlayerState.CHOOSE) return;
+        player.state = PlayerState.WAIT;
+        player.action = null;
+        if (player.effects.TryGetValue(CHARGED_ATTACK, out var list))
+            list.Clear();
+
+        PerformRound();
+    }
+
     void PerformRound()
     {
         state = CombatState.ACTION;
@@ -201,6 +212,10 @@ public class CombatManager : MonoBehaviour
             case (_, Tackle or Charge):
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
+                break;
+            case (_ , _):
+                player.PerformAction(enemy);
+                enemy.PerformAction(player);
                 break;
         }
         RoundEnd();
