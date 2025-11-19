@@ -231,10 +231,8 @@ public class CombatManager : MonoBehaviour
 
         float playerChance = player.counterChance;
         float enemyChance = enemy.counterChance;
-        (bool playerOneCounters, int playerOneHits) = IsCounter(playerChance, player.maxNumHits);
-        (bool playerTwoCounters, int playerTwoHits) = IsCounter(enemyChance, enemy.maxNumHits);
-        player.numHits = playerOneHits;
-        enemy.numHits = playerTwoHits;
+        bool playerOneCounters = player.IsCounter();
+        bool playerTwoCounters = enemy.IsCounter();
 
         if (playerOneCounters && playerTwoCounters)
         {
@@ -277,19 +275,19 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    (bool, int) IsCounter(float counterChance, int numHits)
-    {
-        for (int hitsLeft = numHits; hitsLeft > 0; hitsLeft--)
-        {
-            float randomValue = Random.Range(0f, 1f);
-            if (counterChance >= randomValue)
-            {
-                //return (true, hitsLeft);
-                return (true, numHits);
-            }
-        }
-        return (false, numHits);
-    }
+    // (bool, int) IsCounter(float counterChance, int numHits)
+    // {
+    //     for (int hitsLeft = numHits; hitsLeft > 0; hitsLeft--)
+    //     {
+    //         float randomValue = Random.Range(0f, 1f);
+    //         if (counterChance >= randomValue)
+    //         {
+    //             //return (true, hitsLeft);
+    //             return (true, numHits);
+    //         }
+    //     }
+    //     return (false, numHits);
+    // }
 
     void RoundEnd()
     {

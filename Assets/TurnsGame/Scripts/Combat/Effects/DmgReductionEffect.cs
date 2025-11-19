@@ -1,7 +1,5 @@
 public class DmgReductionEffect : IEffect
 {
-    public string Name => "Damage Reduction";
-
     float Value { get; set; }
     public int MaxUses { get; private set; }
     public EffectTrigger Trigger { get; private set; }
@@ -12,6 +10,7 @@ public class DmgReductionEffect : IEffect
         Trigger = trigger;
     }
 
+    public string Name => "Damage Reduction";
     public int Uses { get; private set; } = 0;
 
     public void Apply(CharacterManager user, CharacterManager target)

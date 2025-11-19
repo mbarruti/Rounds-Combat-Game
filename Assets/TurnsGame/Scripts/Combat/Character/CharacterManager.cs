@@ -146,6 +146,18 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    public bool IsCounter()
+    {
+        int totalNumHits = maxNumHits + activeBuffs.NumHits;
+        for (int hitsLeft = totalNumHits; hitsLeft > 0; hitsLeft--)
+        {
+            float totalCounterChance = counterChance + activeBuffs.CounterChance;
+            float randomValue = Random.Range(0f, 1f);
+            if (totalCounterChance >= randomValue) return true;
+        }
+        return false;
+    }
+
     public void AddEffect(IEffect effect)
     {
         if (!effects.TryGetValue(effect.Trigger, out var list))
