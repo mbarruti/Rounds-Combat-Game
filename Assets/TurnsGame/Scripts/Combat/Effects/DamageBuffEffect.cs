@@ -5,7 +5,7 @@ using static MyProject.Constants;
 
 public class DamageBuffEffect : IEffect
 {
-    float Value { get; set; }
+    public float Value { get; private set; }
     public int MaxUses { get; private set; }
     public EffectTrigger Trigger { get; private set; }
     public DamageBuffEffect(float value, int maxUses, EffectTrigger trigger)
@@ -18,27 +18,18 @@ public class DamageBuffEffect : IEffect
     public string Name => "Damage Buff";
     public int Uses { get; private set; } = 0;
 
-    public void GetAdded(CharacterManager user, CharacterManager target)
-    {
-        user.AddEffect(this);
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText($"{user.username} increases damage by {Value*100}%"));
-    }
-
     public void Apply(CharacterManager user, CharacterManager target)
     {
         if (Uses == 0) user.activeBuffs.BonusDamage += Value;
+    }
+
+    public void Consume(CharacterManager user, CharacterManager target)
+    {
         Uses++;
         if (Uses == MaxUses)
         {
-            user.RemoveEffect(this);
-            return;
+            user.activeBuffs.BonusDamage -= Value;
+            //user.RemoveEffect(this);
         }
-    }
-
-    public void GetRemoved(CharacterManager user, CharacterManager target)
-    {
-        user.activeBuffs.BonusDamage -= Value;
-        user.RemoveEffect(this);
     }
 }

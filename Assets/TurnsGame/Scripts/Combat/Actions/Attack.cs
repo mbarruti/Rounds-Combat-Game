@@ -12,8 +12,9 @@ public class Attack : CharacterAction
 
     public override void Execute(CharacterManager target)
     {
-        Player.ApplyEffects(ATTACK);
-        Player.ApplyEffects(CHARGED_ATTACK);
+        Debug.Log(Player.activeBuffs.BonusDamage);
+        Debug.Log(Player.activeBuffs.Accuracy);
+        Debug.Log(Player.activeBuffs.Prowess);
 
         totalBaseDamage = BonusBaseDamage();
         totalDamage = (totalBaseDamage + BonusDamage()) * ProwessValue(Player.prowess);
@@ -37,19 +38,21 @@ public class Attack : CharacterAction
             }
         }
         //user.RecoverShieldCharge();
+        Player.ConsumeEffects(ATTACK);
+        Player.ConsumeEffects(CHARGED_ATTACK);
         CompleteAction();
-    }
-
-    float BonusDamage()
-    {
-        float bonusDamage = Player.baseDamage * Player.activeBuffs.BonusDamage;
-        return bonusDamage;
     }
 
     float BonusBaseDamage()
     {
         float bonus = Player.baseDamage + Player.activeBuffs.BaseDamage;
         return bonus;
+    }
+
+    float BonusDamage()
+    {
+        float bonusDamage = Player.baseDamage * Player.activeBuffs.BonusDamage;
+        return bonusDamage;
     }
 
     float ProwessValue(float prowess)

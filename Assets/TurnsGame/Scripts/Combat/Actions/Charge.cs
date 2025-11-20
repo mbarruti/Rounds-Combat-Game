@@ -12,14 +12,16 @@ public class Charge : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));
             ChargeBuffEffect chargeBuff = new();
-            chargeBuff.GetAdded(Player, target);
+            Player.AddEffect(chargeBuff);
+            chargeBuff.Apply(Player, target);
         }
         else
         {
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} keeps charging"));
-            DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
-            damageBuff.GetAdded(Player, target);
+            DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, SINGLE_USE, CHARGED_ATTACK);
+            Player.AddEffect(damageBuff);
+            damageBuff.Apply(Player, target);
         }
         CompleteAction();
     }

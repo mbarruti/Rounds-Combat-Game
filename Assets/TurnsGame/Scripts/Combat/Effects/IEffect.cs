@@ -5,21 +5,19 @@ public interface IEffect
     string Name { get; }
     EffectTrigger Trigger { get; }
     int MaxUses { get; }
-    void GetAdded(CharacterManager user, CharacterManager target);
+    int Uses { get; }
     void Apply(CharacterManager user, CharacterManager target);
-    void GetRemoved(CharacterManager user, CharacterManager target);
-
-    // TO-DO: Change order of code so that effects with max uses are removed from the list
-            // and/or corresponding buff before the next call to ApplyEffects is done
+    void Consume(CharacterManager user, CharacterManager target);
 }
 
 public enum EffectTrigger
 {
-    Instant,
     RoundStart,
     PerformAction,
     RoundEnd,
     Attack,
+    Block,
     ChargedAttack,
-    Tackle
+    Tackle,
+    Nothing
 }

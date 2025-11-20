@@ -1,4 +1,5 @@
 using UnityEngine;
+using static MyProject.Constants;
 
 public class Block : CharacterAction
 {
@@ -25,6 +26,7 @@ public class Block : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
         }
+        Player.ConsumeEffects(BLOCK);
         CompleteAction();
     }
 

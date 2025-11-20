@@ -114,7 +114,7 @@ public class CombatManager : MonoBehaviour
     {
         state = CombatState.CHOOSE;
 
-        AIAction();
+        //AIAction();
         if (player.state == PlayerState.WAIT)
         {
             state = CombatState.ACTION;
@@ -175,7 +175,10 @@ public class CombatManager : MonoBehaviour
         player.state = PlayerState.WAIT;
         player.action = null;
         if (player.effects.TryGetValue(CHARGED_ATTACK, out var list))
+        {
+            player.ConsumeEffects(CHARGED_ATTACK);
             list.Clear();
+        }
 
         PerformRound();
     }
@@ -291,6 +294,11 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
+        player.ConsumeEffects(ROUND_START);
+        enemy.ConsumeEffects(ROUND_START);
+        player.ApplyEffects(ROUND_END);
+        enemy.ApplyEffects(ROUND_END);
+
         CheckCombatState();
         if (state != CombatState.END)
         {

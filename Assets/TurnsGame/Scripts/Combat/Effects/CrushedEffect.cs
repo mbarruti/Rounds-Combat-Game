@@ -11,24 +11,16 @@ public class CrushedEffect : IEffect
 
     public EffectTrigger Trigger { get; private set; } = ROUND_START;
 
-    public void GetAdded(CharacterManager user, CharacterManager target)
-    {
-        user.AddEffect(this);
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} got crushed!"));
-    }
-
     public void Apply(CharacterManager user, CharacterManager target)
     {
         user.state = PlayerState.WAIT;
         user.action = null;
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0));
-        Uses++;
-        if (Uses == MaxUses) user.RemoveEffect(this);
     }
 
-    public void GetRemoved(CharacterManager user, CharacterManager target)
+    public void Consume(CharacterManager user, CharacterManager target)
     {
-        user.RemoveEffect(this);
+        Uses++;
     }
 }

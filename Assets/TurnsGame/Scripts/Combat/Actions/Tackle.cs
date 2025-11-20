@@ -12,8 +12,8 @@ public class Tackle : CharacterAction
 
         Player.shieldMeter.LoseCharges(HALF_CHARGE);
 
-        DmgReductionEffect reduction = new(TACKLE_DMG_REDUCTION, 1, TACKLE);
-        reduction.GetAdded(Player, null);
+        DmgReductionEffect reduction = new(TACKLE_DMG_REDUCTION, SINGLE_USE, TACKLE);
+        Player.AddEffect(reduction);
         Player.ApplyEffects(TACKLE);
 
         if (target.action is Attack auxAttack)
@@ -25,15 +25,17 @@ public class Tackle : CharacterAction
         else
         {
             Player.action = null;
-            Player.effects[CHARGED_ATTACK].Clear();
+            Player.ConsumeEffects(CHARGED_ATTACK);
         }
+
+        Player.ConsumeEffects(TACKLE);
         CompleteAction();
     }
 
     void OnTargetAttackCompleted()
     {
         DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
-        damageBuff.GetAdded(Player, null);
+        Player.AddEffect(damageBuff);
         Player.shieldMeter.RecoverCharges();
         targetAttack.OnCompleted -= OnTargetAttackCompleted;
     }

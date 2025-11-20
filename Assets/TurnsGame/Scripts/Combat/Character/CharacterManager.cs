@@ -110,7 +110,6 @@ public class CharacterManager : MonoBehaviour
         // CharacterAction newAction = new(this, action);
         // action = newAction;
         numHits = maxNumHits;
-        activeBuffs = new(this);
         state = PlayerState.CHOOSE;
 
         shieldMeterUI.SetChargesCopy();
@@ -120,8 +119,12 @@ public class CharacterManager : MonoBehaviour
     {
         action?.Execute(target);
         if (action is not (Block or Tackle)) shieldMeter.RecoverCharges();
-        if (action == null) return;
-        // ...
+        if (action == null)
+        {
+            ApplyEffects(NOTHING);
+            return;
+        }
+        ApplyEffects(ANY_ACTION);
     }
 
     public void TakeDamage(float damage)
@@ -142,7 +145,7 @@ public class CharacterManager : MonoBehaviour
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
             CrushedEffect crushedEffect = new CrushedEffect();
-            crushedEffect.GetAdded(this, null);
+            AddEffect(crushedEffect);
         }
     }
 
@@ -187,6 +190,19 @@ public class CharacterManager : MonoBehaviour
             list.Remove(effect);
             // if (list.Count == 0)
             //     effects.Remove(effect.Trigger);
+        }
+    }
+
+    public void ConsumeEffects(EffectTrigger trigger)
+    {
+        if (effects.TryGetValue(trigger, out var list))
+        {
+            List<IEffect> copy = new(list);
+            foreach (IEffect effect in copy)
+            {
+                effect.Consume(this, null);
+                if (effect.Uses == effect.MaxUses) list.Remove(effect);
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 public class DmgReductionEffect : IEffect
 {
-    float Value { get; set; }
+    public float Value { get; private set; }
     public int MaxUses { get; private set; }
     public EffectTrigger Trigger { get; private set; }
     public DmgReductionEffect(float value, int maxUses, EffectTrigger trigger)
@@ -16,25 +16,15 @@ public class DmgReductionEffect : IEffect
     public void Apply(CharacterManager user, CharacterManager target)
     {
         if (Uses == 0) user.activeBuffs.DmgReduction += Value;
+    }
+
+    public void Consume(CharacterManager user, CharacterManager target)
+    {
         Uses++;
         if (Uses == MaxUses)
         {
-            user.RemoveEffect(this);
-            return;
+            user.activeBuffs.DmgReduction -= Value;
+            //user.RemoveEffect(this);
         }
-    }
-
-    public void GetAdded(CharacterManager user, CharacterManager target)
-    {
-        user.AddEffect(this);
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText(
-                $"{user.username} increases damage reduction by {Value*100}%"));
-    }
-
-    public void GetRemoved(CharacterManager user, CharacterManager target)
-    {
-        user.activeBuffs.DmgReduction -= Value;
-        user.RemoveEffect(this);
     }
 }
