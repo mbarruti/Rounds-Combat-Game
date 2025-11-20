@@ -19,6 +19,7 @@ public class ChargeBuffEffect : IEffect
         // TO-DO: make charged buffs depend on weapon
         user.activeBuffs.BonusDamage += 0.4f;
         user.activeBuffs.Accuracy += 0.2f;
+        user.activeBuffs.Prowess += 0.2f;
         Uses++;
         if (Uses == MaxUses)
         {
