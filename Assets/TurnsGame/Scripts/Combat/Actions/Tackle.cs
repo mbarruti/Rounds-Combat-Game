@@ -12,13 +12,11 @@ public class Tackle : CharacterAction
 
         Player.shieldMeter.LoseCharges(HALF_CHARGE);
 
-        DmgReductionEffect reduction = new(TACKLE_DMG_REDUCTION, SINGLE_USE, TACKLE);
-        Player.AddEffect(reduction);
-        Player.ApplyEffects(TACKLE);
-
         if (target.action is Attack auxAttack)
         {
             targetAttack = auxAttack;
+            targetAttack.OnAttackHits -= OnTargetAttackHit;
+            targetAttack.OnAttackHits += OnTargetAttackHit;
             targetAttack.OnCompleted -= OnTargetAttackCompleted;
             targetAttack.OnCompleted += OnTargetAttackCompleted;
         }
@@ -32,12 +30,19 @@ public class Tackle : CharacterAction
         CompleteAction();
     }
 
+    void OnTargetAttackHit()
+    {
+        DmgReductionEffect reduction = new(TACKLE_DMG_REDUCTION, SINGLE_USE, TACKLE);
+        Player.AddEffect(reduction);
+        Player.ApplyEffects(TACKLE);
+        targetAttack.OnAttackHits -= OnTargetAttackHit; // MAYBE NOT NECESSARY
+    }
+
     void OnTargetAttackCompleted()
     {
         DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
         Player.AddEffect(damageBuff);
         Player.shieldMeter.RecoverCharges();
-        targetAttack.OnCompleted -= OnTargetAttackCompleted;
+        targetAttack.OnCompleted -= OnTargetAttackCompleted; // MAYBE NOT NECESSARY
     }
-
 }

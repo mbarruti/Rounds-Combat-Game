@@ -1,5 +1,6 @@
-using MyProject;
 using UnityEngine;
+using System;
+using MyProject;
 using static MyProject.Constants;
 
 public class Attack : CharacterAction
@@ -10,11 +11,11 @@ public class Attack : CharacterAction
     float totalDamage = 0;
     public float prowessBonus = 0;
 
+    public event Action OnAttackHits;
+
     public override void Execute(CharacterManager target)
     {
-        Debug.Log(Player.activeBuffs.BonusDamage);
-        Debug.Log(Player.activeBuffs.Accuracy);
-        Debug.Log(Player.activeBuffs.Prowess);
+        Player.ApplyEffects(ATTACK);
 
         totalBaseDamage = BonusBaseDamage();
         totalDamage = (totalBaseDamage + BonusDamage()) * ProwessValue(Player.prowess);
@@ -29,6 +30,7 @@ public class Attack : CharacterAction
             {
                 if (AttackHits(Player.accuracy))
                 {
+                    OnAttackHits?.Invoke();
                     target.TakeDamage(totalDamage);
                 }
                 else
@@ -66,7 +68,7 @@ public class Attack : CharacterAction
     bool AttackHits(float accuracy)
     {
         accuracy += Player.activeBuffs.Accuracy;
-        float randomValue = Random.Range(0f, 1f);
+        float randomValue = UnityEngine.Random.Range(0f, 1f);
         return randomValue <= accuracy;
     }
 }

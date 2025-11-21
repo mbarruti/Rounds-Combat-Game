@@ -136,6 +136,8 @@ public class CharacterManager : MonoBehaviour
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
+        if (action is Tackle) ConsumeEffects(TACKLE);
+
         CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
     }
 
