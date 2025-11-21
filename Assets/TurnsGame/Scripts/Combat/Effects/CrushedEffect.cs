@@ -6,7 +6,7 @@ using static MyProject.Constants;
 public class CrushedEffect : IEffect
 {
     public string Name => "Crushed";
-    public int MaxUses { get; private set; } = 1;
+    public int MaxUses { get; private set; } = SINGLE_USE;
     public int Uses { get; private set; } = 0;
 
     public EffectTrigger Trigger { get; private set; } = ROUND_START;

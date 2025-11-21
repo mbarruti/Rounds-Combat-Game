@@ -12,9 +12,12 @@ public class ChargeBuffEffect : IEffect
     public void Apply(CharacterManager user, CharacterManager target)
     {
         // TO-DO: make charged buffs depend on weapon
-        user.activeBuffs.BonusDamage += 0.4f;
-        user.activeBuffs.Accuracy += 0.2f;
-        user.activeBuffs.Prowess += 0.2f;
+        if (Uses == 0)
+        {
+            user.activeBuffs.BonusDamage += 0.4f;
+            user.activeBuffs.Accuracy += 0.2f;
+            user.activeBuffs.Prowess += 0.2f;
+        }
     }
 
     public void Consume(CharacterManager user, CharacterManager target)
