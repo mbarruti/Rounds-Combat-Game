@@ -19,13 +19,12 @@ public class Attack : CharacterAction
 
         totalBaseDamage = BonusBaseDamage();
         totalDamage = (totalBaseDamage + BonusDamage()) * ProwessValue(Player.prowess);
-        if (totalDamage <= 0) return;
 
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
-
-        if (target.action is not Block)
+        if (totalDamage > 0 && target.action is not Block)
         {
+            CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
+
             for (int hitNumber = 0; hitNumber < Player.numHits; hitNumber++)
             {
                 if (AttackHits(Player.accuracy))
