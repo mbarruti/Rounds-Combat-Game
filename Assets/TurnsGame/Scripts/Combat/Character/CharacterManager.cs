@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -156,7 +157,7 @@ public class CharacterManager : MonoBehaviour
         for (int hitsLeft = totalNumHits; hitsLeft > 0; hitsLeft--)
         {
             float totalCounterChance = counterChance + activeBuffs.CounterChance;
-            float randomValue = Random.Range(0f, 1f);
+            float randomValue = UnityEngine.Random.Range(0f, 1f);
             if (totalCounterChance >= randomValue) return true;
         }
         return false;
@@ -209,7 +210,7 @@ public class CharacterManager : MonoBehaviour
 
     public bool IsDead()
     {
-        if (currentHP <= 0) return true;
+        if (Mathf.Approximately(currentHP, 0) || currentHP < 0) return true;
         return false;
     }
 }
