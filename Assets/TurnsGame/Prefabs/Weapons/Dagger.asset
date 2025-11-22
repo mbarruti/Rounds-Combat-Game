@@ -19,3 +19,9 @@ MonoBehaviour:
   <Prowess>k__BackingField: 1
   <CounterChance>k__BackingField: 0.05
   <NumHits>k__BackingField: 3
+  <DualBaseDamage>k__BackingField: 6
+  <DualMeterDamage>k__BackingField: 1
+  <DualAccuracy>k__BackingField: 1
+  <DualProwess>k__BackingField: 1
+  <DualCounterChance>k__BackingField: 0.05
+  <DualNumHits>k__BackingField: 4

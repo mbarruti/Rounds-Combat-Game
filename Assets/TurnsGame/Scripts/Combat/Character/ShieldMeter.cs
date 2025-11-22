@@ -9,7 +9,7 @@ public class ShieldMeter
 {
     [SerializeField] int maxCharges;
     Stack<float> charges;
-
+    public event Action chargesWillChangeEvent;
     public event Action<List<float>> chargesChangedEvent;
 
     public void Setup(int shieldMaxCharges)
@@ -30,6 +30,7 @@ public class ShieldMeter
 
     public void RecoverCharges()
     {
+        chargesWillChangeEvent?.Invoke();
         if (GetAvailableCharges() == maxCharges)
             return;
         if (charges.Count > 0 && IsHalf(charges.Peek()))
@@ -43,13 +44,14 @@ public class ShieldMeter
         chargesChangedEvent?.Invoke(GetChargesCopy());
     }
 
-    public void LoseCharges(float shieldMeterDamage)
+    public void LoseCharges(float meterLoss)
     {
+        chargesWillChangeEvent?.Invoke();
+
         Stack<float> tempStack = new Stack<float>();
 
-        while (GetAvailableCharges() > 0 && shieldMeterDamage > 0)
+        while (GetAvailableCharges() > 0 && meterLoss > 0)
         {
-            Debug.Log("Shield meter damage left: " + shieldMeterDamage);
             float chargeValue = charges.Pop();
             if (IsHalf(chargeValue)) // If charge is recovering
             {
@@ -57,11 +59,11 @@ public class ShieldMeter
             }
             else // If charge is available
             {
-                float damageLeft = shieldMeterDamage - chargeValue;
-                chargeValue -= shieldMeterDamage;
+                float damageLeft = meterLoss - chargeValue;
+                chargeValue -= meterLoss;
                 if (IsHalf(chargeValue))
                     tempStack.Push(chargeValue);
-                shieldMeterDamage = damageLeft;
+                meterLoss = damageLeft;
             }
         }
         if (tempStack.Count > 0) charges.Push(HALF_CHARGE);

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 //[System.Serializable]
@@ -9,15 +10,24 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterAction
 {
-    protected CharacterManager User { get; set; }
-    protected CharacterAction LastAction { get; set; }
+    protected CharacterManager Player { get; set; }
+    public CharacterAction LastAction { get; protected set; }
     protected CharacterAction NextAction { get; set; }
+
+    protected bool Completed { get; set; } = false;
+    public event Action OnCompleted;
 
     public CharacterAction(CharacterManager user, CharacterAction lastAction)
     {
-        User = user;
+        Player = user;
         LastAction = lastAction;
     }
 
     public virtual void Execute(CharacterManager target){}
+
+    protected void CompleteAction()
+    {
+        Completed = true;
+        OnCompleted?.Invoke();
+    }
 }

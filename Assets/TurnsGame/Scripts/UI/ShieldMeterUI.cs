@@ -10,7 +10,7 @@ public class ShieldMeterUI : MonoBehaviour
 
     [SerializeField] ChargeUI chargeBar;
     List<ChargeUI> chargeBarList = new();
-    List<float> chargesCopy = new();
+    List<float> previousCharges = new();
 
     public void Setup(ShieldMeter meter)
     {
@@ -19,56 +19,59 @@ public class ShieldMeterUI : MonoBehaviour
 
         if (playerMeter.GetMaxCharges() > 0)
         {
-            for (int i = 0; i < chargesCopy.Count; i++)
+            for (int i = 0; i < previousCharges.Count; i++)
             {
                 var bar = Instantiate(chargeBar, transform);
-                bar.UpdateBarColor(chargesCopy[i]);
+                bar.UpdateBarColor(previousCharges[i]);
                 chargeBarList.Add(bar);
             }
         }
+        playerMeter.chargesWillChangeEvent += SetChargesCopy;
         playerMeter.chargesChangedEvent += UpdateMeterUI;
     }
 
     public void SetChargesCopy()
     {
-        chargesCopy = playerMeter.GetChargesCopy();
+        previousCharges = playerMeter.GetChargesCopy();
     }
 
-    public IEnumerator RecoverChargeBars(List<float> currentCharges, float waitTime = 0f)
+    public IEnumerator RecoverChargeBars(List<float> currentCharges, List<float> copy,
+    float waitTime = 0f)
     {
         for (int i = 0; i < currentCharges.Count; i++)
         {
-            if (TryGet(chargesCopy, i, out float charge))
+            if (TryGet(copy, i, out float charge))
             {
                 if (charge != currentCharges[i])
                 {
-                    chargesCopy[i] = currentCharges[i];
-                    chargeBarList[i].UpdateBarColor(chargesCopy[i]);
+                    copy[i] = currentCharges[i];
+                    chargeBarList[i].UpdateBarColor(copy[i]);
                 }
             }
             else
             {
-                chargesCopy.Add(currentCharges[i]);
+                copy.Add(currentCharges[i]);
                 var bar = Instantiate(chargeBar, transform);
-                bar.UpdateBarColor(chargesCopy[i]);
+                bar.UpdateBarColor(copy[i]);
                 chargeBarList.Add(bar);
             }
         }
         yield return new WaitForSeconds(waitTime);
     }
 
-    public IEnumerator LoseChargeBars(List<float> currentCharges, float waitTime = 0f)
+    public IEnumerator LoseChargeBars(List<float> currentCharges, List<float> copy,
+    float waitTime = 0f)
     {
-        int lastIndex = chargesCopy.Count - 1;
+        int lastIndex = copy.Count - 1;
         int aux = 0;
-        while (chargesCopy.Count > currentCharges.Count)
+        while (copy.Count > currentCharges.Count)
         {
-            for (int i = 1; i <= chargesCopy.Count; i++)
+            for (int i = 1; i <= copy.Count; i++)
             {
-                float value = chargesCopy[^i];
+                float value = copy[^i];
                 if (value == FULL_CHARGE)
                 {
-                    chargesCopy.RemoveAt(chargesCopy.Count - i);
+                    copy.RemoveAt(copy.Count - i);
                     Destroy(chargeBarList[chargeBarList.Count - i].gameObject);
                     chargeBarList.RemoveAt(chargeBarList.Count - i);
                     lastIndex--;
@@ -82,24 +85,24 @@ public class ShieldMeterUI : MonoBehaviour
             }
             else aux++;
         }
-        if (currentCharges.Count != 0 && chargesCopy[^1] != currentCharges[^1])
+        if (currentCharges.Count != 0 && copy[^1] != currentCharges[^1])
         {
-            chargesCopy[^1] = HALF_CHARGE;
-            chargeBarList[^1].UpdateBarColor(chargesCopy[^1]);
+            copy[^1] = HALF_CHARGE;
+            chargeBarList[^1].UpdateBarColor(copy[^1]);
         }
         yield return new WaitForSeconds(waitTime);
     }
 
     void UpdateMeterUI(List<float> currentCharges)
     {
-        if (chargesCopy.Count > currentCharges.Count)
-            CombatUI.AddAnimation(LoseChargeBars(currentCharges));
-        else if (chargesCopy.Count < currentCharges.Count)
-            CombatUI.AddAnimation(RecoverChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != FULL_CHARGE)
-            CombatUI.AddAnimation(LoseChargeBars(currentCharges));
-        else if (chargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == FULL_CHARGE)
-            CombatUI.AddAnimation(RecoverChargeBars(currentCharges));
+        if (previousCharges.Count > currentCharges.Count)
+            CombatUI.AddAnimation(LoseChargeBars(currentCharges, previousCharges));
+        else if (previousCharges.Count < currentCharges.Count)
+            CombatUI.AddAnimation(RecoverChargeBars(currentCharges, previousCharges));
+        else if (previousCharges[^1] != currentCharges[^1] && currentCharges[^1] != FULL_CHARGE)
+            CombatUI.AddAnimation(LoseChargeBars(currentCharges, previousCharges));
+        else if (previousCharges[^1] != currentCharges[^1] && currentCharges[^1] == FULL_CHARGE)
+            CombatUI.AddAnimation(RecoverChargeBars(currentCharges, previousCharges));
     }
 
     public bool TryGet(List<float> list, Index index, out float value)
