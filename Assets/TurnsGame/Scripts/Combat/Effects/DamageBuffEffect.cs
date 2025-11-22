@@ -20,7 +20,12 @@ public class DamageBuffEffect : IEffect
 
     public void Apply(CharacterManager user, CharacterManager target)
     {
-        if (Uses == 0) user.activeBuffs.BonusDamage += Value;
+        if (Uses == 0)
+        {
+            user.activeBuffs.BonusDamage += Value;
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText
+                ($"{user.username} increases damage by {Value*100}%"));
+        }
     }
 
     public void Consume(CharacterManager user, CharacterManager target)

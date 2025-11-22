@@ -17,7 +17,12 @@ public class ProwessBuffEffect : IEffect
 
     public void Apply(CharacterManager user, CharacterManager target)
     {
-        if (Uses == 0) user.activeBuffs.Prowess += Value;
+        if (Uses == 0)
+        {
+            user.activeBuffs.Prowess += Value;
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText
+                ($"{user.username} increases prowess by {Value*100}%"));
+        }
     }
 
     public void Consume(CharacterManager user, CharacterManager target)

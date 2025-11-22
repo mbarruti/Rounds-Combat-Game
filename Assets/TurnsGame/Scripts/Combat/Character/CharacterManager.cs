@@ -136,8 +136,6 @@ public class CharacterManager : MonoBehaviour
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
-        if (action is Tackle) ConsumeEffects(TACKLE);
-
         CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
     }
 
@@ -146,8 +144,9 @@ public class CharacterManager : MonoBehaviour
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
-            CrushedEffect crushedEffect = new CrushedEffect();
+            CrushedEffect crushedEffect = new();
             AddEffect(crushedEffect);
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{username} got crushed!"));
         }
     }
 

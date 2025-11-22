@@ -17,6 +17,7 @@ public class ChargeBuffEffect : IEffect
             user.activeBuffs.BonusDamage += 0.4f;
             user.activeBuffs.Accuracy += 0.2f;
             user.activeBuffs.Prowess += 0.2f;
+            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} increases stats"));
         }
     }
 

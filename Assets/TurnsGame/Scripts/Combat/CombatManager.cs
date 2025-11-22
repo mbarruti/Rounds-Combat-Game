@@ -39,6 +39,11 @@ public class CombatManager : MonoBehaviour
         SetupMatch();
     }
 
+    void Update()
+    {
+       Debug.Log(player.activeBuffs.BonusDamage);
+    }
+
     void SetupMatch()
     {
         //player = SpawnCharacter(IS_PLAYER_ONE);
@@ -114,7 +119,7 @@ public class CombatManager : MonoBehaviour
     {
         state = CombatState.CHOOSE;
 
-        //AIAction();
+        AIAction();
         if (player.state == PlayerState.WAIT)
         {
             state = CombatState.ACTION;
