@@ -1,25 +1,23 @@
 using UnityEngine;
+using MyProject;
 using static MyProject.Constants;
 
 public class Block : CharacterAction
 {
-    public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
+    public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
+    {
+        Lead = MEDIUM;
+    }
+
+    Attack targetAttack;
 
     public override void Execute(CharacterManager target)
     {
-        if (target.action is Attack)
+        if (target.action is Attack auxAttack)
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
-
-            if (IsParry(Player.parryChance))
-            {
-                CombatUI.AddAnimation(
-                    CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
-                NextAction = new Attack(Player, this);
-                NextAction.Execute(target);
-            }
-            else Player.TakeMeterDamage(target.meterDamage);
+            targetAttack = auxAttack;
+            targetAttack.OnAttackHits -= OnTargetAttackHit;
+            targetAttack.OnAttackHits += OnTargetAttackHit;
         }
         else
         {
@@ -28,6 +26,22 @@ public class Block : CharacterAction
         }
         Player.ConsumeEffects(BLOCK);
         CompleteAction();
+    }
+
+    void OnTargetAttackHit(CharacterManager target)
+    {
+        if (IsParry(Player.parryChance))
+        {
+            CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
+
+            NextAction = new Attack(Player, this);
+            NextAction.Execute(target);
+        }
+        else CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
+        targetAttack.prowessBonus = -1;
+        // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }
 
     bool IsParry(float parryChance)
