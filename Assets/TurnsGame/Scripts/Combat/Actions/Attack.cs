@@ -9,6 +9,7 @@ public class Attack : CharacterAction
     public Attack(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
     {
         Lead = LOW;
+        CanRecoverMeter = true;
     }
 
     float totalBaseDamage = 0;

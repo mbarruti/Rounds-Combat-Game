@@ -7,6 +7,7 @@ public class Block : CharacterAction
     public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
     {
         Lead = MEDIUM;
+        CanRecoverMeter = false;
     }
 
     Attack targetAttack;

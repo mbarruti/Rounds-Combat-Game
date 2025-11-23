@@ -119,7 +119,7 @@ public class CharacterManager : MonoBehaviour
     public void PerformAction(CharacterManager target)
     {
         action?.Execute(target);
-        if (action is not (Block or Tackle or Parry)) shieldMeter.RecoverCharges();
+        if (action == null || action.CanRecoverMeter) shieldMeter.RecoverCharges();
         if (action == null)
         {
             ApplyEffects(NOTHING);

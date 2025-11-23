@@ -7,6 +7,7 @@ public class Parry : CharacterAction
     public Parry(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
     {
         Lead = MEDIUM;
+        CanRecoverMeter = false;
     }
 
     bool parrySuccess = false;

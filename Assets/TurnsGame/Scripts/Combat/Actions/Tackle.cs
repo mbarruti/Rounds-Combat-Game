@@ -9,6 +9,7 @@ public class Tackle : CharacterAction
     public Tackle(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
     {
         Lead = HIGH;
+        CanRecoverMeter = false;
     }
 
     Attack targetAttack;
@@ -47,10 +48,10 @@ public class Tackle : CharacterAction
     {
         if (tackleSuccess)
         {
+            Player.shieldMeter.RecoverCharges();
             DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
             Player.AddEffect(damageBuff);
             damageBuff.Apply(Player, null);
-            Player.shieldMeter.RecoverCharges();
         }
         else
         {
