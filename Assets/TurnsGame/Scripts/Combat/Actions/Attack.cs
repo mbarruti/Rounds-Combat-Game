@@ -32,7 +32,6 @@ public class Attack : CharacterAction
         {
             if (AttackHits(Player.accuracy))
             {
-                Debug.Log("entra");
                 totalBaseDamage = BonusBaseDamage();
                 totalDamage = (totalBaseDamage + BonusDamage()) * ProwessValue(Player.prowess);
                 if (!Mathf.Approximately(totalDamage, 0)) target.TakeDamage(totalDamage);

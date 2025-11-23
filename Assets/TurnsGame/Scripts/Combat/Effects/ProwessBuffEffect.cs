@@ -23,11 +23,11 @@ public class ProwessBuffEffect : IEffect
             CombatUI.AddAnimation(CombatUI.Instance.WriteText
                 ($"{user.username} increases prowess by {Value*100}%"));
         }
+        if (Uses < MaxUses) Uses++;
     }
 
     public void Consume(CharacterManager user, CharacterManager target)
     {
-        Uses++;
         if (Uses == MaxUses)
         {
             user.activeBuffs.Prowess -= Value;

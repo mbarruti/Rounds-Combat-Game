@@ -19,11 +19,11 @@ public class ChargeBuffEffect : IEffect
             user.activeBuffs.Prowess += 0.2f;
             CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} increases stats"));
         }
+        if (Uses < MaxUses) Uses++;
     }
 
     public void Consume(CharacterManager user, CharacterManager target)
     {
-        Uses++;
         if (Uses == MaxUses)
         {
             user.activeBuffs.BonusDamage -= 0.4f;

@@ -17,10 +17,11 @@ public class CrushedEffect : IEffect
         user.action = null;
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0));
+        if (Uses < MaxUses) Uses++;
     }
 
     public void Consume(CharacterManager user, CharacterManager target)
     {
-        Uses++;
+        // Uses++;
     }
 }
