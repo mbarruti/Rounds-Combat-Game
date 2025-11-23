@@ -119,7 +119,7 @@ public class CharacterManager : MonoBehaviour
     public void PerformAction(CharacterManager target)
     {
         action?.Execute(target);
-        if (action is not (Block or Tackle)) shieldMeter.RecoverCharges();
+        if (action is not (Block or Tackle or Parry)) shieldMeter.RecoverCharges();
         if (action == null)
         {
             ApplyEffects(NOTHING);
@@ -130,7 +130,7 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (action is Block) return;
+        if (action is (Block or Parry)) return;
 
         damage -= damage * activeBuffs.DmgReduction;
 

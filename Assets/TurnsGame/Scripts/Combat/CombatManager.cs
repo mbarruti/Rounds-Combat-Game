@@ -174,6 +174,16 @@ public class CombatManager : MonoBehaviour
         PerformRound();
     }
 
+    public void OnParryButton()
+    {
+        if (player.state != PlayerState.CHOOSE ||
+            player.shieldMeter.GetAvailableCharges() < PARRY_METER_LOSS) return;
+        player.state = PlayerState.WAIT;
+        player.action = new Parry(player, player.action);
+
+        PerformRound();
+    }
+
     public void OnNothingButton()
     {
         if (player.state != PlayerState.CHOOSE) return;
@@ -199,7 +209,7 @@ public class CombatManager : MonoBehaviour
                 Clash(playerAttack, enemyAttack);
                 break;
 
-            case (Attack, Block):
+            case (Attack, Block or Parry):
                 player.PerformAction(enemy);
                 enemy.PerformAction(player);
                 break;
@@ -209,7 +219,7 @@ public class CombatManager : MonoBehaviour
                     CombatUI.Instance.WriteText("Both players block what the fuck"));
                 break;
 
-            case (Block, Attack):
+            case (Block or Parry, Attack):
                 enemy.PerformAction(player);
                 player.PerformAction(enemy);
                 break;

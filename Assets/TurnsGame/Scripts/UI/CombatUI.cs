@@ -23,6 +23,7 @@ public class CombatUI : MonoBehaviour
     [SerializeField] GameObject blockButton;
     [SerializeField] GameObject chargeButton;
     [SerializeField] GameObject tackleButton;
+    [SerializeField] GameObject parryButton;
     [SerializeField] GameObject nothingButton;
 
     private void Awake()
@@ -82,6 +83,7 @@ public class CombatUI : MonoBehaviour
         if (actionController.canUseBlock) blockButton.SetActive(true);
         if (actionController.canUseCharge) chargeButton.SetActive(true);
         if (actionController.canUseTackle) tackleButton.SetActive(true);
+        if (actionController.canUseParry) parryButton.SetActive(true);
         nothingButton.SetActive(true);
         yield return new WaitForSeconds(waitTime);
     }
@@ -92,6 +94,7 @@ public class CombatUI : MonoBehaviour
         blockButton.SetActive(false);
         chargeButton.SetActive(false);
         tackleButton.SetActive(false);
+        parryButton.SetActive(false);
         nothingButton.SetActive(false);
         yield return new WaitForSeconds(waitTime);
     }
