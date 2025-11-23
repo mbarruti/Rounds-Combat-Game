@@ -1,4 +1,5 @@
 using System;
+using MyProject;
 using UnityEngine;
 
 //[System.Serializable]
@@ -7,10 +8,11 @@ using UnityEngine;
 //    public abstract void Execute(ActionContext context);
 //}
 
-[System.Serializable]
+[Serializable]
 public class CharacterAction
 {
     protected CharacterManager Player { get; set; }
+    public ActionPriority Lead { get; protected set; }
     public CharacterAction LastAction { get; protected set; }
     protected CharacterAction NextAction { get; set; }
 

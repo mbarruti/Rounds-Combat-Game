@@ -2,6 +2,14 @@ using System;
 
 namespace MyProject
 {
+    public enum ActionPriority
+    {
+        High = 1,
+        Medium = 2,
+        Low = 3,
+        NullPriority = int.MaxValue,
+    }
+
     public static class Constants
     {
 
@@ -15,13 +23,17 @@ namespace MyProject
 
         public const float COUNTER_PROWESS_GAIN = 0.2f; // PROWESS GAINED FROM GETTING A COUNTER
 
-        public const float COUNTER_PROWESS_LOSS = -1.0f; // PROWESS LOST WHEN BEING COUNTERED
+        public const float COUNTER_PROWESS_LOSS = -1; // PROWESS LOST WHEN BEING COUNTERED
+
+        public const float FORCED_PARRY_CHANCE = 1;
 
         // METER
 
         public const float HALF_CHARGE = 0.5f; // CHARGE IN RECOVERY
 
-        public const float FULL_CHARGE = 1.0f; // CHARGE AVAILABLE
+        public const float FULL_CHARGE = 1; // CHARGE AVAILABLE
+
+        public const float PARRY_METER_LOSS = 1.5f; // METER LOST AFTER FAILED PARRY
 
         // EFFECTS
 
@@ -46,6 +58,16 @@ namespace MyProject
         public const EffectTrigger TACKLE = EffectTrigger.Tackle;
 
         public const EffectTrigger NOTHING = EffectTrigger.Nothing;
+
+        // ACTION PRIORITY
+
+        public const ActionPriority HIGH = ActionPriority.High;
+
+        public const ActionPriority MEDIUM = ActionPriority.Medium;
+
+        public const ActionPriority LOW = ActionPriority.Low;
+
+        public const ActionPriority NULL_LEAD = ActionPriority.NullPriority;
 
         // public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
         // public const BuffType METER_DAMAGE = BuffType.MeterDamage;

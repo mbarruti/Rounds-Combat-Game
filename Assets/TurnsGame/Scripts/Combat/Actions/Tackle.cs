@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using MyProject;
 using static MyProject.Constants;
 
 public class Tackle : CharacterAction
 {
-    public Tackle(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
+    public Tackle(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
+    {
+        Lead = HIGH;
+    }
 
     Attack targetAttack;
 
@@ -29,7 +33,7 @@ public class Tackle : CharacterAction
         }
     }
 
-    void OnTargetAttackHit()
+    void OnTargetAttackHit(CharacterManager target)
     {
         tackleSuccess = true;
         DmgReductionEffect reduction = new(TACKLE_DMG_REDUCTION, SINGLE_USE, TACKLE);
@@ -50,6 +54,8 @@ public class Tackle : CharacterAction
         }
         else
         {
+            CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt"));
             Player.action = null;
             Player.ConsumeEffects(CHARGED_ATTACK);
         }

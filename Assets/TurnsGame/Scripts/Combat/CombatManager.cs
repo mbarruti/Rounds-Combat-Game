@@ -41,7 +41,7 @@ public class CombatManager : MonoBehaviour
 
     void Update()
     {
-       Debug.Log(player.activeBuffs.BonusDamage);
+       //Debug.Log(player.activeBuffs.BonusDamage);
     }
 
     void SetupMatch()
@@ -203,38 +203,20 @@ public class CombatManager : MonoBehaviour
         state = CombatState.ACTION;
         CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
 
-        switch ((player.action, enemy.action))
+        switch (player.action, enemy.action)
         {
-            case (Attack playerAttack, Attack enemyAttack):
-                Clash(playerAttack, enemyAttack);
+            case (Attack playerOneAttack, Attack playerTwoAttack):
+                Clash(playerOneAttack, playerTwoAttack);
                 break;
 
-            case (Attack, Block or Parry):
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
-                break;
+            case (_, _):
+                int playerLead = (int)(player.action?.Lead ?? NULL_LEAD);
+                int enemyLead  = (int)(enemy.action?.Lead  ?? NULL_LEAD);
+                (var leadActor, var secondActor) =
+                    playerLead <= enemyLead ? (player, enemy) : (enemy, player);
 
-            case (Block, Block):
-                CombatUI.AddAnimation(
-                    CombatUI.Instance.WriteText("Both players block what the fuck"));
-                break;
-
-            case (Block or Parry, Attack):
-                enemy.PerformAction(player);
-                player.PerformAction(enemy);
-                break;
-
-            case (Tackle or Charge, _):
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
-                break;
-            case (_, Tackle or Charge):
-                enemy.PerformAction(player);
-                player.PerformAction(enemy);
-                break;
-            case (_ , _):
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
+                leadActor.PerformAction(secondActor);
+                secondActor.PerformAction(leadActor);
                 break;
         }
         RoundEnd();

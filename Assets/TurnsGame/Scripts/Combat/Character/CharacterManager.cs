@@ -130,14 +130,14 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (action is (Block or Parry)) return;
-
+        float previousHP = currentHP;
         damage -= damage * activeBuffs.DmgReduction;
 
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
-        CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
+        if (currentHP != previousHP)
+            CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
     }
 
     public void TakeMeterDamage(float meterDamage)
