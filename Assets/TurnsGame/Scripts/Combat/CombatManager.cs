@@ -111,7 +111,6 @@ public class CombatManager : MonoBehaviour
         enemy.actionController.SetAvailableActions(enemy.action);
 
         CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons(player.actionController));
-
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
     }
 
@@ -174,12 +173,13 @@ public class CombatManager : MonoBehaviour
         PerformRound();
     }
 
-    public void OnSpecialButton()
+    public void OnSpecialButton(int index)
     {
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
             return;
         player.state = PlayerState.WAIT;
-        player.action = player.weapon.SpecialAction.CreateAction();
+        if (player.weapon.SpecialActions.Count > 0)
+            player.action = player.weapon.SpecialActions[index].CreateAction();
 
         PerformRound();
     }
@@ -187,7 +187,7 @@ public class CombatManager : MonoBehaviour
     public void OnParryButton()
     {
         if (player.state != PlayerState.CHOOSE ||
-            player.shieldMeter.GetAvailableCharges() < PARRY_METER_LOSS) return;
+            player.shieldMeter.GetAvailableCharges() < PARRY_METER_COST) return;
         player.state = PlayerState.WAIT;
         //player.action = new Parry(player, player.action);
 
@@ -284,20 +284,6 @@ public class CombatManager : MonoBehaviour
             enemy.PerformAction(player);
         }
     }
-
-    // (bool, int) IsCounter(float counterChance, int numHits)
-    // {
-    //     for (int hitsLeft = numHits; hitsLeft > 0; hitsLeft--)
-    //     {
-    //         float randomValue = Random.Range(0f, 1f);
-    //         if (counterChance >= randomValue)
-    //         {
-    //             //return (true, hitsLeft);
-    //             return (true, numHits);
-    //         }
-    //     }
-    //     return (false, numHits);
-    // }
 
     void RoundEnd()
     {
