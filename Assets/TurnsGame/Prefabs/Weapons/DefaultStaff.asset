@@ -9,14 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2ee6daccf140ad42aed8d4269e37095, type: 3}
-  m_Name: SwordSO
-  m_EditorClassIdentifier: Assembly-CSharp::SwordSO
+  m_Script: {fileID: 11500000, guid: 8bfb38f76f4f15c488444a902111526c, type: 3}
+  m_Name: DefaultStaff
+  m_EditorClassIdentifier: Assembly-CSharp::StaffSO
   <Name>k__BackingField: None
   <SpecialAction>k__BackingField: {fileID: 0}
-  <SpecialActions>k__BackingField:
-  - {fileID: 11400000, guid: f1671c77f8659f340ac5344a0fd1d1e9, type: 2}
-  - {fileID: 11400000, guid: 52179d79638782f418be4bbdf059b2c8, type: 2}
+  <SpecialActions>k__BackingField: []
   <BaseDamage>k__BackingField: 20
   <MeterDamage>k__BackingField: 1
   <Accuracy>k__BackingField: 1
@@ -29,4 +27,4 @@ MonoBehaviour:
   <DualProwess>k__BackingField: 1
   <DualCounterChance>k__BackingField: 0.05
   <DualNumHits>k__BackingField: 1
-  defaultSpecialActionsInitialized: 1
+  defaultSpecialActionsInitialized: 0
