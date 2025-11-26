@@ -2,18 +2,28 @@ using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
 
+[CreateAssetMenu(menuName = "Character Actions/Block")]
+public class BlockSO : CharacterActionSO
+{
+    public override CharacterAction CreateAction()
+    {
+        return new Block(this);
+    }
+}
+
 public class Block : CharacterAction
 {
-    public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
+    public Block(BlockSO blockSO)
     {
-        Lead = MEDIUM;
-        CanRecoverMeter = false;
+        DataSO = blockSO;
     }
 
     Attack targetAttack;
 
-    public override void Execute(CharacterManager target)
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
+        Player = player;
+
         if (target.action is Attack auxAttack)
         {
             targetAttack = auxAttack;
@@ -36,8 +46,8 @@ public class Block : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
-            NextAction = new Attack(Player, this);
-            NextAction.Execute(target);
+            NextAction = new Attack(null);
+            NextAction.Execute(Player, target);
         }
         else CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));

@@ -4,20 +4,30 @@ using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
 
+[CreateAssetMenu(menuName = "Character Actions/Tackle")]
+public class TackleSO : CharacterActionSO
+{
+    public override CharacterAction CreateAction()
+    {
+        return new Tackle(this);
+    }
+}
+
 public class Tackle : CharacterAction
 {
-    public Tackle(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
+    public Tackle(TackleSO tackleSO)
     {
-        Lead = HIGH;
-        CanRecoverMeter = false;
+        DataSO = tackleSO;
     }
 
     Attack targetAttack;
 
     bool tackleSuccess = false;
 
-    public override void Execute(CharacterManager target)
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
+        Player = player;
+
         CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Player.username} tackles"));
 
         target.action.OnCompleted -= OnTargetActionCompleted;

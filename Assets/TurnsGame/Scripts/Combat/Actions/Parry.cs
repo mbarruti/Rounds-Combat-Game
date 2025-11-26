@@ -2,20 +2,30 @@ using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
 
+[CreateAssetMenu(menuName = "Character Actions/Parry")]
+public class ParrySO : CharacterActionSO
+{
+    public override CharacterAction CreateAction()
+    {
+        return new Parry(this);
+    }
+}
+
 public class Parry : CharacterAction
 {
-    public Parry(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
+    public Parry(ParrySO parrySO)
     {
-        Lead = MEDIUM;
-        CanRecoverMeter = false;
+        DataSO = parrySO;
     }
 
     bool parrySuccess = false;
 
     Attack targetAttack;
 
-    public override void Execute(CharacterManager target)
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
+        Player = player;
+
         target.action.OnCompleted -= OnTargetActionCompleted;
         target.action.OnCompleted += OnTargetActionCompleted;
 
@@ -38,8 +48,8 @@ public class Parry : CharacterAction
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
             targetAttack.prowessBonus = -1;
-            NextAction = new Attack(Player, this);
-            NextAction.Execute(target);
+            NextAction = new Attack(null);
+            NextAction.Execute(Player, target);
         }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }

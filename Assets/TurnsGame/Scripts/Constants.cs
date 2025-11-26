@@ -67,7 +67,7 @@ namespace MyProject
 
         public const ActionPriority LOW = ActionPriority.Low;
 
-        public const ActionPriority NULL_LEAD = ActionPriority.NullPriority;
+        public const ActionPriority NONE = ActionPriority.NullPriority;
 
         // public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
         // public const BuffType METER_DAMAGE = BuffType.MeterDamage;

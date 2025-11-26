@@ -4,12 +4,20 @@ using MyProject;
 using static MyProject.Constants;
 using UnityEngine.TextCore.Text;
 
+[CreateAssetMenu(menuName = "Character Actions/Attack")]
+public class AttackSO : CharacterActionSO
+{
+    public override CharacterAction CreateAction()
+    {
+        return new Attack(this);
+    }
+}
+
 public class Attack : CharacterAction
 {
-    public Attack(CharacterManager user, CharacterAction lastAction) : base(user, lastAction)
+    public Attack(AttackSO attackSO)
     {
-        Lead = LOW;
-        CanRecoverMeter = true;
+        DataSO = attackSO;
     }
 
     float totalBaseDamage = 0;
@@ -18,8 +26,9 @@ public class Attack : CharacterAction
 
     public event Action<CharacterManager> OnAttackHits;
 
-    public override void Execute(CharacterManager target)
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
+        Player = player;
         Player.ApplyEffects(ATTACK);
 
         CombatUI.AddAnimation(

@@ -210,8 +210,8 @@ public class CombatManager : MonoBehaviour
                 break;
 
             case (_, _):
-                int playerLead = (int)(player.action?.Lead ?? NULL_LEAD);
-                int enemyLead  = (int)(enemy.action?.Lead  ?? NULL_LEAD);
+                int playerLead = (int)(player.action?.Lead ?? NONE);
+                int enemyLead  = (int)(enemy.action?.Lead  ?? NONE);
                 (var leadActor, var secondActor) =
                     playerLead <= enemyLead ? (player, enemy) : (enemy, player);
 

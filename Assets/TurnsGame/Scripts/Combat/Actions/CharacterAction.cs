@@ -1,32 +1,32 @@
 using System;
 using MyProject;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using static MyProject.Constants;
 
-//[System.Serializable]
-//public abstract class Action
-//{
-//    public abstract void Execute(ActionContext context);
-//}
+public abstract class CharacterActionSO
+{
+    [field: SerializeField] public ActionPriority Lead { get; private set; } = NONE;
+    [field: SerializeField] public bool CanRecoverMeter { get; private set; }
+
+    public abstract CharacterAction CreateAction();
+}
 
 [Serializable]
 public class CharacterAction
 {
+    // private CharacterActionSO characterActionSO;
+    // public CharacterAction(){}
+
+    protected CharacterActionSO DataSO { get; set; }
     protected CharacterManager Player { get; set; }
-    public ActionPriority Lead { get; protected set; }
-    public bool CanRecoverMeter { get; protected set; }
     public CharacterAction LastAction { get; protected set; }
     protected CharacterAction NextAction { get; set; }
 
     protected bool Completed { get; set; } = false;
     public event Action OnCompleted;
 
-    public CharacterAction(CharacterManager user, CharacterAction lastAction)
-    {
-        Player = user;
-        LastAction = lastAction;
-    }
-
-    public virtual void Execute(CharacterManager target){}
+    public virtual void Execute(CharacterManager player, CharacterManager target){}
 
     protected void CompleteAction()
     {
