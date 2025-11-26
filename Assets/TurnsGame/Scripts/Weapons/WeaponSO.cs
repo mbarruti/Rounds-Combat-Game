@@ -8,7 +8,6 @@ public class WeaponSO : ScriptableObject
 {
     [field: Header("General")]
     [field: SerializeField] public string Name { get; private set; } = "None";
-    [field: SerializeField] public CharacterActionSO SpecialAction { get; private set; }
     [field: SerializeField] public List<CharacterActionSO> SpecialActions { get; protected set; }
 
     [field: Header("One-handed")]

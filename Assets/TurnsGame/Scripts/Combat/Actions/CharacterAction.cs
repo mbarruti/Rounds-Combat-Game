@@ -20,8 +20,6 @@ public class CharacterAction
 
     protected CharacterActionSO DataSO { get; set; }
     protected CharacterManager Player { get; set; }
-    public CharacterAction LastAction { get; protected set; }
-    protected CharacterAction NextAction { get; set; }
 
     protected bool Completed { get; set; } = false;
     public event Action OnCompleted;

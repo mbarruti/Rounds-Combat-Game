@@ -4,7 +4,7 @@ using UnityEngine;
 public class WarhammerSO : WeaponSO
 {
     [field: Header("Editor data")]
-    bool defaultSpecialActionsInitialized = false;
+    [field: SerializeField] bool defaultSpecialActionsInitialized = false;
 
     #if UNITY_EDITOR
     void OnEnable()

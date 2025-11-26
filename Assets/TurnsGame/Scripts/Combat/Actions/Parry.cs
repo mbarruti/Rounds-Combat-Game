@@ -41,8 +41,8 @@ public class Parry : CharacterAction
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
             targetAttack.prowessBonus = -1;
-            NextAction = new Attack(null);
-            NextAction.Execute(Player, target);
+            Player.nextAction = new Attack(null);
+            Player.nextAction.Execute(Player, target);
         }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }
@@ -60,7 +60,7 @@ public class Parry : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} fails parry attempt"));
 
-            Player.shieldMeter.LoseCharges(PARRY_METER_LOSS);
+            Player.shieldMeter.LoseCharges(PARRY_METER_COST);
         }
     }
 }

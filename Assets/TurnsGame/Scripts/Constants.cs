@@ -33,7 +33,7 @@ namespace MyProject
 
         public const float FULL_CHARGE = 1; // CHARGE AVAILABLE
 
-        public const float PARRY_METER_LOSS = 1.5f; // METER LOST AFTER FAILED PARRY
+        public const float PARRY_METER_COST = 1.5f; // METER LOST AFTER FAILED PARRY
 
         // EFFECTS
 

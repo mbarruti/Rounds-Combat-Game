@@ -16,7 +16,7 @@ public class Charge : CharacterAction
         Player = player;
 
         // TODO: think of a way to get the same logic as the if without having to check LastAction
-        if (LastAction is not (Charge or Tackle))
+        if (Player.lastAction is not (Charge or Tackle))
         {
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));

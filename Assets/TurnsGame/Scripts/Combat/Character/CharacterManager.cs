@@ -10,10 +10,10 @@ public enum PlayerState { CHOOSE, WAIT }
 public class CharacterManager : MonoBehaviour
 {
     [SerializeField] User user;
+    public string username => user.Name;
+
     public WeaponSO weapon;
     public ShieldSO shield;
-
-    public string username => user.Name;
 
     // HP data
     public float maxHP;
@@ -48,6 +48,8 @@ public class CharacterManager : MonoBehaviour
     public AttackSO attackSO;
     public BlockSO blockSO;
     public CharacterAction action;
+    public CharacterAction lastAction;
+    public CharacterAction nextAction;
     public CharacterActionController actionController = new();
 
     public PlayerState state;
