@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f0fa4b2b4bc3d418a89eee6de8f106, type: 3}
   m_Name: Parry
   m_EditorClassIdentifier: Assembly-CSharp::ParrySO
+  <Name>k__BackingField: Parry
   <Lead>k__BackingField: 2
   <CanRecoverMeter>k__BackingField: 0

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: DefaultBlock
   m_EditorClassIdentifier: Assembly-CSharp::BlockSO
+  <Name>k__BackingField: Block
   <Lead>k__BackingField: 2
   <CanRecoverMeter>k__BackingField: 0

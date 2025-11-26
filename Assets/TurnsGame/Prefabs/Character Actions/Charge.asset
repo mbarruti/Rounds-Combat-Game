@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb92465bcc72cb44e9558e8e6976fa60, type: 3}
   m_Name: Charge
   m_EditorClassIdentifier: Assembly-CSharp::ChargeSO
+  <Name>k__BackingField: Charge
   <Lead>k__BackingField: 1
   <CanRecoverMeter>k__BackingField: 1

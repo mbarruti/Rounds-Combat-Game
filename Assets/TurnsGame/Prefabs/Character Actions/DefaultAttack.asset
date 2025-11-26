@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: DefaultAttack
   m_EditorClassIdentifier: Assembly-CSharp::AttackSO
+  <Name>k__BackingField: Attack
   <Lead>k__BackingField: 3
   <CanRecoverMeter>k__BackingField: 1
