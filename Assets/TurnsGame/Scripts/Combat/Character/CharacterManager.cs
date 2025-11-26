@@ -10,8 +10,8 @@ public enum PlayerState { CHOOSE, WAIT }
 public class CharacterManager : MonoBehaviour
 {
     [SerializeField] User user;
-    [SerializeField] WeaponSO weapon;
-    [SerializeField] ShieldSO shield;
+    public WeaponSO weapon;
+    public ShieldSO shield;
 
     public string username => user.Name;
 
@@ -45,6 +45,8 @@ public class CharacterManager : MonoBehaviour
     // Effects
     public Dictionary<EffectTrigger, List<IEffect>> effects;
 
+    public AttackSO attackSO;
+    public BlockSO blockSO;
     public CharacterAction action;
     public CharacterActionController actionController = new();
 
@@ -54,7 +56,7 @@ public class CharacterManager : MonoBehaviour
 
     void Awake()
     {
-        action = new(this, null);
+        action = new();
         activeBuffs = new(this);
         effects = new();
         shieldMeter = new();
@@ -118,7 +120,7 @@ public class CharacterManager : MonoBehaviour
 
     public void PerformAction(CharacterManager target)
     {
-        action?.Execute(target);
+        action?.Execute(this, target);
         if (action == null || action.CanRecoverMeter) shieldMeter.RecoverCharges();
         if (action == null)
         {

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Warhammer
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   <Name>k__BackingField: Warhammer
+  <SpecialAction>k__BackingField: {fileID: 11400000, guid: 52179d79638782f418be4bbdf059b2c8, type: 2}
   <BaseDamage>k__BackingField: 50
   <MeterDamage>k__BackingField: 2.5
   <Accuracy>k__BackingField: 0.6

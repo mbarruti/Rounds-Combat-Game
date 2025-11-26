@@ -2,20 +2,13 @@ using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
 
-[CreateAssetMenu(menuName = "Character Actions/Block")]
-public class BlockSO : CharacterActionSO
-{
-    public override CharacterAction CreateAction()
-    {
-        return new Block(this);
-    }
-}
-
 public class Block : CharacterAction
 {
     public Block(BlockSO blockSO)
     {
         DataSO = blockSO;
+        Lead = DataSO.Lead;
+        CanRecoverMeter = DataSO.CanRecoverMeter;
     }
 
     Attack targetAttack;

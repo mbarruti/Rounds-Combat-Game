@@ -2,20 +2,13 @@ using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
 
-[CreateAssetMenu(menuName = "Character Actions/Parry")]
-public class ParrySO : CharacterActionSO
-{
-    public override CharacterAction CreateAction()
-    {
-        return new Parry(this);
-    }
-}
-
 public class Parry : CharacterAction
 {
     public Parry(ParrySO parrySO)
     {
         DataSO = parrySO;
+        Lead = DataSO.Lead;
+        CanRecoverMeter = DataSO.CanRecoverMeter;
     }
 
     bool parrySuccess = false;

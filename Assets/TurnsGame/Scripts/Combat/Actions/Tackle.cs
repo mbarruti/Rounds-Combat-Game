@@ -1,23 +1,15 @@
 using System;
 using System.Collections;
-using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
-
-[CreateAssetMenu(menuName = "Character Actions/Tackle")]
-public class TackleSO : CharacterActionSO
-{
-    public override CharacterAction CreateAction()
-    {
-        return new Tackle(this);
-    }
-}
 
 public class Tackle : CharacterAction
 {
     public Tackle(TackleSO tackleSO)
     {
         DataSO = tackleSO;
+        Lead = DataSO.Lead;
+        CanRecoverMeter = DataSO.CanRecoverMeter;
     }
 
     Attack targetAttack;

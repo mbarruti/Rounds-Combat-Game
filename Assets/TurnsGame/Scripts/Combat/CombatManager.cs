@@ -132,15 +132,15 @@ public class CombatManager : MonoBehaviour
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 &&
-            player.state != PlayerState.WAIT) enemy.action = new Attack(enemy, enemy.action);
-        else enemy.action = new Attack(enemy, enemy.action);
+            player.state != PlayerState.WAIT) enemy.action = enemy.attackSO.CreateAction();
+        else enemy.action = enemy.attackSO.CreateAction();
     }
 
     public void OnAttackButton()
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = new Attack(player, player.action);
+        player.action = player.attackSO.CreateAction();
 
         PerformRound();
     }
@@ -149,7 +149,7 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = new Charge(player, player.action);
+        //player.action = new Charge(player, player.action);
 
         PerformRound();
     }
@@ -159,7 +159,7 @@ public class CombatManager : MonoBehaviour
         if (player.state != PlayerState.CHOOSE ||
             player.shieldMeter.GetAvailableCharges() == 0) return;
         player.state = PlayerState.WAIT;
-        player.action = new Tackle(player, player.action);
+        //player.action = new Tackle(player, player.action);
 
         PerformRound();
     }
@@ -169,7 +169,17 @@ public class CombatManager : MonoBehaviour
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
             return;
         player.state = PlayerState.WAIT;
-        player.action = new Block(player, player.action);
+        player.action = player.blockSO.CreateAction();
+
+        PerformRound();
+    }
+
+    public void OnSpecialButton()
+    {
+        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
+            return;
+        player.state = PlayerState.WAIT;
+        player.action = player.weapon.SpecialAction.CreateAction();
 
         PerformRound();
     }
@@ -179,7 +189,7 @@ public class CombatManager : MonoBehaviour
         if (player.state != PlayerState.CHOOSE ||
             player.shieldMeter.GetAvailableCharges() < PARRY_METER_LOSS) return;
         player.state = PlayerState.WAIT;
-        player.action = new Parry(player, player.action);
+        //player.action = new Parry(player, player.action);
 
         PerformRound();
     }

@@ -1,22 +1,14 @@
 using NUnit.Framework;
-using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
-
-[CreateAssetMenu(menuName = "Character Actions/Charge")]
-public class ChargeSO : CharacterActionSO
-{
-    public override CharacterAction CreateAction()
-    {
-        return new Charge(this);
-    }
-}
 
 public class Charge : CharacterAction
 {
     public Charge(ChargeSO chargeSO)
     {
         DataSO = chargeSO;
+        Lead = DataSO.Lead;
+        CanRecoverMeter = DataSO.CanRecoverMeter;
     }
 
     public override void Execute(CharacterManager player, CharacterManager target)

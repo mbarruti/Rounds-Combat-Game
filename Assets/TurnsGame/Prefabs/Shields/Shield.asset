@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: Assembly-CSharp::ShieldSO
   <Name>k__BackingField: Shield
+  <SpecialAction>k__BackingField: {fileID: 11400000, guid: 7fd6e00a812028d45a88bbdcd705a4e9, type: 2}
   <MaxCharges>k__BackingField: 3
   <ParryChance>k__BackingField: 0.05

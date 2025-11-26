@@ -1,21 +1,21 @@
 using System;
 using MyProject;
-using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static MyProject.Constants;
 
-public abstract class CharacterActionSO
+public enum ActionType
 {
-    [field: SerializeField] public ActionPriority Lead { get; private set; } = NONE;
-    [field: SerializeField] public bool CanRecoverMeter { get; private set; }
-
-    public abstract CharacterAction CreateAction();
+    Attack,
+    Block,
+    Special,
 }
 
 [Serializable]
 public class CharacterAction
 {
     // private CharacterActionSO characterActionSO;
+    public ActionPriority Lead { get; protected set; } = NONE;
+    public bool CanRecoverMeter { get; protected set; } = false;
     // public CharacterAction(){}
 
     protected CharacterActionSO DataSO { get; set; }

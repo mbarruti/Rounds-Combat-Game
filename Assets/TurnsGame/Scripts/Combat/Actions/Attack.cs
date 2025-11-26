@@ -4,20 +4,13 @@ using MyProject;
 using static MyProject.Constants;
 using UnityEngine.TextCore.Text;
 
-[CreateAssetMenu(menuName = "Character Actions/Attack")]
-public class AttackSO : CharacterActionSO
-{
-    public override CharacterAction CreateAction()
-    {
-        return new Attack(this);
-    }
-}
-
 public class Attack : CharacterAction
 {
     public Attack(AttackSO attackSO)
     {
         DataSO = attackSO;
+        Lead = DataSO.Lead;
+        CanRecoverMeter = DataSO.CanRecoverMeter;
     }
 
     float totalBaseDamage = 0;

@@ -344,6 +344,14 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 6b5402f211afcb34bb1cf1640246b8e5, type: 2}
+    - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
+      propertyPath: blockSO
+      value: 
+      objectReference: {fileID: 11400000, guid: c902dbb0431c57341823e753d5e4fc69, type: 2}
+    - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
+      propertyPath: attackSO
+      value: 
+      objectReference: {fileID: 11400000, guid: f95aeea4328545f4f8d00a1eeac44a35, type: 2}
     - target: {fileID: 4339262583653544765, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 885.095
@@ -632,6 +640,14 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 670074cb104b85e49bf7771bb9d45eca, type: 2}
+    - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
+      propertyPath: blockSO
+      value: 
+      objectReference: {fileID: 11400000, guid: c902dbb0431c57341823e753d5e4fc69, type: 2}
+    - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
+      propertyPath: attackSO
+      value: 
+      objectReference: {fileID: 11400000, guid: f95aeea4328545f4f8d00a1eeac44a35, type: 2}
     - target: {fileID: 4339262583653544765, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 885.095

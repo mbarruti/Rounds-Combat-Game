@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponSO", menuName = "Scriptable Objects/Weapon")]
 public class WeaponSO : ScriptableObject
 {
-    [field: SerializeField] public string Name { get; private set; } = "Sword";
+    [field: Header("General")]
+    [field: SerializeField] public string Name { get; private set; } = "None";
+    [field: SerializeField] public CharacterActionSO SpecialAction { get; private set; }
 
     [field: Header("One-handed")]
     [field: SerializeField] public float BaseDamage { get; private set; } = 20;
