@@ -4,12 +4,8 @@ using static MyProject.Constants;
 
 public class Charge : CharacterAction
 {
-    public Charge(ChargeSO chargeSO)
-    {
-        DataSO = chargeSO;
-        Lead = DataSO.Lead;
-        CanRecoverMeter = DataSO.CanRecoverMeter;
-    }
+    public Charge(CharacterActionSO charActionSO) : base(charActionSO){}
+
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {

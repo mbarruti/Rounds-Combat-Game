@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: DefaultAttack
   m_EditorClassIdentifier: Assembly-CSharp::AttackSO
   <Name>k__BackingField: Attack
+  <Type>k__BackingField: 0
   <Lead>k__BackingField: 3
+  <MeterCost>k__BackingField: 0
   <CanRecoverMeter>k__BackingField: 1

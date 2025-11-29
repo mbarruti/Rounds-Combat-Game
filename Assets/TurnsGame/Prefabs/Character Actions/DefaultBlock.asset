@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: DefaultBlock
   m_EditorClassIdentifier: Assembly-CSharp::BlockSO
   <Name>k__BackingField: Block
+  <Type>k__BackingField: 1
   <Lead>k__BackingField: 2
+  <MeterCost>k__BackingField: 0
   <CanRecoverMeter>k__BackingField: 0

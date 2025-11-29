@@ -5,12 +5,8 @@ using static MyProject.Constants;
 
 public class Tackle : CharacterAction
 {
-    public Tackle(TackleSO tackleSO)
-    {
-        DataSO = tackleSO;
-        Lead = DataSO.Lead;
-        CanRecoverMeter = DataSO.CanRecoverMeter;
-    }
+    public Tackle(CharacterActionSO charActionSO) : base(charActionSO){}
+
 
     Attack targetAttack;
 

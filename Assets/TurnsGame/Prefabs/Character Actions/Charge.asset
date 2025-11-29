@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Charge
   m_EditorClassIdentifier: Assembly-CSharp::ChargeSO
   <Name>k__BackingField: Charge
+  <Type>k__BackingField: 2
   <Lead>k__BackingField: 1
+  <MeterCost>k__BackingField: 0
   <CanRecoverMeter>k__BackingField: 1

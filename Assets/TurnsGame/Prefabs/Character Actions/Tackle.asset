@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Tackle
   m_EditorClassIdentifier: Assembly-CSharp::TackleSO
   <Name>k__BackingField: Tackle
+  <Type>k__BackingField: 2
   <Lead>k__BackingField: 1
+  <MeterCost>k__BackingField: 0.5
   <CanRecoverMeter>k__BackingField: 0

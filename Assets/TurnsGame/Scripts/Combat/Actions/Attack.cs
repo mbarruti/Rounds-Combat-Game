@@ -6,12 +6,7 @@ using UnityEngine.TextCore.Text;
 
 public class Attack : CharacterAction
 {
-    public Attack(AttackSO attackSO)
-    {
-        DataSO = attackSO;
-        Lead = DataSO.Lead;
-        CanRecoverMeter = DataSO.CanRecoverMeter;
-    }
+    public Attack(CharacterActionSO charActionSO) : base(charActionSO){}
 
     float totalBaseDamage = 0;
     public float prowessBonus = 0;
@@ -22,7 +17,7 @@ public class Attack : CharacterAction
     public override void Execute(CharacterManager player, CharacterManager target)
     {
         Player = player;
-        Player.ApplyEffects(ATTACK);
+        Player.ApplyEffects(ON_ATTACK);
 
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
@@ -47,7 +42,7 @@ public class Attack : CharacterAction
         }
 
         //user.RecoverShieldCharge();
-        Player.ConsumeEffects(ATTACK);
+        Player.ConsumeEffects(ON_ATTACK);
         Player.ConsumeEffects(CHARGED_ATTACK);
         CompleteAction();
     }

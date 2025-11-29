@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Parry
   m_EditorClassIdentifier: Assembly-CSharp::ParrySO
   <Name>k__BackingField: Parry
+  <Type>k__BackingField: 3
   <Lead>k__BackingField: 2
+  <MeterCost>k__BackingField: 1.5
   <CanRecoverMeter>k__BackingField: 0

@@ -4,12 +4,7 @@ using static MyProject.Constants;
 
 public class Block : CharacterAction
 {
-    public Block(BlockSO blockSO)
-    {
-        DataSO = blockSO;
-        Lead = DataSO.Lead;
-        CanRecoverMeter = DataSO.CanRecoverMeter;
-    }
+    public Block(CharacterActionSO charActionSO) : base(charActionSO){}
 
     Attack targetAttack;
 
@@ -28,7 +23,7 @@ public class Block : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
         }
-        Player.ConsumeEffects(BLOCK);
+        Player.ConsumeEffects(ON_BLOCK);
         CompleteAction();
     }
 

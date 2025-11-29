@@ -4,12 +4,8 @@ using static MyProject.Constants;
 
 public class Parry : CharacterAction
 {
-    public Parry(ParrySO parrySO)
-    {
-        DataSO = parrySO;
-        Lead = DataSO.Lead;
-        CanRecoverMeter = DataSO.CanRecoverMeter;
-    }
+    public Parry(CharacterActionSO charActionSO) : base(charActionSO){}
+
 
     bool parrySuccess = false;
 
