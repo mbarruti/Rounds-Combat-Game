@@ -6,7 +6,7 @@ public class ShieldSO : ScriptableObject
 {
     [field: Header("General")]
     [field: SerializeField] public string Name { get; private set; } = "None";
-    [field: SerializeField] public CharacterActionSO SpecialAction { get; private set; }
+    [field: SerializeField] public List<CharacterActionSO> SpecialActions { get; private set; }
 
     [field: Header("Data")]
     [field: SerializeField] public int MaxCharges { get; private set; } = 3;

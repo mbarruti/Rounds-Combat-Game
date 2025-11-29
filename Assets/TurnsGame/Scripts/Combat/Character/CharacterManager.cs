@@ -58,7 +58,7 @@ public class CharacterManager : MonoBehaviour
 
     void Awake()
     {
-        action = new();
+        //action = new();
         activeBuffs = new(this);
         effects = new();
         shieldMeter = new();
@@ -113,7 +113,7 @@ public class CharacterManager : MonoBehaviour
     public void Reset()
     {
         // CharacterAction newAction = new(this, action);
-        // action = newAction;
+        lastAction = action;
         numHits = maxNumHits;
         state = PlayerState.CHOOSE;
 

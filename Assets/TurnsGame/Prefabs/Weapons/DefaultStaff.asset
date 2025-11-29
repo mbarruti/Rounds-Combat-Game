@@ -12,19 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bfb38f76f4f15c488444a902111526c, type: 3}
   m_Name: DefaultStaff
   m_EditorClassIdentifier: Assembly-CSharp::StaffSO
-  <Name>k__BackingField: None
-  <SpecialAction>k__BackingField: {fileID: 0}
+  <Name>k__BackingField: Staff
   <SpecialActions>k__BackingField: []
-  <BaseDamage>k__BackingField: 20
-  <MeterDamage>k__BackingField: 1
+  <BaseDamage>k__BackingField: 15
+  <MeterDamage>k__BackingField: 1.5
   <Accuracy>k__BackingField: 1
   <Prowess>k__BackingField: 1
-  <CounterChance>k__BackingField: 0.05
+  <CounterChance>k__BackingField: 0.15
   <NumHits>k__BackingField: 1
-  <DualBaseDamage>k__BackingField: 20
-  <DualMeterDamage>k__BackingField: 1
+  <DualBaseDamage>k__BackingField: 15
+  <DualMeterDamage>k__BackingField: 1.5
   <DualAccuracy>k__BackingField: 1
   <DualProwess>k__BackingField: 1
-  <DualCounterChance>k__BackingField: 0.05
-  <DualNumHits>k__BackingField: 1
+  <DualCounterChance>k__BackingField: 0.15
+  <DualNumHits>k__BackingField: 2
   defaultSpecialActionsInitialized: 0

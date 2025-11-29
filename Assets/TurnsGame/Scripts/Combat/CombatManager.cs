@@ -130,9 +130,9 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 &&
-            player.state != PlayerState.WAIT) enemy.action = enemy.attackSO.CreateAction();
-        else enemy.action = enemy.attackSO.CreateAction();
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0)
+            enemy.action = enemy.blockSO.CreateAction(); // BLOCK
+        else enemy.action = enemy.blockSO.CreateAction(); // ATTACK
     }
 
     public void OnAttackButton()
@@ -173,13 +173,24 @@ public class CombatManager : MonoBehaviour
         PerformRound();
     }
 
-    public void OnSpecialButton(int index)
+    public void OnWeaponSpecialButton(int index)
     {
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
             return;
         player.state = PlayerState.WAIT;
         if (player.weapon.SpecialActions.Count > 0)
             player.action = player.weapon.SpecialActions[index].CreateAction();
+
+        PerformRound();
+    }
+
+    public void OnShieldSpecialButton(int index)
+    {
+        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
+            return;
+        player.state = PlayerState.WAIT;
+        if (player.shield.SpecialActions.Count > 0)
+            player.action = player.shield.SpecialActions[index].CreateAction();
 
         PerformRound();
     }

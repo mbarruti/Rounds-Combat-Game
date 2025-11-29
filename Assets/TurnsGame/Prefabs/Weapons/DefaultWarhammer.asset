@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: DefaultWarhammer
   m_EditorClassIdentifier: Assembly-CSharp::WarhammerSO
   <Name>k__BackingField: Warhammer
-  <SpecialAction>k__BackingField: {fileID: 0}
   <SpecialActions>k__BackingField:
   - {fileID: 11400000, guid: f1671c77f8659f340ac5344a0fd1d1e9, type: 2}
   - {fileID: 11400000, guid: 52179d79638782f418be4bbdf059b2c8, type: 2}
@@ -29,3 +28,4 @@ MonoBehaviour:
   <DualProwess>k__BackingField: 1
   <DualCounterChance>k__BackingField: 0.05
   <DualNumHits>k__BackingField: 1
+  defaultSpecialActionsInitialized: 1

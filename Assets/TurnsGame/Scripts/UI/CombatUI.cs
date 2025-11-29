@@ -21,10 +21,14 @@ public class CombatUI : MonoBehaviour
 
     [SerializeField] GameObject attackButton;
     [SerializeField] GameObject blockButton;
+    [SerializeField] GameObject nothingButton;
+    [SerializeField] GameObject weaponSpecialButton;
+    [SerializeField] GameObject weaponSpecialButton2;
+    [SerializeField] GameObject shieldSpecialButton;
+
     [SerializeField] GameObject chargeButton;
     [SerializeField] GameObject tackleButton;
     [SerializeField] GameObject parryButton;
-    [SerializeField] GameObject nothingButton;
 
     private void Awake()
     {
@@ -81,9 +85,9 @@ public class CombatUI : MonoBehaviour
     {
         if (actionController.canUseAttack) attackButton.SetActive(true);
         if (actionController.canUseBlock) blockButton.SetActive(true);
-        if (actionController.canUseCharge) chargeButton.SetActive(true);
-        if (actionController.canUseTackle) tackleButton.SetActive(true);
-        if (actionController.canUseParry) parryButton.SetActive(true);
+        weaponSpecialButton.SetActive(true);
+        weaponSpecialButton2.SetActive(true);
+        shieldSpecialButton.SetActive(true);
         nothingButton.SetActive(true);
         yield return new WaitForSeconds(waitTime);
     }
@@ -92,9 +96,9 @@ public class CombatUI : MonoBehaviour
     {
         attackButton.SetActive(false);
         blockButton.SetActive(false);
-        chargeButton.SetActive(false);
-        tackleButton.SetActive(false);
-        parryButton.SetActive(false);
+        weaponSpecialButton.SetActive(false);
+        weaponSpecialButton2.SetActive(false);
+        shieldSpecialButton.SetActive(false);
         nothingButton.SetActive(false);
         yield return new WaitForSeconds(waitTime);
     }
