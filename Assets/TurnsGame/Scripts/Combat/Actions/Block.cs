@@ -4,7 +4,7 @@ using static MyProject.Constants;
 
 public class Block : CharacterAction
 {
-    public Block(CharacterActionSO charActionSO) : base(charActionSO){}
+    public Block(BlockSO charActionSO) : base(charActionSO){}
 
     Attack targetAttack;
 
@@ -34,7 +34,7 @@ public class Block : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
-            Player.nextAction = new Attack(null);
+            Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);
         }
         else CombatUI.AddAnimation(

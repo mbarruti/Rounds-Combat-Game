@@ -4,8 +4,7 @@ using static MyProject.Constants;
 
 public class Parry : CharacterAction
 {
-    public Parry(CharacterActionSO charActionSO) : base(charActionSO){}
-
+    public Parry(ParrySO charActionSO) : base(charActionSO){}
 
     bool parrySuccess = false;
 
@@ -37,7 +36,7 @@ public class Parry : CharacterAction
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
             targetAttack.prowessBonus = -1;
-            Player.nextAction = new Attack(null);
+            Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);
         }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;

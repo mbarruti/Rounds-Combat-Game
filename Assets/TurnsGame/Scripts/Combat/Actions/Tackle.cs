@@ -5,8 +5,7 @@ using static MyProject.Constants;
 
 public class Tackle : CharacterAction
 {
-    public Tackle(CharacterActionSO charActionSO) : base(charActionSO){}
-
+    public Tackle(TackleSO charActionSO) : base(charActionSO){}
 
     Attack targetAttack;
 

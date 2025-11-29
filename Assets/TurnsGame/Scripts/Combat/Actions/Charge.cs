@@ -4,8 +4,7 @@ using static MyProject.Constants;
 
 public class Charge : CharacterAction
 {
-    public Charge(CharacterActionSO charActionSO) : base(charActionSO){}
-
+    public Charge(ChargeSO charActionSO) : base(charActionSO){}
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {
