@@ -49,15 +49,25 @@ namespace MyProject
 
         public const EffectTrigger ANY_ACTION = EffectTrigger.PerformAction;
 
-        public const EffectTrigger ATTACK = EffectTrigger.Attack;
+        public const EffectTrigger ON_ATTACK = EffectTrigger.OnAttack;
 
-        public const EffectTrigger BLOCK = EffectTrigger.Block;
+        public const EffectTrigger ON_BLOCK = EffectTrigger.OnBlock;
 
         public const EffectTrigger CHARGED_ATTACK = EffectTrigger.ChargedAttack;
 
         public const EffectTrigger TACKLE = EffectTrigger.Tackle;
 
         public const EffectTrigger NOTHING = EffectTrigger.Nothing;
+
+        // ACTION TYPE
+
+        public const ActionType ATTACK = ActionType.Attack;
+
+        public const ActionType BLOCK = ActionType.Block;
+
+        public const ActionType WEAPON_SPECIAL = ActionType.WeaponSpecial;
+
+        public const ActionType SHIELD_SPECIAL = ActionType.ShieldSpecial;
 
         // ACTION PRIORITY
 
