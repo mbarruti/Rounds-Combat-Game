@@ -25,14 +25,18 @@ public class CharacterAction
         CanRecoverMeter = DataSO.CanRecoverMeter;
     }
     protected CharacterManager Player { get; set; }
+    protected CharacterManager Target { get; set; }
 
     protected bool Completed { get; set; } = false;
     public event Action OnCompleted;
 
     public virtual void Execute(CharacterManager player, CharacterManager target){}
 
+    protected virtual void OnComplete(){}
+
     protected void CompleteAction()
     {
+        OnComplete();
         Completed = true;
         OnCompleted?.Invoke();
     }
