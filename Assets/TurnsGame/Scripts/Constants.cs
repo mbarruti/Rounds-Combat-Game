@@ -29,7 +29,7 @@ namespace MyProject
 
         public const float BLOCK_PROWESS_LOSS = -1; // ENEMY PROWESS LOST WITH BLOCK
 
-        public const float PARRY_PROWESS_LOSS = 1.5f; // ENEMY PROWESS LOST WITH PARRY
+        public const float PARRY_PROWESS_LOSS = -1.5f; // ENEMY PROWESS LOST WITH PARRY
 
         // METER
 
