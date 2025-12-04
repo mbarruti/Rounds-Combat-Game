@@ -12,6 +12,9 @@ public class Attack : CharacterAction
     public float prowessBonus = 0;
     float totalDamage = 0;
 
+    // TODO: make this logic better with the same result
+    public int meterDamageValue = 1; // 1 full damage, 0 no damage
+
     public event Action<CharacterManager> OnAttackHits;
 
     public override void Execute(CharacterManager player, CharacterManager target)
@@ -42,7 +45,8 @@ public class Attack : CharacterAction
                 CombatUI.AddAnimation(CombatUI.Instance.WriteText(Player.username + " misses"));
             }
         }
-        if (successfulHits > 0) target.TakeMeterDamage(Player.meterDamage);
+        if (successfulHits > 0 && target.action is Block)
+            target.TakeMeterDamage(Player.meterDamage * meterDamageValue);
 
         // for (int i = 0; i < successfulHits; i++)
         // {
@@ -69,11 +73,11 @@ public class Attack : CharacterAction
 
     float ProwessValue(float prowess)
     {
-        prowess += prowessBonus;
-        if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
-        else if (prowess > 1) prowess = 1;
+        // prowess += prowessBonus;
+        // if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
+        // else if (prowess > 1) prowess = 1;
 
-        prowess += Player.activeBuffs.Prowess;
+        prowess += Player.activeBuffs.Prowess + prowessBonus;
         if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
         else if (prowess > 1) prowess = 1;
         return prowess;

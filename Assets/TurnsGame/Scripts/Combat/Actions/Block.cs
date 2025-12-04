@@ -34,6 +34,7 @@ public class Block : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
             targetAttack.prowessBonus = -1.5f;
+            targetAttack.meterDamageValue = 0;
 
             Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);
