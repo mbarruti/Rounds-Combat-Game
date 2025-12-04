@@ -48,11 +48,6 @@ public class Attack : CharacterAction
         if (successfulHits > 0 && target.action is Block)
             target.TakeMeterDamage(Player.meterDamage * meterDamageValue);
 
-        // for (int i = 0; i < successfulHits; i++)
-        // {
-        //     if (!Mathf.Approximately(totalDamage, 0)) target.TakeDamage(totalDamage);
-        // }
-
         //user.RecoverShieldCharge();
         Player.ConsumeEffects(ON_ATTACK);
         Player.ConsumeEffects(CHARGED_ATTACK);

@@ -39,7 +39,7 @@ public class Parry : CharacterAction
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
-            targetAttack.prowessBonus = -1.5f;
+            targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
             Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);
         }

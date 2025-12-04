@@ -17,7 +17,7 @@ namespace MyProject
 
         // STATS
 
-        public const float CHARGE_DAMAGE_BUFF = 0.2f; // BUFF TO CHARGED ATTACK
+        public const float CHARGE_DAMAGE_BUFF = 0.2f; // % DAMAGE BUFF TO CHARGED ATTACK
 
         public const float TACKLE_DMG_REDUCTION = 0.8f; // % DMG REDUCED FROM TACKLING
 
@@ -25,7 +25,11 @@ namespace MyProject
 
         public const float COUNTER_PROWESS_LOSS = -1; // PROWESS LOST WHEN BEING COUNTERED
 
-        public const float FORCED_PARRY_CHANCE = 1;
+        public const float FORCED_PARRY_CHANCE = 1; // CHANCE OF SUCCESFUL PARRY FOR PARRY ACTION
+
+        public const float BLOCK_PROWESS_LOSS = -1; // ENEMY PROWESS LOST WITH BLOCK
+
+        public const float PARRY_PROWESS_LOSS = 1.5f; // ENEMY PROWESS LOST WITH PARRY
 
         // METER
 
