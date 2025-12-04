@@ -13,16 +13,21 @@ public class Parry : CharacterAction
     public override void Execute(CharacterManager player, CharacterManager target)
     {
         Player = player;
+        Target = target;
 
-        target.action.OnCompleted -= OnTargetActionCompleted;
-        target.action.OnCompleted += OnTargetActionCompleted;
-
-        if (target.action is Attack auxAttack)
+        if (Target.action != null)
         {
-            targetAttack = auxAttack;
-            targetAttack.OnAttackHits -= OnTargetAttackHit;
-            targetAttack.OnAttackHits += OnTargetAttackHit;
+            Target.action.OnCompleted -= OnTargetActionCompleted;
+            Target.action.OnCompleted += OnTargetActionCompleted;
+
+            if (Target.action is Attack auxAttack)
+            {
+                targetAttack = auxAttack;
+                targetAttack.OnAttackHits -= OnTargetAttackHit;
+                targetAttack.OnAttackHits += OnTargetAttackHit;
+            }
         }
+        else OnTargetActionCompleted();
 
         CompleteAction();
     }
