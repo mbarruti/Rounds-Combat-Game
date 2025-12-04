@@ -175,11 +175,15 @@ public class CombatManager : MonoBehaviour
 
     public void OnWeaponSpecialButton(int index)
     {
-        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
+        if (index < 0 || index >= player.weapon.SpecialActions.Count)
             return;
+        if (player.state != PlayerState.CHOOSE
+            || player.shieldMeter.GetAvailableCharges()
+                <= player.weapon.SpecialActions[index].MeterCost)
+            return;
+
         player.state = PlayerState.WAIT;
-        if (player.weapon.SpecialActions.Count > 0)
-            player.action = player.weapon.SpecialActions[index].CreateAction();
+        player.action = player.weapon.SpecialActions[index].CreateAction();
 
         PerformRound();
     }
