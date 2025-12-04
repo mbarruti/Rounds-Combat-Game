@@ -30,7 +30,11 @@ public class CharacterAction
     protected bool Completed { get; set; } = false;
     public event Action OnCompleted;
 
-    public virtual void Execute(CharacterManager player, CharacterManager target){}
+    public virtual void Execute(CharacterManager player, CharacterManager target)
+    {
+        Player = player;
+        Target = target;
+    }
 
     protected virtual void OnComplete(){}
 

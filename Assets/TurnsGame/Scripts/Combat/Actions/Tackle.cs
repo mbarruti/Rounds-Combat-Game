@@ -13,7 +13,7 @@ public class Tackle : CharacterAction
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {
-        Player = player;
+        base.Execute(player, target);
 
         CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Player.username} tackles"));
 

@@ -10,7 +10,7 @@ public class Block : CharacterAction
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {
-        Player = player;
+        base.Execute(player, target);
 
         if (target.action is Attack auxAttack)
         {

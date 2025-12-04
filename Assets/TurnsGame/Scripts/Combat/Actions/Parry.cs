@@ -12,8 +12,7 @@ public class Parry : CharacterAction
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {
-        Player = player;
-        Target = target;
+        base.Execute(player, target);
 
         if (Target.action != null)
         {

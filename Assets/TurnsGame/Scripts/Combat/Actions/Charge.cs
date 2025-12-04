@@ -8,7 +8,7 @@ public class Charge : CharacterAction
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {
-        Player = player;
+        base.Execute(player, target);
 
         // TODO: think of a way to get the same logic as the if without having to check LastAction
         if (Player.lastAction is not (Charge or Tackle))

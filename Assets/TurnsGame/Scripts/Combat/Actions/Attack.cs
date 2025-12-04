@@ -16,7 +16,7 @@ public class Attack : CharacterAction
 
     public override void Execute(CharacterManager player, CharacterManager target)
     {
-        Player = player;
+        base.Execute(player, target);
         Player.ApplyEffects(ON_ATTACK);
 
         CombatUI.AddAnimation(
