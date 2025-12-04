@@ -33,13 +33,17 @@ public class Block : CharacterAction
         {
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
+            targetAttack.prowessBonus = -1.5f;
 
             Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);
         }
-        else CombatUI.AddAnimation(
+        else
+        {
+            CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
-        targetAttack.prowessBonus = -1;
+            targetAttack.prowessBonus = -1;
+        }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }
 
