@@ -263,11 +263,11 @@ PrefabInstance:
     - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
       propertyPath: shield
       value: 
-      objectReference: {fileID: 11400000, guid: 84c685ff829c55f47a317540531f8bb1, type: 2}
+      objectReference: {fileID: 11400000, guid: c710cbb5f50e6c1478a86e0bf347c38d, type: 2}
     - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 11400000, guid: b4d6c8fba460e2b4b9e8e046c3e3577d, type: 2}
+      objectReference: {fileID: 11400000, guid: cd4568f0d3930bf4c807fe3b36880b29, type: 2}
     - target: {fileID: 1020259297200649491, guid: caca17da693e2024c8afa6ae6e400bc5, type: 3}
       propertyPath: blockSO
       value: 

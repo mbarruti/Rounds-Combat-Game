@@ -98,6 +98,20 @@ public class CharacterManager : MonoBehaviour
             gameObject.GetComponent<Renderer>().material = combatManager.playerMaterial;
             healthText = CombatUI.Instance.playerHPText;
             shieldMeterUI = CombatUI.Instance.playerShieldMeter;
+
+            TextMeshProUGUI weaponSpecialText =
+                CombatUI.Instance.weaponSpecialButton.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI weaponSpecialTwoText =
+                CombatUI.Instance.weaponSpecialButton2.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI shieldSpecialText =
+                CombatUI.Instance.shieldSpecialButton.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (0 < weapon.SpecialActions.Count)
+                weaponSpecialText.text = weapon.SpecialActions[0].Name;
+            if (1 <= weapon.SpecialActions.Count)
+                weaponSpecialTwoText.text = weapon.SpecialActions[1].Name;
+            if (0 < shield.SpecialActions.Count)
+                shieldSpecialText.text = shield.SpecialActions[0].Name;
         }
         else
         {

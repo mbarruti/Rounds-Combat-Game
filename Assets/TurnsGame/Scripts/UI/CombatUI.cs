@@ -22,9 +22,9 @@ public class CombatUI : MonoBehaviour
     [SerializeField] GameObject attackButton;
     [SerializeField] GameObject blockButton;
     [SerializeField] GameObject nothingButton;
-    [SerializeField] GameObject weaponSpecialButton;
-    [SerializeField] GameObject weaponSpecialButton2;
-    [SerializeField] GameObject shieldSpecialButton;
+    [SerializeField] public GameObject weaponSpecialButton;
+    [SerializeField] public GameObject weaponSpecialButton2;
+    [SerializeField] public GameObject shieldSpecialButton;
 
     [SerializeField] GameObject chargeButton;
     [SerializeField] GameObject tackleButton;
