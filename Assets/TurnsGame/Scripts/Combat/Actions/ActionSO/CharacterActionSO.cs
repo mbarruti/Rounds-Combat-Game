@@ -1,6 +1,7 @@
 using System;
 using MyProject;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static MyProject.Constants;
 
 public enum ActionType
@@ -21,5 +22,12 @@ public abstract class CharacterActionSO : ScriptableObject
     [field: SerializeField] public bool CanRecoverMeter { get; private set; } = false;
 
     public abstract CharacterAction CreateAction();
-    public virtual bool CanCreateAction(CharacterManager player) => true;
+
+    protected virtual bool OnCanCreate(CharacterManager player) => true;
+    public bool CanCreateAction(CharacterManager player)
+    {
+        if (player.shieldMeter.GetAvailableCharges() <= MeterCost) return false;
+        if (!OnCanCreate(player)) return false;
+        return true;
+    }
 }

@@ -175,13 +175,10 @@ public class CombatManager : MonoBehaviour
 
     public void OnWeaponSpecialButton(int index)
     {
+        if (index < 0 || index >= player.weapon.SpecialActions.Count
+            || player.state != PlayerState.CHOOSE)
+            return;
         if (!player.weapon.SpecialActions[index].CanCreateAction(player))
-            return;
-        if (index < 0 || index >= player.weapon.SpecialActions.Count)
-            return;
-        if (player.state != PlayerState.CHOOSE
-            || player.shieldMeter.GetAvailableCharges()
-                <= player.weapon.SpecialActions[index].MeterCost)
             return;
 
         player.state = PlayerState.WAIT;
@@ -192,13 +189,10 @@ public class CombatManager : MonoBehaviour
 
     public void OnShieldSpecialButton(int index)
     {
-        if (!player.shield.SpecialActions[index].CanCreateAction(player))
+        if (index < 0 || index >= player.weapon.SpecialActions.Count
+            || player.state != PlayerState.CHOOSE)
             return;
-        if (index < 0 || index >= player.shield.SpecialActions.Count)
-            return;
-        if (player.state != PlayerState.CHOOSE
-            || player.shieldMeter.GetAvailableCharges()
-                <= player.shield.SpecialActions[index].MeterCost)
+        if (!player.weapon.SpecialActions[index].CanCreateAction(player))
             return;
 
         player.state = PlayerState.WAIT;
