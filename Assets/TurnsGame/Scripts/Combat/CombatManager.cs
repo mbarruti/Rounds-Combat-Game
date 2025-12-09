@@ -189,10 +189,10 @@ public class CombatManager : MonoBehaviour
 
     public void OnShieldSpecialButton(int index)
     {
-        if (index < 0 || index >= player.weapon.SpecialActions.Count
+        if (index < 0 || index >= player.shield.SpecialActions.Count
             || player.state != PlayerState.CHOOSE)
             return;
-        if (!player.weapon.SpecialActions[index].CanCreateAction(player))
+        if (!player.shield.SpecialActions[index].CanCreateAction(player))
             return;
 
         player.state = PlayerState.WAIT;
