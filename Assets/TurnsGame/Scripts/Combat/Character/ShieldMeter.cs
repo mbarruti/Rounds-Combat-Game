@@ -82,6 +82,7 @@ public class ShieldMeter
 
     public List<float> GetChargesCopy() => new List<float>(new Stack<float>(charges));
 
-    bool IsHalf(float value) => Mathf.Abs(value - HALF_CHARGE) < 0.0000000000000001f;
+    bool IsHalf(float value) => Mathf.Approximately(value, 0.5f);
+    //Mathf.Abs(value - HALF_CHARGE) < 0.0000000000000001f;
 
 }

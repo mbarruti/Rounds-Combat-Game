@@ -26,11 +26,11 @@ public class DamageBuffEffect : IEffect
             CombatUI.AddAnimation(CombatUI.Instance.WriteText
                 ($"{user.username} increases damage by {Value*100}%"));
         }
+        if (Uses < MaxUses) Uses++;
     }
 
     public void Consume(CharacterManager user, CharacterManager target)
     {
-        Uses++;
         if (Uses == MaxUses)
         {
             user.activeBuffs.BonusDamage -= Value;

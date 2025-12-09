@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,10 +10,10 @@ public enum PlayerState { CHOOSE, WAIT }
 public class CharacterManager : MonoBehaviour
 {
     [SerializeField] User user;
-    [SerializeField] WeaponSO weapon;
-    [SerializeField] ShieldSO shield;
-
     public string username => user.Name;
+
+    public WeaponSO weapon;
+    public ShieldSO shield;
 
     // HP data
     public float maxHP;
@@ -44,7 +45,11 @@ public class CharacterManager : MonoBehaviour
     // Effects
     public Dictionary<EffectTrigger, List<IEffect>> effects;
 
+    public AttackSO attackSO;
+    public BlockSO blockSO;
     public CharacterAction action;
+    public CharacterAction lastAction;
+    public CharacterAction nextAction;
     public CharacterActionController actionController = new();
 
     public PlayerState state;
@@ -53,7 +58,7 @@ public class CharacterManager : MonoBehaviour
 
     void Awake()
     {
-        action = new(this, null);
+        //action = new();
         activeBuffs = new(this);
         effects = new();
         shieldMeter = new();
@@ -93,6 +98,20 @@ public class CharacterManager : MonoBehaviour
             gameObject.GetComponent<Renderer>().material = combatManager.playerMaterial;
             healthText = CombatUI.Instance.playerHPText;
             shieldMeterUI = CombatUI.Instance.playerShieldMeter;
+
+            TextMeshProUGUI weaponSpecialText =
+                CombatUI.Instance.weaponSpecialButton.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI weaponSpecialTwoText =
+                CombatUI.Instance.weaponSpecialButton2.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI shieldSpecialText =
+                CombatUI.Instance.shieldSpecialButton.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (0 < weapon.SpecialActions.Count)
+                weaponSpecialText.text = weapon.SpecialActions[0].Name;
+            if (1 <= weapon.SpecialActions.Count)
+                weaponSpecialTwoText.text = weapon.SpecialActions[1].Name;
+            if (0 < shield.SpecialActions.Count)
+                shieldSpecialText.text = shield.SpecialActions[0].Name;
         }
         else
         {
@@ -108,7 +127,7 @@ public class CharacterManager : MonoBehaviour
     public void Reset()
     {
         // CharacterAction newAction = new(this, action);
-        // action = newAction;
+        lastAction = action;
         numHits = maxNumHits;
         state = PlayerState.CHOOSE;
 
@@ -117,8 +136,8 @@ public class CharacterManager : MonoBehaviour
 
     public void PerformAction(CharacterManager target)
     {
-        action?.Execute(target);
-        if (action is not (Block or Tackle)) shieldMeter.RecoverCharges();
+        action?.Execute(this, target);
+        if (action == null || action.CanRecoverMeter) shieldMeter.RecoverCharges();
         if (action == null)
         {
             ApplyEffects(NOTHING);
@@ -129,14 +148,14 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (action is Block) return;
-
+        float previousHP = currentHP;
         damage -= damage * activeBuffs.DmgReduction;
 
         if (currentHP - damage < 0) currentHP = 0;
         else currentHP -= damage;
 
-        CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
+        if (currentHP != previousHP)
+            CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
     }
 
     public void TakeMeterDamage(float meterDamage)
@@ -156,7 +175,7 @@ public class CharacterManager : MonoBehaviour
         for (int hitsLeft = totalNumHits; hitsLeft > 0; hitsLeft--)
         {
             float totalCounterChance = counterChance + activeBuffs.CounterChance;
-            float randomValue = Random.Range(0f, 1f);
+            float randomValue = UnityEngine.Random.Range(0f, 1f);
             if (totalCounterChance >= randomValue) return true;
         }
         return false;
@@ -209,7 +228,7 @@ public class CharacterManager : MonoBehaviour
 
     public bool IsDead()
     {
-        if (currentHP <= 0) return true;
+        if (Mathf.Approximately(currentHP, 0) || currentHP < 0) return true;
         return false;
     }
 }

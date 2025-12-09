@@ -124,14 +124,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d49437b0547c1f64c998030e9feed3b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterManager
+  user:
+    Name: 
+  weapon: {fileID: 0}
+  shield: {fileID: 0}
   maxHP: 100
   currentHP: 100
   healthText: {fileID: 0}
   shieldMeter:
     maxCharges: 0
   shieldMeterUI: {fileID: 0}
-  weapon: {fileID: 0}
+  isDual: 0
   baseDamage: 0
   meterDamage: 0
   accuracy: 0
   prowess: 0
+  counterChance: 0
+  maxNumHits: 0
+  numHits: 0
+  parryChance: 0
+  attackSO: {fileID: 11400000, guid: f95aeea4328545f4f8d00a1eeac44a35, type: 2}
+  blockSO: {fileID: 11400000, guid: c902dbb0431c57341823e753d5e4fc69, type: 2}
+  state: 0

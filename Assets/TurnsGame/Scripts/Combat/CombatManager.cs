@@ -41,7 +41,7 @@ public class CombatManager : MonoBehaviour
 
     void Update()
     {
-       Debug.Log(player.activeBuffs.BonusDamage);
+       //Debug.Log(player.activeBuffs.BonusDamage);
     }
 
     void SetupMatch()
@@ -111,7 +111,6 @@ public class CombatManager : MonoBehaviour
         enemy.actionController.SetAvailableActions(enemy.action);
 
         CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons(player.actionController));
-
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
     }
 
@@ -131,16 +130,16 @@ public class CombatManager : MonoBehaviour
     {
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
-        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0 &&
-            player.state != PlayerState.WAIT) enemy.action = new Attack(enemy, enemy.action);
-        else enemy.action = new Attack(enemy, enemy.action);
+        if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0)
+            enemy.action = enemy.attackSO.CreateAction(); // BLOCK
+        else enemy.action = enemy.attackSO.CreateAction(); // ATTACK
     }
 
     public void OnAttackButton()
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = new Attack(player, player.action);
+        player.action = player.attackSO.CreateAction();
 
         PerformRound();
     }
@@ -149,7 +148,7 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = new Charge(player, player.action);
+        //player.action = new Charge(player, player.action);
 
         PerformRound();
     }
@@ -159,7 +158,7 @@ public class CombatManager : MonoBehaviour
         if (player.state != PlayerState.CHOOSE ||
             player.shieldMeter.GetAvailableCharges() == 0) return;
         player.state = PlayerState.WAIT;
-        player.action = new Tackle(player, player.action);
+        //player.action = new Tackle(player, player.action);
 
         PerformRound();
     }
@@ -169,7 +168,45 @@ public class CombatManager : MonoBehaviour
         if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
             return;
         player.state = PlayerState.WAIT;
-        player.action = new Block(player, player.action);
+        player.action = player.blockSO.CreateAction();
+
+        PerformRound();
+    }
+
+    public void OnWeaponSpecialButton(int index)
+    {
+        if (index < 0 || index >= player.weapon.SpecialActions.Count
+            || player.state != PlayerState.CHOOSE)
+            return;
+        if (!player.weapon.SpecialActions[index].CanCreateAction(player))
+            return;
+
+        player.state = PlayerState.WAIT;
+        player.action = player.weapon.SpecialActions[index].CreateAction();
+
+        PerformRound();
+    }
+
+    public void OnShieldSpecialButton(int index)
+    {
+        if (index < 0 || index >= player.shield.SpecialActions.Count
+            || player.state != PlayerState.CHOOSE)
+            return;
+        if (!player.shield.SpecialActions[index].CanCreateAction(player))
+            return;
+
+        player.state = PlayerState.WAIT;
+        player.action = player.shield.SpecialActions[index].CreateAction();
+
+        PerformRound();
+    }
+
+    public void OnParryButton()
+    {
+        if (player.state != PlayerState.CHOOSE ||
+            player.shieldMeter.GetAvailableCharges() < PARRY_METER_COST) return;
+        player.state = PlayerState.WAIT;
+        //player.action = new Parry(player, player.action);
 
         PerformRound();
     }
@@ -193,38 +230,20 @@ public class CombatManager : MonoBehaviour
         state = CombatState.ACTION;
         CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
 
-        switch ((player.action, enemy.action))
+        switch (player.action, enemy.action)
         {
-            case (Attack playerAttack, Attack enemyAttack):
-                Clash(playerAttack, enemyAttack);
+            case (Attack playerOneAttack, Attack playerTwoAttack):
+                Clash(playerOneAttack, playerTwoAttack);
                 break;
 
-            case (Attack, Block):
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
-                break;
+            case (_, _):
+                int playerLead = (int)(player.action?.Lead ?? NONE);
+                int enemyLead  = (int)(enemy.action?.Lead  ?? NONE);
+                (var leadActor, var secondActor) =
+                    playerLead <= enemyLead ? (player, enemy) : (enemy, player);
 
-            case (Block, Block):
-                CombatUI.AddAnimation(
-                    CombatUI.Instance.WriteText("Both players block what the fuck"));
-                break;
-
-            case (Block, Attack):
-                enemy.PerformAction(player);
-                player.PerformAction(enemy);
-                break;
-
-            case (Tackle or Charge, _):
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
-                break;
-            case (_, Tackle or Charge):
-                enemy.PerformAction(player);
-                player.PerformAction(enemy);
-                break;
-            case (_ , _):
-                player.PerformAction(enemy);
-                enemy.PerformAction(player);
+                leadActor.PerformAction(secondActor);
+                secondActor.PerformAction(leadActor);
                 break;
         }
         RoundEnd();
@@ -282,20 +301,6 @@ public class CombatManager : MonoBehaviour
             enemy.PerformAction(player);
         }
     }
-
-    // (bool, int) IsCounter(float counterChance, int numHits)
-    // {
-    //     for (int hitsLeft = numHits; hitsLeft > 0; hitsLeft--)
-    //     {
-    //         float randomValue = Random.Range(0f, 1f);
-    //         if (counterChance >= randomValue)
-    //         {
-    //             //return (true, hitsLeft);
-    //             return (true, numHits);
-    //         }
-    //     }
-    //     return (false, numHits);
-    // }
 
     void RoundEnd()
     {

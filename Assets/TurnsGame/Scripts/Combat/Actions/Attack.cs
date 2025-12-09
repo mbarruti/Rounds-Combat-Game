@@ -2,44 +2,54 @@ using UnityEngine;
 using System;
 using MyProject;
 using static MyProject.Constants;
+using UnityEngine.TextCore.Text;
 
 public class Attack : CharacterAction
 {
-    public Attack(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
+    public Attack(AttackSO charActionSO) : base(charActionSO){}
 
     float totalBaseDamage = 0;
-    float totalDamage = 0;
     public float prowessBonus = 0;
+    float totalDamage = 0;
 
-    public event Action OnAttackHits;
+    // TODO: make this logic better with the same result
+    public int meterDamageValue = 1; // 1 full damage, 0 no damage
 
-    public override void Execute(CharacterManager target)
+    public event Action<CharacterManager> OnAttackHits;
+
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
-        Player.ApplyEffects(ATTACK);
+        base.Execute(player, target);
+        Player.ApplyEffects(ON_ATTACK);
+
+        CombatUI.AddAnimation(
+            CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
+
+        // TODO: think of a way to Invoke event one time inside the for
+        // taking AttackHits into account once for Parry
+        OnAttackHits?.Invoke(Player);
 
         totalBaseDamage = BonusBaseDamage();
         totalDamage = (totalBaseDamage + BonusDamage()) * ProwessValue(Player.prowess);
 
-        if (totalDamage > 0 && target.action is not Block)
+        int successfulHits = 0;
+        for (int hitNumber = 0; hitNumber < Player.numHits; hitNumber++)
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
-
-            for (int hitNumber = 0; hitNumber < Player.numHits; hitNumber++)
+            if (AttackHits(Player.accuracy))
             {
-                if (AttackHits(Player.accuracy))
-                {
-                    OnAttackHits?.Invoke();
-                    target.TakeDamage(totalDamage);
-                }
-                else
-                {
-                    CombatUI.AddAnimation(CombatUI.Instance.WriteText(Player.username + " misses"));
-                }
+                successfulHits += 1;
+                if (!Mathf.Approximately(totalDamage, 0)) target.TakeDamage(totalDamage);
+            }
+            else
+            {
+                CombatUI.AddAnimation(CombatUI.Instance.WriteText(Player.username + " misses"));
             }
         }
+        if (successfulHits > 0 && target.action is Block)
+            target.TakeMeterDamage(Player.meterDamage * meterDamageValue);
+
         //user.RecoverShieldCharge();
-        Player.ConsumeEffects(ATTACK);
+        Player.ConsumeEffects(ON_ATTACK);
         Player.ConsumeEffects(CHARGED_ATTACK);
         CompleteAction();
     }
@@ -58,8 +68,12 @@ public class Attack : CharacterAction
 
     float ProwessValue(float prowess)
     {
+        // prowess += prowessBonus;
+        // if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
+        // else if (prowess > 1) prowess = 1;
+
         prowess += Player.activeBuffs.Prowess + prowessBonus;
-        if (prowess < 0) prowess = 0;
+        if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
         else if (prowess > 1) prowess = 1;
         return prowess;
     }

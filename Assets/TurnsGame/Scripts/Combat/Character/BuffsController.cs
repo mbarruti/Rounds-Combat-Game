@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
-using static MyProject.Constants;
 
+[Serializable]
 public class BuffsController
 {
     CharacterManager User { get; set; }
@@ -16,7 +15,7 @@ public class BuffsController
     public float BaseDamage { get; set; } = 0;
     public float MeterDamage { get; set; } = 0;
     public float Accuracy { get; set; } = 0;
-    public float Prowess { get; set; } = 0;
+    public float Prowess { get; set; } = 0.5f;
     public float CounterChance { get; set; } = 0;
     public int NumHits { get; set; } = 0;
     public float BonusDamage { get; set; } = 0;

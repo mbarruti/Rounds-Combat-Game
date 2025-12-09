@@ -1,18 +1,20 @@
 using System;
 using System.Collections;
-using UnityEngine;
+using MyProject;
 using static MyProject.Constants;
 
 public class Tackle : CharacterAction
 {
-    public Tackle(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
+    public Tackle(TackleSO charActionSO) : base(charActionSO){}
 
     Attack targetAttack;
 
     bool tackleSuccess = false;
 
-    public override void Execute(CharacterManager target)
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
+        base.Execute(player, target);
+
         CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Player.username} tackles"));
 
         target.action.OnCompleted -= OnTargetActionCompleted;
@@ -29,7 +31,7 @@ public class Tackle : CharacterAction
         }
     }
 
-    void OnTargetAttackHit()
+    void OnTargetAttackHit(CharacterManager target)
     {
         tackleSuccess = true;
         DmgReductionEffect reduction = new(TACKLE_DMG_REDUCTION, SINGLE_USE, TACKLE);
@@ -43,13 +45,15 @@ public class Tackle : CharacterAction
     {
         if (tackleSuccess)
         {
+            Player.shieldMeter.RecoverCharges();
             DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
             Player.AddEffect(damageBuff);
             damageBuff.Apply(Player, null);
-            Player.shieldMeter.RecoverCharges();
         }
         else
         {
+            CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt"));
             Player.action = null;
             Player.ConsumeEffects(CHARGED_ATTACK);
         }

@@ -1,13 +1,17 @@
 using NUnit.Framework;
-using UnityEngine;
+using MyProject;
 using static MyProject.Constants;
 
 public class Charge : CharacterAction
 {
-    public Charge(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
-    public override void Execute(CharacterManager target)
+    public Charge(ChargeSO charActionSO) : base(charActionSO){}
+
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
-        if (LastAction is not (Charge or Tackle))
+        base.Execute(player, target);
+
+        // TODO: think of a way to get the same logic as the if without having to check LastAction
+        if (Player.lastAction is not (Charge or Tackle))
         {
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));

@@ -21,11 +21,11 @@ public class DmgReductionEffect : IEffect
                 $"{user.username} reduces damage taken by {Value*100}%"));
             user.activeBuffs.DmgReduction += Value;
         }
+        if (Uses < MaxUses) Uses++;
     }
 
     public void Consume(CharacterManager user, CharacterManager target)
     {
-        Uses++;
         if (Uses == MaxUses)
         {
             user.activeBuffs.DmgReduction -= Value;

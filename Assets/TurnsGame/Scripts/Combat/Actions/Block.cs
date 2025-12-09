@@ -1,33 +1,51 @@
 using UnityEngine;
+using MyProject;
 using static MyProject.Constants;
 
 public class Block : CharacterAction
 {
-    public Block(CharacterManager user, CharacterAction lastAction) : base(user, lastAction) {}
+    public Block(BlockSO charActionSO) : base(charActionSO){}
 
-    public override void Execute(CharacterManager target)
+    Attack targetAttack;
+
+    public override void Execute(CharacterManager player, CharacterManager target)
     {
-        if (target.action is Attack)
-        {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
+        base.Execute(player, target);
 
-            if (IsParry(Player.parryChance))
-            {
-                CombatUI.AddAnimation(
-                    CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
-                NextAction = new Attack(Player, this);
-                NextAction.Execute(target);
-            }
-            else Player.TakeMeterDamage(target.meterDamage);
+        if (target.action is Attack auxAttack)
+        {
+            targetAttack = auxAttack;
+            targetAttack.OnAttackHits -= OnTargetAttackHit;
+            targetAttack.OnAttackHits += OnTargetAttackHit;
         }
         else
         {
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
         }
-        Player.ConsumeEffects(BLOCK);
+        Player.ConsumeEffects(ON_BLOCK);
         CompleteAction();
+    }
+
+    void OnTargetAttackHit(CharacterManager target)
+    {
+        if (IsParry(Player.parryChance))
+        {
+            CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
+            targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
+            targetAttack.meterDamageValue = 0;
+
+            Player.nextAction = Player.attackSO.CreateAction();
+            Player.nextAction.Execute(Player, target);
+        }
+        else
+        {
+            CombatUI.AddAnimation(
+                CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
+            targetAttack.prowessBonus = BLOCK_PROWESS_LOSS;
+        }
+        // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }
 
     bool IsParry(float parryChance)
