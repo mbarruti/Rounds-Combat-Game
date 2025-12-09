@@ -131,8 +131,8 @@ public class CombatManager : MonoBehaviour
         int randomChoice = Random.Range(0, 2);
         if (enemy.state == PlayerState.WAIT) return;
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0)
-            enemy.action = enemy.blockSO.CreateAction(); // BLOCK
-        else enemy.action = enemy.blockSO.CreateAction(); // ATTACK
+            enemy.action = enemy.attackSO.CreateAction(); // BLOCK
+        else enemy.action = enemy.attackSO.CreateAction(); // ATTACK
     }
 
     public void OnAttackButton()
@@ -175,6 +175,8 @@ public class CombatManager : MonoBehaviour
 
     public void OnWeaponSpecialButton(int index)
     {
+        if (!player.weapon.SpecialActions[index].CanCreateAction(player))
+            return;
         if (index < 0 || index >= player.weapon.SpecialActions.Count)
             return;
         if (player.state != PlayerState.CHOOSE
@@ -190,11 +192,17 @@ public class CombatManager : MonoBehaviour
 
     public void OnShieldSpecialButton(int index)
     {
-        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
+        if (!player.shield.SpecialActions[index].CanCreateAction(player))
             return;
+        if (index < 0 || index >= player.shield.SpecialActions.Count)
+            return;
+        if (player.state != PlayerState.CHOOSE
+            || player.shieldMeter.GetAvailableCharges()
+                <= player.shield.SpecialActions[index].MeterCost)
+            return;
+
         player.state = PlayerState.WAIT;
-        if (player.shield.SpecialActions.Count > 0)
-            player.action = player.shield.SpecialActions[index].CreateAction();
+        player.action = player.shield.SpecialActions[index].CreateAction();
 
         PerformRound();
     }

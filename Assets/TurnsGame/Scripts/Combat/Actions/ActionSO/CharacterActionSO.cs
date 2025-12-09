@@ -21,4 +21,5 @@ public abstract class CharacterActionSO : ScriptableObject
     [field: SerializeField] public bool CanRecoverMeter { get; private set; } = false;
 
     public abstract CharacterAction CreateAction();
+    public virtual bool CanCreateAction(CharacterManager player) => true;
 }
