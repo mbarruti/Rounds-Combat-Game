@@ -7,4 +7,10 @@ public class TackleSO : CharacterActionSO
     {
         return new Tackle(this);
     }
+
+    public override bool CanCreateAction(CharacterManager player)
+    {
+        if (player.lastAction is not (Charge or Tackle)) return false;
+        return true;
+    }
 }
