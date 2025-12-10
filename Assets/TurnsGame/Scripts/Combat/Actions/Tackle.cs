@@ -11,9 +11,9 @@ public class Tackle : CharacterAction
 
     bool tackleSuccess = false;
 
-    public override void Execute(CharacterManager player, CharacterManager target)
+    public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        base.Execute(player, target);
+        base.OnExecute(player, target);
 
         CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Player.username} tackles"));
 
@@ -55,7 +55,8 @@ public class Tackle : CharacterAction
         {
             CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt"));
-            Player.action = null;
+            Player.action = new(null);
+            Player.stance = Player.chosenStance.Clone();
             Player.ConsumeEffects(CHARGED_ATTACK);
         }
         Player.ConsumeEffects(TACKLE);

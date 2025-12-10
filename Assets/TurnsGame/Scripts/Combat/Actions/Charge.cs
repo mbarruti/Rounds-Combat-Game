@@ -6,17 +6,15 @@ public class Charge : CharacterAction
 {
     public Charge(ChargeSO charActionSO) : base(charActionSO){}
 
-    public override void Execute(CharacterManager player, CharacterManager target)
+    public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        base.Execute(player, target);
+        base.OnExecute(player, target);
 
         // TODO: think of a way to get the same logic as the if without having to check LastAction
-        if (Player.lastAction is not (Charge or Tackle))
+        if (/* Player.lastAction is not (Charge or Tackle) */Player.stance is not ChargeStance)
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));
-            ChargeBuffEffect chargeBuff = new();
-            Player.AddEffect(chargeBuff);
+            Player.stance = new ChargeStance(Player);
+            Player.stance.EnterStance();
             //chargeBuff.Apply(Player, target);
         }
         else

@@ -17,9 +17,9 @@ public class Attack : CharacterAction
 
     public event Action<CharacterManager> OnAttackHits;
 
-    public override void Execute(CharacterManager player, CharacterManager target)
+    public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        base.Execute(player, target);
+        base.OnExecute(player, target);
         Player.ApplyEffects(ON_ATTACK);
 
         CombatUI.AddAnimation(
@@ -50,7 +50,7 @@ public class Attack : CharacterAction
 
         //user.RecoverShieldCharge();
         Player.ConsumeEffects(ON_ATTACK);
-        Player.ConsumeEffects(CHARGED_ATTACK);
+        //Player.ConsumeEffects(CHARGED_ATTACK);
         CompleteAction();
     }
 

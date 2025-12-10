@@ -10,7 +10,8 @@ public class TackleSO : CharacterActionSO
 
     protected override bool OnCanCreate(CharacterManager player)
     {
-        if (player.lastAction is not (Charge or Tackle)) return false;
+        if (player.stance is not ChargeStance && player.lastAction is not (Charge or Tackle))
+            return false;
         return true;
     }
 }

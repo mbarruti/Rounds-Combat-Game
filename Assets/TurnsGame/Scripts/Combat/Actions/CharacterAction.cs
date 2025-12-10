@@ -13,16 +13,19 @@ public class CharacterAction
     public ActionType Type { get; protected set; } = ActionType.NoType;
     public ActionPriority Lead { get; protected set; } = NONE;
     public float MeterCost { get; protected set; } = 0;
-    public bool CanRecoverMeter { get; protected set; } = false;
+    public bool CanRecoverMeter { get; protected set; } = true;
 
     public CharacterAction(CharacterActionSO charActionSO)
     {
-        DataSO = charActionSO;
-        Name = DataSO.Name;
-        Type = DataSO.Type;
-        Lead = DataSO.Lead;
-        MeterCost = DataSO.MeterCost;
-        CanRecoverMeter = DataSO.CanRecoverMeter;
+        if (charActionSO != null)
+        {
+            DataSO = charActionSO;
+            Name = DataSO.Name;
+            Type = DataSO.Type;
+            Lead = DataSO.Lead;
+            MeterCost = DataSO.MeterCost;
+            CanRecoverMeter = DataSO.CanRecoverMeter;
+        }
     }
     protected CharacterManager Player { get; set; }
     protected CharacterManager Target { get; set; }
@@ -34,12 +37,17 @@ public class CharacterAction
     {
         Player = player;
         Target = target;
+        OnExecute(Player, Target);
+        //CompleteAction();
     }
+
+    public virtual void OnExecute(CharacterManager player, CharacterManager target){}
 
     protected virtual void OnComplete(){}
 
     protected void CompleteAction()
     {
+        //if (Completed == true) return;
         OnComplete();
         Completed = true;
         OnCompleted?.Invoke();

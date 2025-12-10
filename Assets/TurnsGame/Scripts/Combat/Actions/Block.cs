@@ -8,9 +8,9 @@ public class Block : CharacterAction
 
     Attack targetAttack;
 
-    public override void Execute(CharacterManager player, CharacterManager target)
+    public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        base.Execute(player, target);
+        base.OnExecute(player, target);
 
         if (target.action is Attack auxAttack)
         {
@@ -37,7 +37,7 @@ public class Block : CharacterAction
             targetAttack.meterDamageValue = 0;
 
             Player.nextAction = Player.attackSO.CreateAction();
-            Player.nextAction.Execute(Player, target);
+            Player.nextAction.OnExecute(Player, target);
         }
         else
         {

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SheatheSO
   <Name>k__BackingField: Sheathe
   <Type>k__BackingField: 2
-  <Lead>k__BackingField: 2147483647
+  <Lead>k__BackingField: 1
   <MeterCost>k__BackingField: 0
   <CanRecoverMeter>k__BackingField: 1

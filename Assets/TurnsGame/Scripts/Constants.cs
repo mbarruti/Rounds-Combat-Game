@@ -7,7 +7,14 @@ namespace MyProject
         High = 1,
         Medium = 2,
         Low = 3,
-        NullPriority = int.MaxValue,
+        NullPriority = int.MinValue,
+    }
+
+    public enum PlayerStance
+    {
+        Default,
+        Sheathed,
+        Charging,
     }
 
     public static class Constants
@@ -73,6 +80,8 @@ namespace MyProject
 
         public const ActionType SHIELD_SPECIAL = ActionType.ShieldSpecial;
 
+        public const ActionType NO_TYPE = ActionType.NoType;
+
         // ACTION PRIORITY
 
         public const ActionPriority HIGH = ActionPriority.High;
@@ -82,6 +91,14 @@ namespace MyProject
         public const ActionPriority LOW = ActionPriority.Low;
 
         public const ActionPriority NONE = ActionPriority.NullPriority;
+
+        // PLAYER STANCE
+
+        public const PlayerStance DEFAULT = PlayerStance.Default;
+
+        public const PlayerStance SHEATHED = PlayerStance.Sheathed;
+
+        public const PlayerStance CHARGING = PlayerStance.Charging;
 
         // public const BuffType BASE_DAMAGE = BuffType.BaseDamage;
         // public const BuffType METER_DAMAGE = BuffType.MeterDamage;

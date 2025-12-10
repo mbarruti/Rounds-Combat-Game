@@ -10,9 +10,9 @@ public class Parry : CharacterAction
 
     Attack targetAttack;
 
-    public override void Execute(CharacterManager player, CharacterManager target)
+    public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        base.Execute(player, target);
+        base.OnExecute(player, target);
 
         if (Target.action != null)
         {
@@ -41,7 +41,7 @@ public class Parry : CharacterAction
 
             targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
             Player.nextAction = Player.attackSO.CreateAction();
-            Player.nextAction.Execute(Player, target);
+            Player.nextAction.OnExecute(Player, target);
         }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }

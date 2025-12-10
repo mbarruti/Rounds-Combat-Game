@@ -215,7 +215,7 @@ public class CombatManager : MonoBehaviour
     {
         if (player.state != PlayerState.CHOOSE) return;
         player.state = PlayerState.WAIT;
-        player.action = null;
+        player.action = new(null);
         if (player.effects.TryGetValue(CHARGED_ATTACK, out var list))
         {
             player.ConsumeEffects(CHARGED_ATTACK);

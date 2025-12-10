@@ -39,18 +39,25 @@ public class CharacterManager : MonoBehaviour
     // Shield data
     public float parryChance;
 
+    // Stance
+    public Stance chosenStance;
+    public Stance stance;
+
     // Buff data
     public BuffsController activeBuffs;
 
     // Effects
     public Dictionary<EffectTrigger, List<IEffect>> effects;
 
+    // Combat actions
     public AttackSO attackSO;
     public BlockSO blockSO;
     public CharacterAction action;
     public CharacterAction lastAction;
     public CharacterAction nextAction;
     public CharacterActionController actionController = new();
+
+    public event Action OnPerformAction;
 
     public PlayerState state;
 
@@ -59,6 +66,8 @@ public class CharacterManager : MonoBehaviour
     void Awake()
     {
         //action = new();
+        chosenStance = new DefaultStance(this);
+        stance = chosenStance.Clone();
         activeBuffs = new(this);
         effects = new();
         shieldMeter = new();
@@ -108,7 +117,7 @@ public class CharacterManager : MonoBehaviour
 
             if (0 < weapon.SpecialActions.Count)
                 weaponSpecialText.text = weapon.SpecialActions[0].Name;
-            if (1 <= weapon.SpecialActions.Count)
+            if (1 < weapon.SpecialActions.Count)
                 weaponSpecialTwoText.text = weapon.SpecialActions[1].Name;
             if (0 < shield.SpecialActions.Count)
                 shieldSpecialText.text = shield.SpecialActions[0].Name;
@@ -136,9 +145,10 @@ public class CharacterManager : MonoBehaviour
 
     public void PerformAction(CharacterManager target)
     {
+        OnPerformAction?.Invoke();
         action?.Execute(this, target);
-        if (action == null || action.CanRecoverMeter) shieldMeter.RecoverCharges();
-        if (action == null)
+        if (action.Type == NO_TYPE || action.CanRecoverMeter) shieldMeter.RecoverCharges();
+        if (action.Type == NO_TYPE)
         {
             ApplyEffects(NOTHING);
             return;
