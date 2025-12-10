@@ -17,6 +17,7 @@ public class Tackle : CharacterAction
 
         CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Player.username} tackles"));
 
+        // TODO: Check if this works when enemy does nothing
         target.action.OnCompleted -= OnTargetActionCompleted;
         target.action.OnCompleted += OnTargetActionCompleted;
 
