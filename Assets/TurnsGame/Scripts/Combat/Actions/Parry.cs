@@ -41,7 +41,7 @@ public class Parry : CharacterAction
 
             targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
             Player.nextAction = Player.attackSO.CreateAction();
-            Player.nextAction.OnExecute(Player, target);
+            Player.nextAction.Execute(Player, target);
         }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;
     }

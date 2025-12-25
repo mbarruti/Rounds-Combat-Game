@@ -37,7 +37,7 @@ public class Block : CharacterAction
             targetAttack.meterDamageValue = 0;
 
             Player.nextAction = Player.attackSO.CreateAction();
-            Player.nextAction.OnExecute(Player, target);
+            Player.nextAction.Execute(Player, target);
         }
         else
         {
