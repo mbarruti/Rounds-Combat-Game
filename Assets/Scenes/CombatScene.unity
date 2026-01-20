@@ -151,7 +151,7 @@ MonoBehaviour:
   playerOne: {fileID: 2039997135}
   playerTwo: {fileID: 598692940}
   state: 0
-  prefabCharacter: {fileID: 5778573123989318117, guid: c9397c8c17f08c148909ddc541b5d179, type: 3}
+  prefabCharacter: {fileID: 0}
   playerMaterial: {fileID: 2100000, guid: a3679296caa7c8d42b5dbb6b117ebd03, type: 2}
   enemyMaterial: {fileID: 2100000, guid: 9802b00d15bc21144adf955c4c473026, type: 2}
 --- !u!4 &20222994

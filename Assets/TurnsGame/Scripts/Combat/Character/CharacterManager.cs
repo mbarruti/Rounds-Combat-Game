@@ -73,7 +73,7 @@ public class CharacterManager : MonoBehaviour
 
     CombatManager combatManager;
 
-    void Start()
+    void Awake()
     {
         //action = new();
         chosenStance = new DefaultStance(this);
@@ -113,8 +113,7 @@ public class CharacterManager : MonoBehaviour
         if (isPlayer)
         {
             user.Name = "Player One";
-            if (combatManager != null) gameObject.GetComponent<Renderer>().material = combatManager.playerMaterial;
-            else Debug.LogError("Player material es null");
+            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
             healthText = CombatUI.Instance.playerHPText;
             shieldMeterUI = CombatUI.Instance.playerShieldMeter;
 
@@ -135,7 +134,7 @@ public class CharacterManager : MonoBehaviour
         else
         {
             user.Name = "Player Two";
-            gameObject.GetComponent<Renderer>().material = combatManager.enemyMaterial;
+            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
             healthText = CombatUI.Instance.enemyHPText;
             shieldMeterUI = CombatUI.Instance.enemyShieldMeter;
         }
@@ -215,6 +214,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ApplyEffects(EffectTrigger trigger)
     {
+        //if (effects == null) return;
         if (effects.TryGetValue(trigger, out var list))
         {
             List<IEffect> copy = new(list);
