@@ -22,6 +22,7 @@ public class CombatManager : MonoBehaviour
     CharacterManager enemy;
 
     int roundNumber = 0;
+    int turnNumber = 0; // Each round has a set number of turns for each player
 
     private void Awake()
     {
@@ -52,17 +53,17 @@ public class CombatManager : MonoBehaviour
         //enemy.username = "PlayerTwo";
 
         // PROVISIONAL
-        Vector3 screenPosition = CombatUI.Instance.uiPlayerOnePosition.position;
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        worldPosition.z = 0f;
-        playerOne.transform.position = worldPosition;
+        // Vector3 screenPosition = CombatUI.Instance.uiPlayerOnePosition.position;
+        // Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        // worldPosition.z = 0f;
+        // playerOne.transform.position = worldPosition;
         playerOne.Setup(IS_PLAYER_ONE);
         player = playerOne;
 
-        screenPosition = CombatUI.Instance.uiPlayerTwoPosition.position;
-        worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        worldPosition.z = 0f;
-        playerTwo.transform.position = worldPosition;
+        // screenPosition = CombatUI.Instance.uiPlayerTwoPosition.position;
+        // worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        // worldPosition.z = 0f;
+        // playerTwo.transform.position = worldPosition;
         playerTwo.Setup(!IS_PLAYER_ONE);
         enemy = playerTwo;
         //
@@ -107,8 +108,8 @@ public class CombatManager : MonoBehaviour
         player.ApplyEffects(ROUND_START);
         enemy.ApplyEffects(ROUND_START);
 
-        player.actionController.SetAvailableActions(player.action);
-        enemy.actionController.SetAvailableActions(enemy.action);
+        player.actionController.SetAvailableActions();
+        enemy.actionController.SetAvailableActions();
 
         CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons(player.actionController));
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
@@ -118,8 +119,8 @@ public class CombatManager : MonoBehaviour
     {
         state = CombatState.CHOOSE;
 
-        AIAction();
-        if (player.state == PlayerState.WAIT)
+        //AIAction();
+        if (player.state == PlayerState.Wait)
         {
             state = CombatState.ACTION;
             PerformRound();
@@ -129,7 +130,7 @@ public class CombatManager : MonoBehaviour
     void AIAction()
     {
         int randomChoice = Random.Range(0, 2);
-        if (enemy.state == PlayerState.WAIT) return;
+        if (enemy.state == WAIT) return;
         if (randomChoice == 1 && enemy.shieldMeter.GetAvailableCharges() > 0)
             enemy.action = enemy.attackSO.CreateAction(); // BLOCK
         else enemy.action = enemy.attackSO.CreateAction(); // ATTACK
@@ -137,37 +138,19 @@ public class CombatManager : MonoBehaviour
 
     public void OnAttackButton()
     {
-        if (player.state != PlayerState.CHOOSE) return;
-        player.state = PlayerState.WAIT;
+        if (!player.attackSO.CanCreateAction(player))
+            return;
+        player.state = OFFENSE;
         player.action = player.attackSO.CreateAction();
-
-        PerformRound();
-    }
-
-    public void OnChargeButton()
-    {
-        if (player.state != PlayerState.CHOOSE) return;
-        player.state = PlayerState.WAIT;
-        //player.action = new Charge(player, player.action);
-
-        PerformRound();
-    }
-
-    public void OnTackleButton()
-    {
-        if (player.state != PlayerState.CHOOSE ||
-            player.shieldMeter.GetAvailableCharges() == 0) return;
-        player.state = PlayerState.WAIT;
-        //player.action = new Tackle(player, player.action);
 
         PerformRound();
     }
 
     public void OnBlockButton()
     {
-        if (player.state != PlayerState.CHOOSE || player.shieldMeter.GetAvailableCharges() <= 0)
+        if (!player.blockSO.CanCreateAction(player))
             return;
-        player.state = PlayerState.WAIT;
+        player.state = DEFENSE;
         player.action = player.blockSO.CreateAction();
 
         PerformRound();
@@ -176,12 +159,12 @@ public class CombatManager : MonoBehaviour
     public void OnWeaponSpecialButton(int index)
     {
         if (index < 0 || index >= player.weapon.SpecialActions.Count
-            || player.state != PlayerState.CHOOSE)
+            || player.state == WAIT)
             return;
         if (!player.weapon.SpecialActions[index].CanCreateAction(player))
             return;
 
-        player.state = PlayerState.WAIT;
+        //player.state = PlayerState.WAIT;
         player.action = player.weapon.SpecialActions[index].CreateAction();
 
         PerformRound();
@@ -190,35 +173,25 @@ public class CombatManager : MonoBehaviour
     public void OnShieldSpecialButton(int index)
     {
         if (index < 0 || index >= player.shield.SpecialActions.Count
-            || player.state != PlayerState.CHOOSE)
+            || player.state == WAIT)
             return;
         if (!player.shield.SpecialActions[index].CanCreateAction(player))
             return;
 
-        player.state = PlayerState.WAIT;
+        //player.state = PlayerState.WAIT;
         player.action = player.shield.SpecialActions[index].CreateAction();
-
-        PerformRound();
-    }
-
-    public void OnParryButton()
-    {
-        if (player.state != PlayerState.CHOOSE ||
-            player.shieldMeter.GetAvailableCharges() < PARRY_METER_COST) return;
-        player.state = PlayerState.WAIT;
-        //player.action = new Parry(player, player.action);
 
         PerformRound();
     }
 
     public void OnNothingButton()
     {
-        if (player.state != PlayerState.CHOOSE) return;
-        player.state = PlayerState.WAIT;
+        if (player.state == WAIT) return;
+        player.state = NEUTRAL;
         player.action = new(null);
-        if (player.effects.TryGetValue(CHARGED_ATTACK, out var list))
+        if (player.effects.TryGetValue(ON_STANCE, out var list))
         {
-            player.ConsumeEffects(CHARGED_ATTACK);
+            player.ConsumeEffects(ON_STANCE);
             list.Clear();
         }
 
@@ -230,6 +203,7 @@ public class CombatManager : MonoBehaviour
         state = CombatState.ACTION;
         CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
 
+        AIAction();
         switch (player.action, enemy.action)
         {
             case (Attack playerOneAttack, Attack playerTwoAttack):
@@ -246,6 +220,7 @@ public class CombatManager : MonoBehaviour
                 secondActor.PerformAction(leadActor);
                 break;
         }
+        turnNumber = 0;
         RoundEnd();
     }
 
@@ -304,10 +279,13 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
+        // TODO: perhaps an event for this
         player.ConsumeEffects(ROUND_START);
         enemy.ConsumeEffects(ROUND_START);
         player.ApplyEffects(ROUND_END);
         enemy.ApplyEffects(ROUND_END);
+        player.ConsumeEffects(ROUND_END);
+        enemy.ConsumeEffects(ROUND_END);
 
         CheckCombatState();
         if (state != CombatState.END)

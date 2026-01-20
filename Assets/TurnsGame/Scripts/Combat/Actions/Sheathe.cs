@@ -16,7 +16,7 @@ public class Sheathe : CharacterAction
         else CombatUI.AddAnimation(
                 CombatUI.Instance.WriteText($"{Player.username} keeps the weapon sheathed"));
 
-        Player.ApplyEffects(CHARGED_ATTACK);
+        Player.ApplyEffects(ON_STANCE);
         CompleteAction();
     }
 }

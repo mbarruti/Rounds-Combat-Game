@@ -17,7 +17,7 @@ public enum EffectTrigger
     RoundEnd,
     OnAttack,
     OnBlock,
-    ChargedAttack,
+    OnStance,
     Tackle,
     Nothing
 }

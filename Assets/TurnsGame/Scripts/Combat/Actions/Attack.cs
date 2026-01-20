@@ -68,13 +68,14 @@ public class Attack : CharacterAction
 
     float ProwessValue(float prowess)
     {
-        // prowess += prowessBonus;
-        // if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
-        // else if (prowess > 1) prowess = 1;
-
-        prowess += Player.activeBuffs.Prowess + prowessBonus;
+        prowess += Player.activeBuffs.Prowess;
         if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
         else if (prowess > 1) prowess = 1;
+
+        prowess += prowessBonus;
+        if (prowess < 0 || Mathf.Approximately(prowess, 0)) prowess = 0;
+        else if (prowess > 1) prowess = 1;
+
         return prowess;
     }
 

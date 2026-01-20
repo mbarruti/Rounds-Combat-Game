@@ -27,7 +27,7 @@ public class SheatheStance : Stance
 
     protected override void ExitStance()
     {
-        Player.ConsumeEffects(CHARGED_ATTACK);
+        Player.ConsumeEffects(ON_STANCE);
         Player.stance = Player.chosenStance.Clone();
         Player.action.OnCompleted -= ExitStance;
     }

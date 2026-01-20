@@ -5,7 +5,17 @@ using TMPro;
 using UnityEngine;
 using static MyProject.Constants;
 
-public enum PlayerState { CHOOSE, WAIT }
+public enum PlayerState
+{
+    Neutral,
+    Offense,
+    Defense,
+    Counter,
+    Recover,
+    SpecialStance,
+    //CRUSHED,
+    Wait,
+}
 
 public class CharacterManager : MonoBehaviour
 {
@@ -25,7 +35,7 @@ public class CharacterManager : MonoBehaviour
     public ShieldMeterUI shieldMeterUI;
 
     // Weapon setup
-    [SerializeField] bool isDual;
+    public bool isDual;
 
     // Weapon data
     public float baseDamage;
@@ -63,7 +73,7 @@ public class CharacterManager : MonoBehaviour
 
     CombatManager combatManager;
 
-    void Awake()
+    void Start()
     {
         //action = new();
         chosenStance = new DefaultStance(this);
@@ -72,7 +82,6 @@ public class CharacterManager : MonoBehaviour
         effects = new();
         shieldMeter = new();
         combatManager = CombatManager.Instance;
-
     }
 
     public void Setup(bool isPlayer)
@@ -86,7 +95,7 @@ public class CharacterManager : MonoBehaviour
             counterChance = weapon.DualCounterChance;
             maxNumHits = weapon.DualNumHits;
 
-            shieldMeter.Setup(1);
+            shieldMeter.Setup(3);
         }
         else
         {
@@ -104,7 +113,8 @@ public class CharacterManager : MonoBehaviour
         if (isPlayer)
         {
             user.Name = "Player One";
-            gameObject.GetComponent<Renderer>().material = combatManager.playerMaterial;
+            if (combatManager != null) gameObject.GetComponent<Renderer>().material = combatManager.playerMaterial;
+            else Debug.LogError("Player material es null");
             healthText = CombatUI.Instance.playerHPText;
             shieldMeterUI = CombatUI.Instance.playerShieldMeter;
 
@@ -129,6 +139,8 @@ public class CharacterManager : MonoBehaviour
             healthText = CombatUI.Instance.enemyHPText;
             shieldMeterUI = CombatUI.Instance.enemyShieldMeter;
         }
+        // TODO: Enter chosen stance when combat starts
+        currentHP = maxHP;
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
     }
@@ -138,7 +150,7 @@ public class CharacterManager : MonoBehaviour
         // CharacterAction newAction = new(this, action);
         lastAction = action;
         numHits = maxNumHits;
-        state = PlayerState.CHOOSE;
+        state = NEUTRAL;
 
         shieldMeterUI.SetChargesCopy();
     }

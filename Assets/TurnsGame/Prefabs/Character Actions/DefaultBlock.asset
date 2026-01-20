@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 6ad3cb5b5917a0b49b1a7bf25597badf, type: 3}
   m_Name: DefaultBlock
   m_EditorClassIdentifier: Assembly-CSharp::BlockSO
   <Name>k__BackingField: Block
   <Type>k__BackingField: 1
   <Lead>k__BackingField: 2
+  <CurrentState>k__BackingField: 2
   <MeterCost>k__BackingField: 0
   <CanRecoverMeter>k__BackingField: 0

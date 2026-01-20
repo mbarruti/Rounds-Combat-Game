@@ -64,11 +64,27 @@ namespace MyProject
 
         public const EffectTrigger ON_BLOCK = EffectTrigger.OnBlock;
 
-        public const EffectTrigger CHARGED_ATTACK = EffectTrigger.ChargedAttack;
+        public const EffectTrigger ON_STANCE = EffectTrigger.OnStance;
 
         public const EffectTrigger TACKLE = EffectTrigger.Tackle;
 
         public const EffectTrigger NOTHING = EffectTrigger.Nothing;
+
+        // PLAYER STATE
+
+        public const PlayerState NEUTRAL = PlayerState.Neutral;
+
+        public const PlayerState OFFENSE = PlayerState.Offense;
+
+        public const PlayerState DEFENSE = PlayerState.Defense;
+
+        public const PlayerState COUNTER = PlayerState.Counter;
+
+        public const PlayerState RECOVER = PlayerState.Recover;
+
+        public const PlayerState STANCE = PlayerState.SpecialStance;
+
+        public const PlayerState WAIT = PlayerState.Wait;
 
         // ACTION TYPE
 

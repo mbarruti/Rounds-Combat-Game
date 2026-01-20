@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class CharacterActionController
 {
     public bool canUseAttack = true;
@@ -6,24 +8,10 @@ public class CharacterActionController
     public bool canUseTackle = false;
     public bool canUseParry = true;
 
-    public void SetAvailableActions(CharacterAction lastAction)
+    public List<CharacterActionSO> actionList = new();
+
+    public void SetAvailableActions()
     {
-        switch (lastAction)
-        {
-            case Attack or Block or Parry or null:
-                canUseAttack = true;
-                canUseBlock = true;
-                canUseCharge = true;
-                canUseTackle = false;
-                canUseParry = true;
-                break;
-            case Charge or Tackle:
-                canUseAttack = true;
-                canUseBlock = false;
-                canUseCharge = true;
-                canUseTackle = true;
-                canUseParry = false;
-                break;
-        }
+
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using static MyProject.Constants;
 
 [CreateAssetMenu(menuName = "Character Actions/Tackle")]
 public class TackleSO : CharacterActionSO
@@ -10,8 +11,10 @@ public class TackleSO : CharacterActionSO
 
     protected override bool OnCanCreate(CharacterManager player)
     {
-        if (player.stance is not ChargeStance && player.lastAction is not (Charge or Tackle))
-            return false;
+        if (!player.isDual ||
+            player.stance is not ChargeStance ||
+            player.state == RECOVER ||
+            player.state == WAIT) return false;
         return true;
     }
 }

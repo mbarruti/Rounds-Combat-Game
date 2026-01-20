@@ -13,18 +13,17 @@ MonoBehaviour:
   m_Name: DefaultDagger
   m_EditorClassIdentifier: Assembly-CSharp::DaggerSO
   <Name>k__BackingField: Dagger
-  <SpecialAction>k__BackingField: {fileID: 0}
   <SpecialActions>k__BackingField: []
   <BaseDamage>k__BackingField: 6
   <MeterDamage>k__BackingField: 0.5
   <Accuracy>k__BackingField: 1
   <Prowess>k__BackingField: 1
   <CounterChance>k__BackingField: 0.05
-  <NumHits>k__BackingField: 3
+  <NumHits>k__BackingField: 2
   <DualBaseDamage>k__BackingField: 6
   <DualMeterDamage>k__BackingField: 0.5
   <DualAccuracy>k__BackingField: 1
   <DualProwess>k__BackingField: 1
   <DualCounterChance>k__BackingField: 0.05
-  <DualNumHits>k__BackingField: 4
+  <DualNumHits>k__BackingField: 3
   defaultSpecialActionsInitialized: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf200c8addef874f9662af461aacc52, type: 3}
   m_Name: DefaultKatana
   m_EditorClassIdentifier: Assembly-CSharp::KatanaSO
-  <Name>k__BackingField: None
+  <Name>k__BackingField: Katana
   <SpecialActions>k__BackingField:
   - {fileID: 11400000, guid: 027d45f03fd354940a9adfc23a361ec4, type: 2}
   <BaseDamage>k__BackingField: 20

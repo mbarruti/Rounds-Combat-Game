@@ -12,6 +12,7 @@ public class CharacterAction
     public string Name { get; protected set; } = "None";
     public ActionType Type { get; protected set; } = ActionType.NoType;
     public ActionPriority Lead { get; protected set; } = NONE;
+    public PlayerState CurrentState { get; private set; } = PlayerState.Neutral;
     public float MeterCost { get; protected set; } = 0;
     public bool CanRecoverMeter { get; protected set; } = true;
 
@@ -23,6 +24,7 @@ public class CharacterAction
             Name = DataSO.Name;
             Type = DataSO.Type;
             Lead = DataSO.Lead;
+            CurrentState = DataSO.CurrentState;
             MeterCost = DataSO.MeterCost;
             CanRecoverMeter = DataSO.CanRecoverMeter;
         }
@@ -37,6 +39,7 @@ public class CharacterAction
     {
         Player = player;
         Target = target;
+        Player.state = CurrentState;
         OnExecute(Player, Target);
         //CompleteAction();
     }

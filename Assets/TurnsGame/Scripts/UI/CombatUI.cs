@@ -83,8 +83,8 @@ public class CombatUI : MonoBehaviour
     public IEnumerator ShowActionButtons(CharacterActionController actionController,
     float waitTime = 0f)
     {
-        if (actionController.canUseAttack) attackButton.SetActive(true);
-        if (actionController.canUseBlock) blockButton.SetActive(true);
+        attackButton.SetActive(true);
+        blockButton.SetActive(true);
         weaponSpecialButton.SetActive(true);
         weaponSpecialButton2.SetActive(true);
         shieldSpecialButton.SetActive(true);

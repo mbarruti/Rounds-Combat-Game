@@ -47,7 +47,7 @@ public class Tackle : CharacterAction
         if (tackleSuccess)
         {
             Player.shieldMeter.RecoverCharges();
-            DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, CHARGED_ATTACK);
+            DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, 1, ON_STANCE);
             Player.AddEffect(damageBuff);
             damageBuff.Apply(Player, null);
         }
@@ -57,7 +57,7 @@ public class Tackle : CharacterAction
                 CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt"));
             Player.action = new(null);
             Player.stance = Player.chosenStance.Clone();
-            Player.ConsumeEffects(CHARGED_ATTACK);
+            Player.ConsumeEffects(ON_STANCE);
         }
         Player.ConsumeEffects(TACKLE);
         CompleteAction();

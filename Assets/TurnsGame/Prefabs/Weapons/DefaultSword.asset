@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: DefaultSword
   m_EditorClassIdentifier: Assembly-CSharp::SwordSO
   <Name>k__BackingField: Sword
-  <SpecialAction>k__BackingField: {fileID: 0}
   <SpecialActions>k__BackingField: []
   <BaseDamage>k__BackingField: 20
   <MeterDamage>k__BackingField: 1
@@ -21,7 +20,7 @@ MonoBehaviour:
   <Prowess>k__BackingField: 1
   <CounterChance>k__BackingField: 0.05
   <NumHits>k__BackingField: 1
-  <DualBaseDamage>k__BackingField: 30
+  <DualBaseDamage>k__BackingField: 25
   <DualMeterDamage>k__BackingField: 1
   <DualAccuracy>k__BackingField: 1
   <DualProwess>k__BackingField: 1
