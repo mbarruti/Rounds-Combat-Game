@@ -3,6 +3,7 @@ using System;
 using MyProject;
 using static MyProject.Constants;
 using UnityEngine.TextCore.Text;
+using System.Collections;
 
 public class Attack : CharacterAction
 {
@@ -15,15 +16,37 @@ public class Attack : CharacterAction
     // TODO: make this logic better with the same result
     public int meterDamageValue = 1; // 1 full damage, 0 no damage
 
+    public Vector3 expectedPositionDefault = new(-0.6f, 0.5f, -0.8f);
+    public Vector3 expectedPositionDefault2 = new(0.6f, 0.5f, 0.8f);
+
     public event Action<CharacterManager> OnAttackHits;
 
     public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        base.OnExecute(player, target);
         Player.ApplyEffects(ON_ATTACK);
 
+        if (Target.action is Attack)
+        {
+            Player.expectedPosition = expectedPositionDefault;
+            Player.transform.position = Player.expectedPosition;
+        }
+        else
+        {
+            Player.expectedPosition = Target.transform.localPosition;
+            Player.expectedPosition.z += 1.5f;
+            if (Target.transform.parent != null)
+            {
+                Player.expectedPosition =
+                    Target.transform.parent.TransformPoint(Player.expectedPosition);
+            }
+
+            Player.transform.position = Player.expectedPosition;
+        }
+
         CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText(Player.username + " attacks " + target.username));
+            CombatUI.Instance.WriteText(Player.username + " attacks "
+                                        + target.username, waitTime: 0f));
+        CombatUI.AddAnimation(Player.Move());
 
         // TODO: think of a way to Invoke event one time inside the for
         // taking AttackHits into account once for Parry

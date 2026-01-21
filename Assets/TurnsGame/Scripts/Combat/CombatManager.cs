@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static MyProject.Constants;
 
@@ -279,6 +280,10 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
+        if (player.transform.position != player.defaultPosition ||
+            enemy.transform.position != enemy.defaultPosition)
+            CombatUI.AddAnimation(MoveToDefaultPosition());
+
         // TODO: perhaps an event for this
         player.ConsumeEffects(ROUND_START);
         enemy.ConsumeEffects(ROUND_START);
@@ -317,5 +322,12 @@ public class CombatManager : MonoBehaviour
             CombatUI.AddAnimation(CombatUI.Instance.WriteText(winner.name + " wins the match!"));
         }
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
+    }
+
+    IEnumerator MoveToDefaultPosition()
+    {
+        player.transform.position = player.defaultPosition;
+        enemy.transform.position = enemy.defaultPosition;
+        yield return new WaitForSeconds(0f);
     }
 }

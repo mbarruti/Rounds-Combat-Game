@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,9 @@ public class CharacterManager : MonoBehaviour
 {
     [SerializeField] User user;
     public string username => user.Name;
+
+    public Vector3 defaultPosition;
+    public Vector3 expectedPosition;
 
     public WeaponSO weapon;
     public ShieldSO shield;
@@ -81,6 +85,8 @@ public class CharacterManager : MonoBehaviour
         activeBuffs = new(this);
         effects = new();
         shieldMeter = new();
+        defaultPosition = transform.position;
+
         combatManager = CombatManager.Instance;
     }
 
@@ -113,7 +119,9 @@ public class CharacterManager : MonoBehaviour
         if (isPlayer)
         {
             user.Name = "Player One";
-            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
+            SkinnedMeshRenderer smr = GetComponentInChildren<SkinnedMeshRenderer>();
+            smr.material = CombatManager.Instance.playerMaterial;
+            //gameObject.GetComponent<Renderer>().material = CombatManager.Instance.playerMaterial;
             healthText = CombatUI.Instance.playerHPText;
             shieldMeterUI = CombatUI.Instance.playerShieldMeter;
 
@@ -134,11 +142,15 @@ public class CharacterManager : MonoBehaviour
         else
         {
             user.Name = "Player Two";
-            gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
+            SkinnedMeshRenderer smr = GetComponentInChildren<SkinnedMeshRenderer>();
+            smr.material = CombatManager.Instance.enemyMaterial;
+            //gameObject.GetComponent<Renderer>().material = CombatManager.Instance.enemyMaterial;
             healthText = CombatUI.Instance.enemyHPText;
             shieldMeterUI = CombatUI.Instance.enemyShieldMeter;
         }
         // TODO: Enter chosen stance when combat starts
+
+
         currentHP = maxHP;
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
@@ -252,5 +264,11 @@ public class CharacterManager : MonoBehaviour
     {
         if (Mathf.Approximately(currentHP, 0) || currentHP < 0) return true;
         return false;
+    }
+
+    public IEnumerator Move()
+    {
+        transform.position = expectedPosition;
+        yield return new WaitForSeconds(1f);
     }
 }
