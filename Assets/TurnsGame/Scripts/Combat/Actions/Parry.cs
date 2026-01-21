@@ -40,6 +40,8 @@ public class Parry : CharacterAction
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
 
             targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
+            Target.state = RECOVER;
+
             Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);
         }

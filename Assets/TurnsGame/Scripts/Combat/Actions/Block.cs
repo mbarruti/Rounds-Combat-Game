@@ -35,6 +35,7 @@ public class Block : CharacterAction
                 CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
             targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
             targetAttack.meterDamageValue = 0;
+            Target.state = RECOVER;
 
             Player.nextAction = Player.attackSO.CreateAction();
             Player.nextAction.Execute(Player, target);

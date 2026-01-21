@@ -68,6 +68,8 @@ public class CombatManager : MonoBehaviour
         playerTwo.Setup(!IS_PLAYER_ONE);
         enemy = playerTwo;
         //
+        player.transform.LookAt(enemy.transform);
+        enemy.transform.LookAt(player.transform);
 
         CombatUI.AddAnimation(CombatUI.Instance.WriteText("Begin match"));
         PreRound();
@@ -328,6 +330,8 @@ public class CombatManager : MonoBehaviour
     {
         player.transform.position = player.defaultPosition;
         enemy.transform.position = enemy.defaultPosition;
+        player.transform.LookAt(enemy.transform);
+        enemy.transform.LookAt(player.transform);
         yield return new WaitForSeconds(0f);
     }
 }

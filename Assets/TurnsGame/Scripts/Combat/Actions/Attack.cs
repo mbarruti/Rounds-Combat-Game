@@ -21,11 +21,14 @@ public class Attack : CharacterAction
 
     public event Action<CharacterManager> OnAttackHits;
 
+    bool isAttacking;
+    bool attackFinished;
+
     public override void OnExecute(CharacterManager player, CharacterManager target)
     {
         Player.ApplyEffects(ON_ATTACK);
 
-        if (Target.action is Attack)
+        if (Target.state == OFFENSE)
         {
             Player.expectedPosition = expectedPositionDefault;
             Player.transform.position = Player.expectedPosition;
@@ -33,21 +36,23 @@ public class Attack : CharacterAction
         else
         {
             Player.expectedPosition = Target.transform.localPosition;
+
             Player.expectedPosition.z += 1.5f;
+            //Player.transform.localPosition = Player.expectedPosition;
             if (Target.transform.parent != null)
             {
                 Player.expectedPosition =
                     Target.transform.parent.TransformPoint(Player.expectedPosition);
             }
 
-            Player.transform.position = Player.expectedPosition;
+            //Player.transform.position = Player.expectedPosition;
         }
 
         CombatUI.AddAnimation(
             CombatUI.Instance.WriteText(Player.username + " attacks "
                                         + target.username, waitTime: 0f));
-        CombatUI.AddAnimation(Player.Move());
-
+        CombatUI.AddAnimation(Player.Move(Player.expectedPosition));
+        CombatUI.AddAnimation(AttackAnimation());
         // TODO: think of a way to Invoke event one time inside the for
         // taking AttackHits into account once for Parry
         OnAttackHits?.Invoke(Player);
@@ -107,5 +112,18 @@ public class Attack : CharacterAction
         accuracy += Player.activeBuffs.Accuracy;
         float randomValue = UnityEngine.Random.Range(0f, 1f);
         return randomValue <= accuracy;
+    }
+
+    private IEnumerator AttackAnimation()
+    {
+        isAttacking = true;
+        attackFinished = false;
+        Player.animator.SetTrigger("Attack");
+        yield return null;
+    }
+
+    public void OnAttackAnimFinished()
+    {
+        attackFinished = true;
     }
 }

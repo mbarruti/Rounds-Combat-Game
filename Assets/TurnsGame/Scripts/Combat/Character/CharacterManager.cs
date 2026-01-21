@@ -26,6 +26,8 @@ public class CharacterManager : MonoBehaviour
     public Vector3 defaultPosition;
     public Vector3 expectedPosition;
 
+    public Animator animator;
+
     public WeaponSO weapon;
     public ShieldSO shield;
 
@@ -86,6 +88,8 @@ public class CharacterManager : MonoBehaviour
         effects = new();
         shieldMeter = new();
         defaultPosition = transform.position;
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null) Debug.Log("es null");
 
         combatManager = CombatManager.Instance;
     }
@@ -149,8 +153,6 @@ public class CharacterManager : MonoBehaviour
             shieldMeterUI = CombatUI.Instance.enemyShieldMeter;
         }
         // TODO: Enter chosen stance when combat starts
-
-
         currentHP = maxHP;
         healthText.text = $"{currentHP}/{maxHP}";
         shieldMeterUI.Setup(shieldMeter);
@@ -266,9 +268,9 @@ public class CharacterManager : MonoBehaviour
         return false;
     }
 
-    public IEnumerator Move()
+    public IEnumerator Move(Vector3 expectedPos)
     {
-        transform.position = expectedPosition;
+        transform.position = expectedPos;
         yield return new WaitForSeconds(1f);
     }
 }
