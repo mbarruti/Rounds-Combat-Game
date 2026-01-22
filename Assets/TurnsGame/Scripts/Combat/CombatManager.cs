@@ -282,9 +282,16 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
-        if (player.transform.position != player.defaultPosition ||
-            enemy.transform.position != enemy.defaultPosition)
-            CombatUI.AddAnimation(MoveToDefaultPosition());
+        if (player.expectedPosition != player.defaultPosition ||
+            enemy.expectedPosition != enemy.defaultPosition)
+        {
+            if (player.expectedPosition != player.defaultPosition) CombatUI.AddAnimation(
+                player.Move(player.defaultPosition.z)
+            );
+            if (enemy.expectedPosition != enemy.defaultPosition) CombatUI.AddAnimation(
+                enemy.Move(enemy.defaultPosition.z)
+            );
+        }
 
         // TODO: perhaps an event for this
         player.ConsumeEffects(ROUND_START);
@@ -324,14 +331,5 @@ public class CombatManager : MonoBehaviour
             CombatUI.AddAnimation(CombatUI.Instance.WriteText(winner.name + " wins the match!"));
         }
         StartCoroutine(CombatUI.Instance.ExecuteAnimations());
-    }
-
-    IEnumerator MoveToDefaultPosition()
-    {
-        player.transform.position = player.defaultPosition;
-        enemy.transform.position = enemy.defaultPosition;
-        player.transform.LookAt(enemy.transform);
-        enemy.transform.LookAt(player.transform);
-        yield return new WaitForSeconds(0f);
     }
 }

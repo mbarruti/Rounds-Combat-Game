@@ -49,6 +49,7 @@ MonoBehaviour:
     Name: 
   defaultPosition: {x: 0, y: 0, z: 0}
   expectedPosition: {x: 0, y: 0, z: 0}
+  animator: {fileID: 8075410989873234463}
   weapon: {fileID: 11400000, guid: cd4568f0d3930bf4c807fe3b36880b29, type: 2}
   shield: {fileID: 11400000, guid: c710cbb5f50e6c1478a86e0bf347c38d, type: 2}
   maxHP: 100
@@ -129,5 +130,10 @@ PrefabInstance:
 --- !u!4 &2806221225042630757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8515035406679363014, guid: d508f7b5e601b2542994402009c29087, type: 3}
+  m_PrefabInstance: {fileID: 5826189796915844515}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8075410989873234463 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2363078374718609340, guid: d508f7b5e601b2542994402009c29087, type: 3}
   m_PrefabInstance: {fileID: 5826189796915844515}
   m_PrefabAsset: {fileID: 0}

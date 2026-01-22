@@ -64,6 +64,7 @@ public class CombatUI : MonoBehaviour
     {
         //TO-DO: make dialogue animation and HP update when taking damage happen at the same time
         panelText.text = "";
+
         foreach (char c in message)
         {
             panelText.text += c;

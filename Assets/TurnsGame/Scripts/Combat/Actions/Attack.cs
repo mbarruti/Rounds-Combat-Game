@@ -16,43 +16,27 @@ public class Attack : CharacterAction
     // TODO: make this logic better with the same result
     public int meterDamageValue = 1; // 1 full damage, 0 no damage
 
-    public Vector3 expectedPositionDefault = new(-0.6f, 0.5f, -0.8f);
-    public Vector3 expectedPositionDefault2 = new(0.6f, 0.5f, 0.8f);
-
+    public Vector3 expectedPositionDefault;
+    public Vector3 expectedPositionDefault2;
     public event Action<CharacterManager> OnAttackHits;
-
-    bool isAttacking;
-    bool attackFinished;
 
     public override void OnExecute(CharacterManager player, CharacterManager target)
     {
         Player.ApplyEffects(ON_ATTACK);
 
-        if (Target.state == OFFENSE)
-        {
-            Player.expectedPosition = expectedPositionDefault;
-            Player.transform.position = Player.expectedPosition;
-        }
-        else
-        {
-            Player.expectedPosition = Target.transform.localPosition;
+        float desiredDistance = 1.5f;
 
-            Player.expectedPosition.z += 1.5f;
-            //Player.transform.localPosition = Player.expectedPosition;
-            if (Target.transform.parent != null)
-            {
-                Player.expectedPosition =
-                    Target.transform.parent.TransformPoint(Player.expectedPosition);
-            }
+        bool iAmBehind = Player.expectedPosition.z < Target.expectedPosition.z;
 
-            //Player.transform.position = Player.expectedPosition;
-        }
+        float targetZ = iAmBehind
+            ? Target.expectedPosition.z - desiredDistance
+            : Target.expectedPosition.z + desiredDistance;
 
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText(Player.username + " attacks "
-                                        + target.username, waitTime: 0f));
-        CombatUI.AddAnimation(Player.Move(Player.expectedPosition));
+        Player.expectedPosition.z = targetZ;
+
+        CombatUI.AddAnimation(Player.Move(Player.expectedPosition.z));
         CombatUI.AddAnimation(AttackAnimation());
+
         // TODO: think of a way to Invoke event one time inside the for
         // taking AttackHits into account once for Parry
         OnAttackHits?.Invoke(Player);
@@ -116,14 +100,11 @@ public class Attack : CharacterAction
 
     private IEnumerator AttackAnimation()
     {
-        isAttacking = true;
-        attackFinished = false;
-        Player.animator.SetTrigger("Attack");
-        yield return null;
-    }
-
-    public void OnAttackAnimFinished()
-    {
-        attackFinished = true;
+        Player.isPerformingAction = true;
+        Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
+        while (Player.isPerformingAction)
+        {
+            yield return null;
+        }
     }
 }

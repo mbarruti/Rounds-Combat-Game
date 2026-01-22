@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static MyProject.Constants;
 
@@ -74,6 +75,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterActionController actionController = new();
 
     public event Action OnPerformAction;
+    public bool isPerformingAction;
 
     public PlayerState state;
 
@@ -164,6 +166,7 @@ public class CharacterManager : MonoBehaviour
         lastAction = action;
         numHits = maxNumHits;
         state = NEUTRAL;
+        expectedPosition = defaultPosition;
 
         shieldMeterUI.SetChargesCopy();
     }
@@ -264,13 +267,55 @@ public class CharacterManager : MonoBehaviour
 
     public bool IsDead()
     {
-        if (Mathf.Approximately(currentHP, 0) || currentHP < 0) return true;
+        if (Mathf.Approximately(currentHP, 0)|| currentHP < 0) return true;
         return false;
     }
 
-    public IEnumerator Move(Vector3 expectedPos)
+    public IEnumerator Move(float targetZ)
     {
-        transform.position = expectedPos;
-        yield return new WaitForSeconds(1f);
+        float speed = 7.5f;
+
+        Vector3 targetPosition = new Vector3(
+            transform.position.x,
+            transform.position.y,
+            targetZ
+        );
+        transform.LookAt(targetPosition);
+        animator.CrossFadeInFixedTime("Run", 0.2f);
+
+        float timeStart = Time.deltaTime;
+        while (Mathf.Abs(transform.position.z - targetZ) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                targetPosition,
+                speed * Time.deltaTime
+            );
+            // float elapsedTime = Time.deltaTime - timeStart;
+            // float b = Mathf.Exp(0.2f * elapsedTime * speed);
+            // float a = Mathf.MoveTowards(0, 1f, b);
+            // transform.position = Vector3.Lerp(
+            //     transform.position,
+            //     targetPosition,
+            //     a
+            // );
+
+            yield return null;
+        }
+
+        //transform.position = targetPosition;
+    }
+
+    private Vector3 SmoothInterpolateMovement(Vector3 currentPos, Vector3 targetPos)
+    {
+        float x = currentPos.x - targetPos.x;
+        float y = currentPos.y - targetPos.y;
+        float z = currentPos.z - targetPos.z;
+
+        x = Mathf.Exp(x);
+        y = Mathf.Exp(y);
+        z = Mathf.Exp(z);
+
+        return new Vector3(x, y, z);
     }
 }
