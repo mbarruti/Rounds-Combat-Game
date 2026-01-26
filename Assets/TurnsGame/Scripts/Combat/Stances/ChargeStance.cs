@@ -9,8 +9,12 @@ public class ChargeStance : Stance
     public override void EnterStance()
     {
         if (Applied) return;
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText($"{Player.username} is charging an attack"));
+
+        Anim.Sequence(
+            Anim.Do(() =>
+                CombatUI.Instance.WriteText($"{Player.username} is charging an attack")
+            )
+        );
 
         ChargeBuffEffect chargeBuff = new();
         Player.AddEffect(chargeBuff);
@@ -38,6 +42,7 @@ public class ChargeStance : Stance
         //Debug.Log(Player.activeBuffs.BonusDamage);
         Player.stance = Player.chosenStance.Clone();
         Player.action.OnCompleted -= ExitStance;
+        //Player.OnPerformAction -= PrepareStanceExit;
     }
 
     protected override void PrepareStanceExit()

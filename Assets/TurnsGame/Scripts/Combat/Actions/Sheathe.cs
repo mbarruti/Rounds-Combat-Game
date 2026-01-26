@@ -13,8 +13,8 @@ public class Sheathe : CharacterAction
             Player.stance = new SheatheStance(Player);
             Player.stance.EnterStance();
         }
-        else CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} keeps the weapon sheathed"));
+        // else CombatUI.AddAnimation(
+        //         CombatUI.Instance.WriteText($"{Player.username} keeps the weapon sheathed"));
 
         Player.ApplyEffects(ON_STANCE);
         CompleteAction();

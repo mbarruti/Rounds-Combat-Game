@@ -17,7 +17,12 @@ public class ChargeBuffEffect : IEffect
             user.activeBuffs.BonusDamage += 0.4f;
             user.activeBuffs.Accuracy += 0.2f;
             user.activeBuffs.Prowess += 0.2f;
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} increases stats"));
+
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{user.username} increases stats")
+                )
+            );
         }
         if (Uses < MaxUses) Uses++;
     }
@@ -47,7 +52,12 @@ public class SheatheBuffEffect : IEffect
         {
             user.activeBuffs.Accuracy += 0.4f;
             user.activeBuffs.CounterChance += 0.2f;
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{user.username} increases stats"));
+
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{user.username} increases stats")
+                )
+            );
         }
         if (Uses < MaxUses) Uses++;
     }

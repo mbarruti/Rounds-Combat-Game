@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using MyProject;
 using static MyProject.Constants;
+using UnityEngine;
 
 public class Charge : CharacterAction
 {
@@ -19,8 +20,11 @@ public class Charge : CharacterAction
         }
         else
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} keeps charging"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{Player.username} keeps charging")
+                )
+            );
             DamageBuffEffect damageBuff = new(CHARGE_DAMAGE_BUFF, SINGLE_USE, ON_STANCE);
             Player.AddEffect(damageBuff);
             //damageBuff.Apply(Player, target);

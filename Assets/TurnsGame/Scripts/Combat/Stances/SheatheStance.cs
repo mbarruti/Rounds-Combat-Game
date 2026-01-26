@@ -9,8 +9,12 @@ public class SheatheStance : Stance
         if (Applied) return;
 
         // TODO: make it recognize gender
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText($"{Player.username} sheathes their weapon"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{Player.username} sheathes their weapon")
+                )
+            );
+
         ChargeBuffEffect chargeBuff = new();
         Player.AddEffect(chargeBuff);
 
@@ -30,6 +34,7 @@ public class SheatheStance : Stance
         Player.ConsumeEffects(ON_STANCE);
         Player.stance = Player.chosenStance.Clone();
         Player.action.OnCompleted -= ExitStance;
+        //Player.OnPerformAction -= PrepareStanceExit;
     }
 
     protected override void PrepareStanceExit()

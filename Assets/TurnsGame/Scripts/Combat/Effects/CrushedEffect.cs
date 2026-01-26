@@ -15,8 +15,13 @@ public class CrushedEffect : IEffect
     {
         user.state = PlayerState.Wait;
         user.action = new(null);
-        CombatUI.AddAnimation(
-            CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0));
+
+        Anim.Sequence(
+            Anim.Do(() =>
+                CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0)
+            )
+        );
+
         if (Uses < MaxUses) Uses++;
     }
 

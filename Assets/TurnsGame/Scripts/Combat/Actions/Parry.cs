@@ -36,8 +36,12 @@ public class Parry : CharacterAction
         if (IsParry())
         {
             parrySuccess = true;
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
+
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
+                )
+            );
 
             targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
             Target.state = RECOVER;
@@ -58,8 +62,11 @@ public class Parry : CharacterAction
     {
         if (parrySuccess == false)
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} fails parry attempt"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{Player.username} fails parry attempt")
+                )
+            );
 
             Player.shieldMeter.LoseCharges(PARRY_METER_COST);
         }

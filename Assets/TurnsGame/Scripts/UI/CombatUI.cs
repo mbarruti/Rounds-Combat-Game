@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public class CombatUI : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class CombatUI : MonoBehaviour
     public RectTransform uiPlayerOnePosition;
     public RectTransform uiPlayerTwoPosition;
 
-    private static readonly Queue<IEnumerator> coroutineQueue = new();
+    public static readonly Queue<IEnumerator> coroutineQueue = new();
 
     [SerializeField] GameObject attackButton;
     [SerializeField] GameObject blockButton;
@@ -60,28 +61,40 @@ public class CombatUI : MonoBehaviour
         //Debug.LogFormat("Num of queued animations {0}", coroutineQueue.Count());
     }
 
-    public IEnumerator WriteText(string message, float delay = 0.03f, float waitTime = 1f)
+    public async UniTask WriteText(string message, float delay = 0.03f, float waitTime = 1f)
     {
-        //TO-DO: make dialogue animation and HP update when taking damage happen at the same time
         panelText.text = "";
 
         foreach (char c in message)
         {
             panelText.text += c;
-            yield return new WaitForSeconds(delay);
+
+            await UniTask.Delay(
+                Mathf.RoundToInt(delay * 1000),
+                DelayType.DeltaTime,
+                PlayerLoopTiming.Update
+            );
         }
-        yield return new WaitForSeconds(waitTime);
+
+        await UniTask.Delay(
+            Mathf.RoundToInt(waitTime * 1000),
+            DelayType.DeltaTime,
+            PlayerLoopTiming.Update
+        );
     }
 
-    public IEnumerator UpdateHPText(CharacterManager character, float currentHP,
+    public async UniTask UpdateHPText(CharacterManager character, float currentHP,
     float waitTime = 0.5f)
     {
-        yield return character.healthText.text =
-            $"{Mathf.CeilToInt(currentHP)}/{(int)character.maxHP}";
-        yield return new WaitForSeconds(waitTime);
+        character.healthText.text = $"{Mathf.CeilToInt(currentHP)}/{(int)character.maxHP}";
+        await UniTask.Delay(
+            Mathf.RoundToInt(waitTime * 1000),
+            DelayType.DeltaTime,
+            PlayerLoopTiming.Update
+        );
     }
 
-    public IEnumerator ShowActionButtons(CharacterActionController actionController,
+    public async UniTask ShowActionButtons(CharacterActionController actionController,
     float waitTime = 0f)
     {
         attackButton.SetActive(true);
@@ -90,10 +103,14 @@ public class CombatUI : MonoBehaviour
         weaponSpecialButton2.SetActive(true);
         shieldSpecialButton.SetActive(true);
         nothingButton.SetActive(true);
-        yield return new WaitForSeconds(waitTime);
+        await UniTask.Delay(
+            Mathf.RoundToInt(waitTime * 1000),
+            DelayType.DeltaTime,
+            PlayerLoopTiming.Update
+        );
     }
 
-    public IEnumerator HideActionButtons(float waitTime = 0f)
+    public async UniTask HideActionButtons(float waitTime = 0f)
     {
         attackButton.SetActive(false);
         blockButton.SetActive(false);
@@ -101,6 +118,10 @@ public class CombatUI : MonoBehaviour
         weaponSpecialButton2.SetActive(false);
         shieldSpecialButton.SetActive(false);
         nothingButton.SetActive(false);
-        yield return new WaitForSeconds(waitTime);
+        await UniTask.Delay(
+            Mathf.RoundToInt(waitTime * 1000),
+            DelayType.DeltaTime,
+            PlayerLoopTiming.Update
+        );
     }
 }

@@ -20,8 +20,13 @@ public class ProwessBuffEffect : IEffect
         if (Uses == 0)
         {
             user.activeBuffs.Prowess += Value;
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText
-                ($"{user.username} increases prowess by {Value*100}%"));
+
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText
+                        ($"{user.username} increases prowess by {Value*100}%")
+                )
+            );
         }
         if (Uses < MaxUses) Uses++;
     }

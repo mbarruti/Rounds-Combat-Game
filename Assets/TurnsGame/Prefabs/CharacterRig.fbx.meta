@@ -179,7 +179,7 @@ ModelImporter:
       name: CharacterRig|Run_Fwd
       takeName: CharacterRig|Run_Fwd
       internalID: -7003192678721567101
-      firstFrame: 1
+      firstFrame: 0
       lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0

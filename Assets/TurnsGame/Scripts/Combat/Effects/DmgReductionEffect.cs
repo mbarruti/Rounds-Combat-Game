@@ -17,8 +17,13 @@ public class DmgReductionEffect : IEffect
     {
         if (Uses == 0)
         {
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText(
-                $"{user.username} reduces damage taken by {Value*100}%"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText(
+                        $"{user.username} reduces damage taken by {Value*100}%")
+                )
+        );
+
             user.activeBuffs.DmgReduction += Value;
         }
         if (Uses < MaxUses) Uses++;

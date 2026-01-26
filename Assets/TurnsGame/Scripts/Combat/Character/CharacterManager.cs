@@ -24,6 +24,8 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] User user;
     public string username => user.Name;
 
+    // Animation
+    public RigAnimationController rigController;
     public Vector3 defaultPosition;
     public Vector3 expectedPosition;
 
@@ -92,6 +94,7 @@ public class CharacterManager : MonoBehaviour
         defaultPosition = transform.position;
         animator = GetComponentInChildren<Animator>();
         if (animator == null) Debug.Log("es null");
+        rigController = new(this, animator);
 
         combatManager = CombatManager.Instance;
     }
@@ -193,7 +196,10 @@ public class CharacterManager : MonoBehaviour
         else currentHP -= damage;
 
         if (currentHP != previousHP)
-            CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
+            //CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
+            Anim.Sequence(
+                Anim.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP))
+            );
     }
 
     public void TakeMeterDamage(float meterDamage)
@@ -203,7 +209,10 @@ public class CharacterManager : MonoBehaviour
         {
             CrushedEffect crushedEffect = new();
             AddEffect(crushedEffect);
-            CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{username} got crushed!"));
+            //CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{username} got crushed!"));
+            Anim.Sequence(
+                Anim.Do(() => CombatUI.Instance.WriteText($"{username} got crushed!"))
+            );
         }
     }
 
@@ -271,51 +280,40 @@ public class CharacterManager : MonoBehaviour
         return false;
     }
 
-    public IEnumerator Move(float targetZ)
-    {
-        float speed = 7.5f;
+    // public IEnumerator Move(float targetZ)
+    // {
+    //     float speed = 7.5f;
 
-        Vector3 targetPosition = new Vector3(
-            transform.position.x,
-            transform.position.y,
-            targetZ
-        );
-        transform.LookAt(targetPosition);
-        animator.CrossFadeInFixedTime("Run", 0.2f);
+    //     Vector3 targetPosition = new Vector3(
+    //         transform.position.x,
+    //         transform.position.y,
+    //         targetZ
+    //     );
+    //     transform.LookAt(targetPosition);
+    //     animator.CrossFadeInFixedTime("Run", 0.2f);
 
-        float timeStart = Time.deltaTime;
-        while (Mathf.Abs(transform.position.z - targetZ) > 0.01f)
-        {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPosition,
-                speed * Time.deltaTime
-            );
-            // float elapsedTime = Time.deltaTime - timeStart;
-            // float b = Mathf.Exp(0.2f * elapsedTime * speed);
-            // float a = Mathf.MoveTowards(0, 1f, b);
-            // transform.position = Vector3.Lerp(
-            //     transform.position,
-            //     targetPosition,
-            //     a
-            // );
+    //     float timeStart = Time.deltaTime;
+    //     while (Mathf.Abs(transform.position.z - targetZ) > 0.01f)
+    //     {
+    //         transform.position = Vector3.MoveTowards(
+    //             transform.position,
+    //             targetPosition,
+    //             speed * Time.deltaTime
+    //         );
+    //         // float elapsedTime = Time.deltaTime - timeStart;
+    //         // float b = Mathf.Exp(0.2f * elapsedTime * speed);
+    //         // float a = Mathf.MoveTowards(0, 1f, b);
+    //         // transform.position = Vector3.Lerp(
+    //         //     transform.position,
+    //         //     targetPosition,
+    //         //     a
+    //         // );
 
-            yield return null;
-        }
+    //         yield return null;
+    //     }
 
-        //transform.position = targetPosition;
-    }
-
-    private Vector3 SmoothInterpolateMovement(Vector3 currentPos, Vector3 targetPos)
-    {
-        float x = currentPos.x - targetPos.x;
-        float y = currentPos.y - targetPos.y;
-        float z = currentPos.z - targetPos.z;
-
-        x = Mathf.Exp(x);
-        y = Mathf.Exp(y);
-        z = Mathf.Exp(z);
-
-        return new Vector3(x, y, z);
-    }
+    //     if (rigAnimationList.Count == 1) animator.Play("DefaultIdle");
+    //     if (rigAnimationList.Count > 0) rigAnimationList.RemoveAt(0);
+    //     //transform.position = targetPosition;
+    // }
 }

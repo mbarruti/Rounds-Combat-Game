@@ -15,7 +15,11 @@ public class Tackle : CharacterAction
     {
         base.OnExecute(player, target);
 
-        CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{Player.username} tackles"));
+        Anim.Sequence(
+            Anim.Do(() =>
+                CombatUI.Instance.WriteText($"{Player.username} tackles")
+            )
+        );
 
         // TODO: Check if this works when enemy does nothing
         target.action.OnCompleted -= OnTargetActionCompleted;
@@ -53,8 +57,11 @@ public class Tackle : CharacterAction
         }
         else
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt")
+                )
+            );
             Player.action = new(null);
             Player.stance = Player.chosenStance.Clone();
             Player.ConsumeEffects(ON_STANCE);

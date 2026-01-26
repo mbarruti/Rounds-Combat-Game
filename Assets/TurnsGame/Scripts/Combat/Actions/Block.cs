@@ -20,8 +20,13 @@ public class Block : CharacterAction
         }
         else
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
+            // CombatUI.AddAnimation(
+            //     CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey")
+                )
+            );
         }
         Player.ConsumeEffects(ON_BLOCK);
         CompleteAction();
@@ -31,8 +36,14 @@ public class Block : CharacterAction
     {
         if (IsParry(Player.parryChance))
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
+            // CombatUI.AddAnimation(
+            //     CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
+                )
+            );
+
             targetAttack.prowessBonus = PARRY_PROWESS_LOSS;
             targetAttack.meterDamageValue = 0;
             Target.state = RECOVER;
@@ -42,8 +53,14 @@ public class Block : CharacterAction
         }
         else
         {
-            CombatUI.AddAnimation(
-                CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
+            // CombatUI.AddAnimation(
+            //     CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
+            Anim.Sequence(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack")
+                )
+            );
+
             targetAttack.prowessBonus = BLOCK_PROWESS_LOSS;
         }
         // maybe targetAttack.OnAttackHits -= OnTargetAttackHit;

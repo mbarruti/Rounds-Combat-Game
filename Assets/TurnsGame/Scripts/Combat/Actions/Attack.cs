@@ -4,6 +4,7 @@ using MyProject;
 using static MyProject.Constants;
 using UnityEngine.TextCore.Text;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 
 public class Attack : CharacterAction
 {
@@ -34,8 +35,32 @@ public class Attack : CharacterAction
 
         Player.expectedPosition.z = targetZ;
 
-        CombatUI.AddAnimation(Player.Move(Player.expectedPosition.z));
-        CombatUI.AddAnimation(AttackAnimation());
+        UniTask anim = Player.rigController.Move(Player.expectedPosition.z);
+        //Player.rigController.AddRigAnimation(anim);
+
+        UniTask anim2 = AttackAnimation();
+        //Player.rigController.AddRigAnimation(anim);
+        //Player.rigAnimationlist.Add(anim);
+
+        Anim.Sequence(
+            Anim.Do(() =>
+                Player.rigController.Move(Player.expectedPosition.z)
+            ),
+            Anim.Do(() => AttackAnimation())
+            // AnimationManager.Parallel(
+            //     AnimationManager.Do(() =>
+            //         CombatUI.Instance.WriteText(
+            //             $"{Player.username} attacks {Target.username}", waitTime: 0)
+            //     ),
+            //     AnimationManager.Do(() =>
+            //         Player.rigController.Move(Player.expectedPosition.z)
+            //     )
+            // ),
+        );
+        // AnimationManager.Sequence(
+        //     AnimationManager.Do(() => AttackAnimation())
+
+        // );
 
         // TODO: think of a way to Invoke event one time inside the for
         // taking AttackHits into account once for Parry
@@ -54,7 +79,12 @@ public class Attack : CharacterAction
             }
             else
             {
-                CombatUI.AddAnimation(CombatUI.Instance.WriteText(Player.username + " misses"));
+                //CombatUI.AddAnimation(CombatUI.Instance.WriteText(Player.username + " misses"));
+                Anim.Sequence(
+                    Anim.Do(() =>
+                        CombatUI.Instance.WriteText(Player.username + " misses")
+                    )
+                );
             }
         }
         if (successfulHits > 0 && target.action is Block)
@@ -98,13 +128,15 @@ public class Attack : CharacterAction
         return randomValue <= accuracy;
     }
 
-    private IEnumerator AttackAnimation()
+    private async UniTask AttackAnimation()
     {
         Player.isPerformingAction = true;
         Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
+
         while (Player.isPerformingAction)
         {
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update);
         }
     }
+
 }
