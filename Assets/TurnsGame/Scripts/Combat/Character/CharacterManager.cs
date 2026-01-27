@@ -93,7 +93,7 @@ public class CharacterManager : MonoBehaviour
         shieldMeter = new();
         defaultPosition = transform.position;
         animator = GetComponentInChildren<Animator>();
-        if (animator == null) Debug.Log("es null");
+        if (animator == null) Debug.Log("animator es null");
         rigController = new(this, animator);
 
         combatManager = CombatManager.Instance;

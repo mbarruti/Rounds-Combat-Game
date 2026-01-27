@@ -419,7 +419,7 @@ public class CombatManager : MonoBehaviour
     async UniTask IdleAnimation(float waitTime = 0)
     {
         Player.isPerformingAction = true;
-        Player.animator.Play("DefaultIdle");
+        Player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
         Player.transform.LookAt(Enemy.transform);
 
         await UniTask.Delay(

@@ -13,6 +13,10 @@ public class Block : CharacterAction
     {
         base.OnExecute(player, target);
 
+        Anim.Sequence(
+            Anim.Do(() => Player.rigController.IdleAnimation("BlockIdle"))
+        );
+
         if (target.action is Attack auxAttack)
         {
             targetAttack = auxAttack;
@@ -74,7 +78,7 @@ public class Block : CharacterAction
     private async UniTask BlockAnimation()
     {
         Player.isPerformingAction = true;
-        Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
+        Player.animator.CrossFadeInFixedTime("Block", 0.2f);
 
         while (Player.isPerformingAction)
         {
