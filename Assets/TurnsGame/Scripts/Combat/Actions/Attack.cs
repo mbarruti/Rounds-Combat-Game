@@ -21,29 +21,31 @@ public class Attack : CharacterAction
 
     public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        Player.ApplyEffects(ON_ATTACK);
+        // Player.ApplyEffects(ON_ATTACK);
 
-        float desiredDistance = 1.5f;
+        // float desiredDistance = 1.5f;
 
-        bool iAmBehind = Player.expectedPosition.z < Target.expectedPosition.z;
+        // bool iAmBehind = Player.expectedPosition.z < Target.expectedPosition.z;
 
-        float targetZ = iAmBehind
-            ? Target.expectedPosition.z - desiredDistance
-            : Target.expectedPosition.z + desiredDistance;
+        // float targetZ = iAmBehind
+        //     ? Target.expectedPosition.z - desiredDistance
+        //     : Target.expectedPosition.z + desiredDistance;
 
-        Player.expectedPosition.z = targetZ;
+        float targetZ = Player.rigController.CalculateTargetZ(Target.expectedPosition.z);
+        if (targetZ != Player.expectedPosition.z) Player.expectedPosition.z = targetZ;
 
         Anim.Sequence(
-            Anim.Parallel(
-                Anim.Do(() =>
-                    CombatUI.Instance.WriteText(
-                        $"{Player.username} attacks {Target.username}", waitTime: 0)
-                ),
-                Anim.Do(() =>
-                    Player.rigController.Move(targetZ)
-                )
-            ),
-            Anim.Do(() => AttackAnimation())
+            // Anim.Parallel(
+            //     Anim.Do(() =>
+            //         CombatUI.Instance.WriteText(
+            //             $"{Player.username} attacks {Target.username}", waitTime: 0)
+            //     ),
+            //     Anim.Do(() =>
+            //         Player.rigController.Move(targetZ)
+            //     )
+            // ),
+            Anim.Do(() => Player.rigController.Move(targetZ)),
+            Anim.Do(() => Player.rigController.ActionAnimation("Attack"))
         );
 
         // TODO: think of a way to Invoke event one time inside the for
@@ -111,14 +113,14 @@ public class Attack : CharacterAction
         return randomValue <= accuracy;
     }
 
-    private async UniTask AttackAnimation()
-    {
-        Player.isPerformingAction = true;
-        Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
+    // private async UniTask AttackAnimation()
+    // {
+    //     Player.isPerformingAction = true;
+    //     Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
 
-        while (Player.isPerformingAction)
-        {
-            await UniTask.Yield(PlayerLoopTiming.Update);
-        }
-    }
+    //     while (Player.isPerformingAction)
+    //     {
+    //         await UniTask.Yield(PlayerLoopTiming.Update);
+    //     }
+    // }
 }

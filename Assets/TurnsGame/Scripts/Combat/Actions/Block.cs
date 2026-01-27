@@ -28,7 +28,8 @@ public class Block : CharacterAction
             Anim.Sequence(
                 Anim.Do(() =>
                     CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey")
-                )
+                ),
+                Anim.Do(() => Player.rigController.IdleAnimation("DefaultIdle"))
             );
         }
         Player.ConsumeEffects(ON_BLOCK);
@@ -60,7 +61,7 @@ public class Block : CharacterAction
                         CombatUI.Instance.WriteText(
                             $"{Player.username} blocks the incoming attack", waitTime: 0)
                     ),
-                    Anim.Do(() => BlockAnimation())
+                    Anim.Do(() => Player.rigController.ActionAnimation("Block"))
                 )
             );
 
@@ -75,14 +76,14 @@ public class Block : CharacterAction
         return parryChance >= randomValue;
     }
 
-    private async UniTask BlockAnimation()
-    {
-        Player.isPerformingAction = true;
-        Player.animator.CrossFadeInFixedTime("Block", 0.2f);
+    // private async UniTask BlockAnimation()
+    // {
+    //     Player.isPerformingAction = true;
+    //     Player.animator.CrossFadeInFixedTime("Block", 0.2f);
 
-        while (Player.isPerformingAction)
-        {
-            await UniTask.Yield(PlayerLoopTiming.Update);
-        }
-    }
+    //     while (Player.isPerformingAction)
+    //     {
+    //         await UniTask.Yield(PlayerLoopTiming.Update);
+    //     }
+    // }
 }

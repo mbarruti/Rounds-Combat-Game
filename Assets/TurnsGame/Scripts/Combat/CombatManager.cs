@@ -137,9 +137,9 @@ public class CombatManager : MonoBehaviour
         //return;
         int randomChoice = Random.Range(0, 2);
         if (Enemy.state == WAIT) return;
-        if (randomChoice == 1 && Enemy.shieldMeter.GetAvailableCharges() > 0)
-            Enemy.action = Enemy.blockSO.CreateAction(); // BLOCK
-        else Enemy.action = Enemy.blockSO.CreateAction(); // ATTACK
+        if (/* randomChoice == 1 &&  */Enemy.shieldMeter.GetAvailableCharges() > 0)
+            Enemy.action = Enemy.attackSO.CreateAction(); // BLOCK
+        else Enemy.action = Enemy.attackSO.CreateAction(); // ATTACK
     }
 
     public void OnAttackButton()
@@ -235,9 +235,17 @@ public class CombatManager : MonoBehaviour
 
     void Clash(Attack playerAttack, Attack enemyAttack)
     {
-        //CombatUI.AddAnimation(CombatUI.Instance.WriteText("A clash is happening!"));
+        float playerOneTargetZ = Player.rigController.CalculateTargetZ(0.75f);
+        Player.expectedPosition.z = playerOneTargetZ;
+        float playerTwoTargetZ = Enemy.rigController.CalculateTargetZ(-0.75f);
+        Enemy.expectedPosition.z = playerTwoTargetZ;
+
         Anim.Sequence(
-            Anim.Do(() => CombatUI.Instance.WriteText("A clash is happening!"))
+            Anim.Parallel(
+                Anim.Do(() => CombatUI.Instance.WriteText("A clash is happening!", waitTime: 0)),
+                Anim.Do(() => Player.rigController.Move(playerOneTargetZ)),
+                Anim.Do(() => Enemy.rigController.Move(playerTwoTargetZ))
+            )
         );
 
         playerAttack.prowessBonus -= Random.Range(4, 8) / 10f;
@@ -305,28 +313,26 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
-        //Debug.Log("entra");
-        if (Player.expectedPosition != Player.defaultPosition ||
+/*         if (Player.expectedPosition != Player.defaultPosition ||
             Enemy.expectedPosition != Enemy.defaultPosition)
-        {
-            //Debug.Log("a");
-            if (Player.expectedPosition != Player.defaultPosition)
-            {
-                //Debug.Log("b1");
-                Anim.Sequence(
-                    Anim.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
-                    Anim.Do(() => IdleAnimation())
-                );
-            }
-            if (Enemy.expectedPosition != Enemy.defaultPosition)
-            {
-                //Debug.Log("b2");
-                Anim.Sequence(
-                    Anim.Do(() => Enemy.rigController.Move(Enemy.defaultPosition.z)),
-                    Anim.Do(() => IdleAnimation())
-                );
-            }
-        }
+        { */
+        Anim.Sequence(
+            Anim.Parallel(
+                Anim.Do(async () =>
+                {
+                    await Player.rigController.Move(Player.defaultPosition.z);
+                    //await Player.rigController.IdleAnimation("DefaultIdle");
+                    await IdleAnimation(Player, Enemy);
+                }),
+                Anim.Do(async () =>
+                {
+                    await Enemy.rigController.Move(Enemy.defaultPosition.z);
+                    //await Enemy.rigController.IdleAnimation("DefaultIdle");
+                    await IdleAnimation(Enemy, Player);
+                })
+            )
+        );
+/*         } */
 
         // TODO: perhaps an event for this
         Player.ConsumeEffects(ROUND_START);
@@ -397,7 +403,7 @@ public class CombatManager : MonoBehaviour
         );
         Anim.Sequence(
             Anim.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
-            Anim.Do(() => IdleAnimation(waitTime: 1))
+            Anim.Do(() => IdleAnimation(Player, Enemy, waitTime: 1))
             //Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController))
         );
         await AnimationManager.Instance.RunAnimations();
@@ -416,11 +422,11 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    async UniTask IdleAnimation(float waitTime = 0)
+    async UniTask IdleAnimation(CharacterManager player, CharacterManager target, float waitTime = 0)
     {
-        Player.isPerformingAction = true;
-        Player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
-        Player.transform.LookAt(Enemy.transform);
+        player.isPerformingAction = true;
+        player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
+        player.transform.LookAt(target.transform);
 
         await UniTask.Delay(
             Mathf.RoundToInt(waitTime * 1000),

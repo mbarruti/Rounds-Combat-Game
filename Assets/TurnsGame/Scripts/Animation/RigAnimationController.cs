@@ -8,7 +8,7 @@ public class RigAnimationController
 {
     CharacterManager Player { get; set; }
     Animator PlayerAnimator { get; set; }
-    List<IEnumerator> rigAnimationList = new();
+    List<Func<UniTask>> rigAnimationList = new();
 
     public RigAnimationController(CharacterManager player, Animator playerAnimator)
     {
@@ -16,8 +16,15 @@ public class RigAnimationController
         PlayerAnimator = playerAnimator;
     }
 
+    // public void ReturnToIdle()
+    // {
+    //     IdleAnimation()
+    // }
+
     public async UniTask Move(float targetZ, float waitTime = 0f)
     {
+        if (Player.transform.position.z == targetZ) return;
+
         float speed = 7.5f;
 
         Vector3 targetPosition = new Vector3(
@@ -58,11 +65,23 @@ public class RigAnimationController
         }
     }
 
+    public float CalculateTargetZ(float enemyZ)
+    {
+        float desiredDistance = 1.5f;
+
+        bool iAmBehind = Player.expectedPosition.z < enemyZ;
+
+        float targetZ = iAmBehind
+            ? enemyZ - desiredDistance
+            : enemyZ + desiredDistance;
+
+        return targetZ;
+    }
+
     public async UniTask IdleAnimation(string idleAnim, float waitTime = 0)
     {
         Player.isPerformingAction = true;
         Player.animator.CrossFadeInFixedTime(idleAnim, 0.2f);
-        //Player.transform.LookAt(Enemy.transform);
 
         await UniTask.Delay(
             Mathf.RoundToInt(waitTime * 1000),
@@ -71,11 +90,24 @@ public class RigAnimationController
         );
     }
 
-    public void AddRigAnimation(IEnumerator anim)
+    public async UniTask ActionAnimation(string anim)
     {
-        rigAnimationList.Add(anim);
+        Player.isPerformingAction = true;
+
+        Player.animator.CrossFadeInFixedTime(anim, 0.2f);
+
+        while (Player.isPerformingAction)
+        {
+            await UniTask.Yield(PlayerLoopTiming.Update);
+        }
+    }
+
+    public Func<UniTask> RigAnimation(Func<UniTask> task)
+    {
+        rigAnimationList.Add(task);
         // AnimationManager.Sequence(
         //     AnimationManager.Do(anim)
         // );
+        return task;
     }
 }
