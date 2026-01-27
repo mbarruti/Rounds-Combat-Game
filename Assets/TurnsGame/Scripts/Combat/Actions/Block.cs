@@ -1,6 +1,7 @@
 using UnityEngine;
 using MyProject;
 using static MyProject.Constants;
+using Cysharp.Threading.Tasks;
 
 public class Block : CharacterAction
 {
@@ -20,8 +21,6 @@ public class Block : CharacterAction
         }
         else
         {
-            // CombatUI.AddAnimation(
-            //     CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey"));
             Anim.Sequence(
                 Anim.Do(() =>
                     CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey")
@@ -36,8 +35,6 @@ public class Block : CharacterAction
     {
         if (IsParry(Player.parryChance))
         {
-            // CombatUI.AddAnimation(
-            //     CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!"));
             Anim.Sequence(
                 Anim.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
@@ -53,11 +50,13 @@ public class Block : CharacterAction
         }
         else
         {
-            // CombatUI.AddAnimation(
-            //     CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack"));
             Anim.Sequence(
-                Anim.Do(() =>
-                    CombatUI.Instance.WriteText(Player.username + " blocks the incoming attack")
+                Anim.Parallel(
+                    Anim.Do(() =>
+                        CombatUI.Instance.WriteText(
+                            $"{Player.username} blocks the incoming attack", waitTime: 0)
+                    ),
+                    Anim.Do(() => BlockAnimation())
                 )
             );
 
@@ -70,5 +69,16 @@ public class Block : CharacterAction
     {
         float randomValue = Random.Range(0f, 1f);
         return parryChance >= randomValue;
+    }
+
+    private async UniTask BlockAnimation()
+    {
+        Player.isPerformingAction = true;
+        Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
+
+        while (Player.isPerformingAction)
+        {
+            await UniTask.Yield(PlayerLoopTiming.Update);
+        }
     }
 }

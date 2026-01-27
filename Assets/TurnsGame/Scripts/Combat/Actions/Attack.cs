@@ -17,8 +17,6 @@ public class Attack : CharacterAction
     // TODO: make this logic better with the same result
     public int meterDamageValue = 1; // 1 full damage, 0 no damage
 
-    public Vector3 expectedPositionDefault;
-    public Vector3 expectedPositionDefault2;
     public event Action<CharacterManager> OnAttackHits;
 
     public override void OnExecute(CharacterManager player, CharacterManager target)
@@ -35,32 +33,18 @@ public class Attack : CharacterAction
 
         Player.expectedPosition.z = targetZ;
 
-        UniTask anim = Player.rigController.Move(Player.expectedPosition.z);
-        //Player.rigController.AddRigAnimation(anim);
-
-        UniTask anim2 = AttackAnimation();
-        //Player.rigController.AddRigAnimation(anim);
-        //Player.rigAnimationlist.Add(anim);
-
         Anim.Sequence(
-            Anim.Do(() =>
-                Player.rigController.Move(Player.expectedPosition.z)
+            Anim.Parallel(
+                Anim.Do(() =>
+                    CombatUI.Instance.WriteText(
+                        $"{Player.username} attacks {Target.username}", waitTime: 0)
+                ),
+                Anim.Do(() =>
+                    Player.rigController.Move(targetZ)
+                )
             ),
             Anim.Do(() => AttackAnimation())
-            // AnimationManager.Parallel(
-            //     AnimationManager.Do(() =>
-            //         CombatUI.Instance.WriteText(
-            //             $"{Player.username} attacks {Target.username}", waitTime: 0)
-            //     ),
-            //     AnimationManager.Do(() =>
-            //         Player.rigController.Move(Player.expectedPosition.z)
-            //     )
-            // ),
         );
-        // AnimationManager.Sequence(
-        //     AnimationManager.Do(() => AttackAnimation())
-
-        // );
 
         // TODO: think of a way to Invoke event one time inside the for
         // taking AttackHits into account once for Parry
@@ -79,7 +63,6 @@ public class Attack : CharacterAction
             }
             else
             {
-                //CombatUI.AddAnimation(CombatUI.Instance.WriteText(Player.username + " misses"));
                 Anim.Sequence(
                     Anim.Do(() =>
                         CombatUI.Instance.WriteText(Player.username + " misses")
@@ -138,5 +121,4 @@ public class Attack : CharacterAction
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
     }
-
 }

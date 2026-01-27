@@ -43,17 +43,12 @@ public class CombatManager : MonoBehaviour
         SetupMatch();
     }
 
-    void Update()
-    {
-       //Debug.Log(player.activeBuffs.BonusDamage);
-    }
-
     void SetupMatch()
     {
-        //player = SpawnCharacter(IS_PLAYER_ONE);
-        //player.username = "PlayerOne";
-        //enemy = SpawnCharacter(!IS_PLAYER_ONE);
-        //enemy.username = "PlayerTwo";
+        //Player = SpawnCharacter(IS_PLAYER_ONE);
+        //Player.username = "PlayerOne";
+        //Enemy = SpawnCharacter(!IS_PLAYER_ONE);
+        //Enemy.username = "PlayerTwo";
 
         // PROVISIONAL
         // Vector3 screenPosition = CombatUI.Instance.uiPlayerOnePosition.position;
@@ -69,14 +64,12 @@ public class CombatManager : MonoBehaviour
         // playerTwo.transform.position = worldPosition;
         playerTwo.Setup(!IS_PLAYER_ONE);
         Enemy = playerTwo;
-        //
+        // PROVISIONAL END (DELETE LATER)
+
         Player.transform.LookAt(Enemy.transform);
         Enemy.transform.LookAt(Player.transform);
 
-        //CombatUI.AddAnimation(CombatUI.Instance.WriteText("Begin match"));
-        // AnimationManager.Sequence(
-        //     AnimationManager.Do(CombatUI.Instance.WriteText("Begin match"))
-        // );
+        Anim.Sequence(Anim.Do(() => CombatUI.Instance.WriteText("Begin match")));
         PreRound();
     }
 
@@ -108,10 +101,7 @@ public class CombatManager : MonoBehaviour
     {
         roundNumber++;
 
-        //CombatUI.AddAnimation(CombatUI.Instance.WriteText("Round " + roundNumber));
-        // AnimationManager.Sequence(
-        //     AnimationManager.Do(CombatUI.Instance.WriteText($"Round {roundNumber}"))
-        // );
+        // Anim.Sequence(Anim.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")));
 
         Player.Reset();
         Enemy.Reset();
@@ -122,24 +112,11 @@ public class CombatManager : MonoBehaviour
         Player.actionController.SetAvailableActions();
         Enemy.actionController.SetAvailableActions();
 
-        //CombatUI.AddAnimation(CombatUI.Instance.ShowActionButtons(Player.actionController));
-        //StartCoroutine(CombatUI.Instance.ExecuteAnimations());
         Anim.Sequence(
-            Anim.Do(() => CombatUI.Instance.WriteText("Begin match")),
             Anim.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
-            Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 1))
+            Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 0))
         );
-        Anim.Sequence(
-            Anim.Do(() => CombatUI.Instance.HideActionButtons()),
-            Anim.Do(() => Player.rigController.Move(Enemy.transform.position.z-1.5f)),
-            Anim.Do(() => AttackAnimation())
-        );
-        Anim.Sequence(
-            Anim.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
-            Anim.Do(() => IdleAnimation()),
-            Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController))
-        );
-        //await AnimationManager.Instance.RunAnimations();
+        //await AnimationLoop();
         AnimationManager.Instance.RunAnimations().Forget();
     }
 
@@ -157,11 +134,12 @@ public class CombatManager : MonoBehaviour
 
     void AIAction()
     {
+        //return;
         int randomChoice = Random.Range(0, 2);
         if (Enemy.state == WAIT) return;
         if (randomChoice == 1 && Enemy.shieldMeter.GetAvailableCharges() > 0)
-            Enemy.action = Enemy.attackSO.CreateAction(); // BLOCK
-        else Enemy.action = Enemy.attackSO.CreateAction(); // ATTACK
+            Enemy.action = Enemy.blockSO.CreateAction(); // BLOCK
+        else Enemy.action = Enemy.blockSO.CreateAction(); // ATTACK
     }
 
     public void OnAttackButton()
@@ -327,18 +305,26 @@ public class CombatManager : MonoBehaviour
 
     void RoundEnd()
     {
+        //Debug.Log("entra");
         if (Player.expectedPosition != Player.defaultPosition ||
             Enemy.expectedPosition != Enemy.defaultPosition)
         {
+            //Debug.Log("a");
             if (Player.expectedPosition != Player.defaultPosition)
             {
-                UniTask anim = Player.rigController.Move(Player.defaultPosition.z);
-                //Player.rigController.AddRigAnimation(anim);
+                //Debug.Log("b1");
+                Anim.Sequence(
+                    Anim.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
+                    Anim.Do(() => IdleAnimation())
+                );
             }
             if (Enemy.expectedPosition != Enemy.defaultPosition)
             {
-                UniTask anim = Enemy.rigController.Move(Enemy.defaultPosition.z);
-                //Enemy.rigController.AddRigAnimation(anim);
+                //Debug.Log("b2");
+                Anim.Sequence(
+                    Anim.Do(() => Enemy.rigController.Move(Enemy.defaultPosition.z)),
+                    Anim.Do(() => IdleAnimation())
+                );
             }
         }
 
@@ -371,8 +357,6 @@ public class CombatManager : MonoBehaviour
     {
         if (Player.IsDead() && Enemy.IsDead())
         {
-            // CombatUI.AddAnimation(
-            //     CombatUI.Instance.WriteText("Both players have fallen. The match ends in a draw!"));
             Anim.Sequence(
                 Anim.Do(() =>
                     CombatUI.Instance.WriteText(
@@ -383,17 +367,44 @@ public class CombatManager : MonoBehaviour
         else
         {
             (var winner, var loser) = Player.IsDead() ? (Enemy, Player) : (Player, Enemy);
-            //CombatUI.AddAnimation(CombatUI.Instance.WriteText(winner.name + " wins the match!"));
             Anim.Sequence(
                 Anim.Do(() =>
                     CombatUI.Instance.WriteText(winner.name + " wins the match!")
                 )
             );
         }
-        StartCoroutine(CombatUI.Instance.ExecuteAnimations());
+        AnimationManager.Instance.RunAnimations().Forget();
     }
 
     // TEST FUNCTIONS (DELETE LATER)
+    async UniTask AnimationLoop()
+    {
+        Anim.Sequence(
+            Anim.Do(() => CombatUI.Instance.WriteText("Begin match")),
+            Anim.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
+            Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 1))
+        );
+        Anim.Sequence(
+            Anim.Parallel(
+                Anim.Do(() => CombatUI.Instance.HideActionButtons()),
+                Anim.Do(() => CombatUI.Instance.WriteText($"{Player.username} goes to attack", delay: 0.01f, waitTime: 0)),
+                Anim.Do(() => Player.rigController.Move(Enemy.transform.position.z-1.5f))
+            ),
+            Anim.Parallel(
+                Anim.Do(() => CombatUI.Instance.WriteText($"{Player.username} attacks {Enemy.username}", delay: 0.01f, waitTime: 0)),
+                Anim.Do(() => AttackAnimation())
+            )
+        );
+        Anim.Sequence(
+            Anim.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
+            Anim.Do(() => IdleAnimation(waitTime: 1))
+            //Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController))
+        );
+        await AnimationManager.Instance.RunAnimations();
+        await AnimationLoop();
+        //AnimationManager.Instance.RunAnimations().Forget();
+    }
+
     async UniTask AttackAnimation()
     {
         Player.isPerformingAction = true;

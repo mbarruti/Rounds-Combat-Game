@@ -41,11 +41,11 @@ public class RigAnimationController
 
         Player.transform.position = targetPosition;
 
-        if (rigAnimationList.Count == 1)
-            PlayerAnimator.Play("DefaultIdle");
+        // if (rigAnimationList.Count == 1)
+        //     PlayerAnimator.Play("DefaultIdle");
 
-        if (rigAnimationList.Count > 0)
-            rigAnimationList.RemoveAt(0);
+        // if (rigAnimationList.Count > 0)
+        //     rigAnimationList.RemoveAt(0);
 
         if (waitTime > 0f)
         {
