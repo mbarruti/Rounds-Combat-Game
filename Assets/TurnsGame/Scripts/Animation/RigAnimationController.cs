@@ -2,24 +2,49 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RigAnimationController
 {
     CharacterManager Player { get; set; }
     Animator PlayerAnimator { get; set; }
-    List<Func<UniTask>> rigAnimationList = new();
+    AnimatorTask Anim { get; set; }
+    List<string> rigAnimationList = new();
+    UniTaskCompletionSource animationCompletionSource;
+    UniTaskCompletionSource frameCompletionSource;
+
+    public event Action OnFrame;
 
     public RigAnimationController(CharacterManager player, Animator playerAnimator)
     {
         Player = player;
         PlayerAnimator = playerAnimator;
+        Anim = new(playerAnimator);
     }
 
     // public void ReturnToIdle()
     // {
     //     IdleAnimation()
     // }
+
+    public void DeleteFrameEvents()
+    {
+        OnFrame = null;
+    }
+
+    public void OnAnimationFrame()
+    {
+        //OnFrame?.Invoke();
+        frameCompletionSource?.TrySetResult();
+        frameCompletionSource = null;
+    }
+
+    public void OnAnimationFinished()
+    {
+        animationCompletionSource?.TrySetResult();
+        animationCompletionSource = null;
+    }
 
     public async UniTask Move(float targetZ, float waitTime = 0f)
     {
@@ -46,8 +71,8 @@ public class RigAnimationController
 
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
-
         Player.transform.position = targetPosition;
+        PlayerAnimator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
 
         // if (rigAnimationList.Count == 1)
         //     PlayerAnimator.Play("DefaultIdle");
@@ -80,7 +105,6 @@ public class RigAnimationController
 
     public async UniTask IdleAnimation(string idleAnim, float waitTime = 0)
     {
-        Player.isPerformingAction = true;
         Player.animator.CrossFadeInFixedTime(idleAnim, 0.2f);
 
         await UniTask.Delay(
@@ -90,24 +114,39 @@ public class RigAnimationController
         );
     }
 
-    public async UniTask ActionAnimation(string anim)
+    public async UniTask ActionAnimation(string anim, float trigger)
     {
-        Player.isPerformingAction = true;
+/*         Player.animator.CrossFadeInFixedTime(anim, 0.2f);
 
-        Player.animator.CrossFadeInFixedTime(anim, 0.2f);
+        // Esperar a que el animator entre en el estado
+        await UniTask.WaitUntil(() =>
+            Player.animator.GetCurrentAnimatorStateInfo(0).IsName(anim)
+        );
 
-        while (Player.isPerformingAction)
+        _ = UniTask.Create(async () =>
         {
-            await UniTask.Yield(PlayerLoopTiming.Update);
-        }
-    }
+            await UniTask.WaitUntil(() =>
+                Player.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f
+            );
 
-    public Func<UniTask> RigAnimation(Func<UniTask> task)
-    {
-        rigAnimationList.Add(task);
-        // AnimationManager.Sequence(
-        //     AnimationManager.Do(anim)
-        // );
-        return task;
+            if (Player.animator.GetCurrentAnimatorStateInfo(0).IsName(anim))
+                Player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
+        });
+
+        // Esperar a que termine la animación
+        await UniTask.WaitUntil(() =>
+            Player.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animEndTime
+        ); */
+        var actionAnim = Anim.Play(anim);
+        _ = UniTask.Create(async () =>
+        {
+            await actionAnim.End();
+
+            var state = Player.animator.GetCurrentAnimatorStateInfo(0);
+
+            if (state.IsName(anim))
+                Player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
+        });
+        if (trigger != 1f) await actionAnim.At(trigger);
     }
 }

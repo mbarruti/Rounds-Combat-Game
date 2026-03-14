@@ -261,16 +261,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &364740070 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3295056005274239711, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
-  m_PrefabInstance: {fileID: 2020553549}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &495127367 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3295056005274239711, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
-  m_PrefabInstance: {fileID: 3637629643169971618}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,18 +868,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1283761070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 364740070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9941f707373a8034c82d97bd6f676c6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReceiver
 --- !u!114 &1293431178 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 488297555584424816, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
@@ -1133,26 +1111,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerTwo
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4928679758661635640, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3295056005274239711, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1283761070}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
---- !u!114 &2083058557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 495127367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9941f707373a8034c82d97bd6f676c6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReceiver
 --- !u!1001 &3637629643169971618
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1449,13 +1413,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 13.983009
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4928679758661635640, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3295056005274239711, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2083058557}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
 --- !u!1001 &5425446490218578318
 PrefabInstance:

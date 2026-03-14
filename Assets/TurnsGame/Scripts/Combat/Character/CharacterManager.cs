@@ -31,7 +31,6 @@ public class CharacterManager : MonoBehaviour
     public RigAnimationController rigController;
     public Vector3 defaultPosition;
     public Vector3 expectedPosition;
-    [SerializeField] AnimationEventReceiver animationReceiver;
 
     public Animator animator;
 
@@ -97,7 +96,6 @@ public class CharacterManager : MonoBehaviour
         if (animator == null) animator = GetComponentInChildren<Animator>();
         if (animator == null) Debug.Log("animator es null");
         rigController = new(this, animator);
-        animationReceiver.playerController = rigController;
 
         combatManager = CombatManager.Instance;
     }
