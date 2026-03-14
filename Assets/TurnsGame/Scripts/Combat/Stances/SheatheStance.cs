@@ -9,8 +9,8 @@ public class SheatheStance : Stance
         if (Applied) return;
 
         // TODO: make it recognize gender
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} sheathes their weapon")
                 )
             );

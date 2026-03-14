@@ -13,8 +13,8 @@ public class Block : CharacterAction
     {
         base.OnExecute(player, target);
 
-        Anim.Sequence(
-            Anim.Do(() => Player.rigController.IdleAnimation("BlockIdle"))
+        Act.Sequence(
+            Act.Do(() => Player.rigController.IdleAnimation("BlockIdle"))
         );
 
         if (target.action is Attack auxAttack)
@@ -25,11 +25,11 @@ public class Block : CharacterAction
         }
         else
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText(Player.username + " blocks nothing what a donkey")
-                ),
-                Anim.Do(() => Player.rigController.IdleAnimation("DefaultIdle"))
+                )/* ,
+                Anim.Do(() => Player.rigController.IdleAnimation("DefaultIdle")) */
             );
         }
         Player.ConsumeEffects(ON_BLOCK);
@@ -40,8 +40,8 @@ public class Block : CharacterAction
     {
         if (IsParry(Player.parryChance))
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
                 )
             );
@@ -55,13 +55,13 @@ public class Block : CharacterAction
         }
         else
         {
-            Anim.Sequence(
-                Anim.Parallel(
-                    Anim.Do(() =>
+            Act.Sequence(
+                Act.Parallel(
+                    Act.Do(() =>
                         CombatUI.Instance.WriteText(
                             $"{Player.username} blocks the incoming attack", waitTime: 0)
                     ),
-                    Anim.Do(() => Player.rigController.ActionAnimation("Block"))
+                    Act.Do(() => Player.rigController.ActionAnimation("Block", 1f))
                 )
             );
 

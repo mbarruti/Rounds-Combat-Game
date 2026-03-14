@@ -108,23 +108,23 @@ public class ShieldMeterUI : MonoBehaviour
 
         if (previousChargesCopy.Count > currentCharges.Count)
         {
-            Anim.Sequence(Anim.Do(() => LoseChargeBars(currentCharges, previousChargesCopy)));
+            Act.Sequence(Act.Do(() => LoseChargeBars(currentCharges, previousChargesCopy)));
         }
         else if (previousChargesCopy.Count < currentCharges.Count)
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     RecoverChargeBars(currentCharges, previousChargesCopy)
                 )
             );
         else if (previousChargesCopy[^1] != currentCharges[^1] && currentCharges[^1] != FULL_CHARGE)
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     LoseChargeBars(currentCharges, previousChargesCopy)
                 )
             );
         else if (previousChargesCopy[^1] != currentCharges[^1] && currentCharges[^1] == FULL_CHARGE)
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     RecoverChargeBars(currentCharges, previousChargesCopy)
                 )
             );

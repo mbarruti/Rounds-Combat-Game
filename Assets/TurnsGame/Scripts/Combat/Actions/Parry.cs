@@ -37,8 +37,8 @@ public class Parry : CharacterAction
         {
             parrySuccess = true;
 
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
                 )
             );
@@ -62,8 +62,8 @@ public class Parry : CharacterAction
     {
         if (parrySuccess == false)
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} fails parry attempt")
                 )
             );

@@ -21,8 +21,8 @@ public class ProwessBuffEffect : IEffect
         {
             user.activeBuffs.Prowess += Value;
 
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText
                         ($"{user.username} increases prowess by {Value*100}%")
                 )

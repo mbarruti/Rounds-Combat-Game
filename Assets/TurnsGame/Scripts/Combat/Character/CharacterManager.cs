@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -24,10 +25,13 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] User user;
     public string username => user.Name;
 
+    CombatManager combatManager;
+
     // Animation
     public RigAnimationController rigController;
     public Vector3 defaultPosition;
     public Vector3 expectedPosition;
+    [SerializeField] AnimationEventReceiver animationReceiver;
 
     public Animator animator;
 
@@ -81,8 +85,6 @@ public class CharacterManager : MonoBehaviour
 
     public PlayerState state;
 
-    CombatManager combatManager;
-
     void Awake()
     {
         //action = new();
@@ -92,9 +94,10 @@ public class CharacterManager : MonoBehaviour
         effects = new();
         shieldMeter = new();
         defaultPosition = transform.position;
-        animator = GetComponentInChildren<Animator>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
         if (animator == null) Debug.Log("animator es null");
         rigController = new(this, animator);
+        animationReceiver.playerController = rigController;
 
         combatManager = CombatManager.Instance;
     }
@@ -172,6 +175,8 @@ public class CharacterManager : MonoBehaviour
         expectedPosition = defaultPosition;
 
         shieldMeterUI.SetChargesCopy();
+
+        //rigController.DeleteFrameEvents();
     }
 
     public void PerformAction(CharacterManager target)
@@ -196,10 +201,25 @@ public class CharacterManager : MonoBehaviour
         else currentHP -= damage;
 
         if (currentHP != previousHP)
-            //CombatUI.AddAnimation(CombatUI.Instance.UpdateHPText(this, currentHP));
-            Anim.Sequence(
-                Anim.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP))
+        {
+            // Action onFrameHandler = () =>
+            // {
+            //     CombatUI.Instance
+            //     .UpdateHPText(this, currentHP)
+            //     .Forget();
+            // };
+            // //tiene que ser el rigcontroller del player contrario rigController.OnFrame += onFrameHandler;
+            Act.Sequence(
+                Act.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP))
             );
+            // {
+            //    void HandleFrame()
+            //     {
+            //         CombatUI.Instance.UpdateHPText(this, currentHP).Forget();
+            //     }
+            //     rigController.OnFrame += HandleFrame;
+            // }
+        }
     }
 
     public void TakeMeterDamage(float meterDamage)
@@ -210,8 +230,8 @@ public class CharacterManager : MonoBehaviour
             CrushedEffect crushedEffect = new();
             AddEffect(crushedEffect);
             //CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{username} got crushed!"));
-            Anim.Sequence(
-                Anim.Do(() => CombatUI.Instance.WriteText($"{username} got crushed!"))
+            Act.Sequence(
+                Act.Do(() => CombatUI.Instance.WriteText($"{username} got crushed!"))
             );
         }
     }
@@ -279,41 +299,4 @@ public class CharacterManager : MonoBehaviour
         if (Mathf.Approximately(currentHP, 0)|| currentHP < 0) return true;
         return false;
     }
-
-    // public IEnumerator Move(float targetZ)
-    // {
-    //     float speed = 7.5f;
-
-    //     Vector3 targetPosition = new Vector3(
-    //         transform.position.x,
-    //         transform.position.y,
-    //         targetZ
-    //     );
-    //     transform.LookAt(targetPosition);
-    //     animator.CrossFadeInFixedTime("Run", 0.2f);
-
-    //     float timeStart = Time.deltaTime;
-    //     while (Mathf.Abs(transform.position.z - targetZ) > 0.01f)
-    //     {
-    //         transform.position = Vector3.MoveTowards(
-    //             transform.position,
-    //             targetPosition,
-    //             speed * Time.deltaTime
-    //         );
-    //         // float elapsedTime = Time.deltaTime - timeStart;
-    //         // float b = Mathf.Exp(0.2f * elapsedTime * speed);
-    //         // float a = Mathf.MoveTowards(0, 1f, b);
-    //         // transform.position = Vector3.Lerp(
-    //         //     transform.position,
-    //         //     targetPosition,
-    //         //     a
-    //         // );
-
-    //         yield return null;
-    //     }
-
-    //     if (rigAnimationList.Count == 1) animator.Play("DefaultIdle");
-    //     if (rigAnimationList.Count > 0) rigAnimationList.RemoveAt(0);
-    //     //transform.position = targetPosition;
-    // }
 }

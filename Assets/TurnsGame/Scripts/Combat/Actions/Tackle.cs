@@ -15,8 +15,8 @@ public class Tackle : CharacterAction
     {
         base.OnExecute(player, target);
 
-        Anim.Sequence(
-            Anim.Do(() =>
+        Act.Sequence(
+            Act.Do(() =>
                 CombatUI.Instance.WriteText($"{Player.username} tackles")
             )
         );
@@ -57,8 +57,8 @@ public class Tackle : CharacterAction
         }
         else
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} fails tackle attempt")
                 )
             );

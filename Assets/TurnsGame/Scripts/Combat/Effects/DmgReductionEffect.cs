@@ -17,8 +17,8 @@ public class DmgReductionEffect : IEffect
     {
         if (Uses == 0)
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText(
                         $"{user.username} reduces damage taken by {Value*100}%")
                 )

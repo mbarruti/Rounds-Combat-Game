@@ -81,7 +81,7 @@ public class AnimationManager : MonoBehaviour
 }
 
 // Helper Builder
-public static class Anim
+public static class Act
 {
     /// <summary>
     /// Creates a step that executes a UniTask
@@ -98,4 +98,3 @@ public static class Anim
     /// </summary>
     public static void Sequence(params AnimationStep[] steps) => AnimationManager.Sequence(steps);
 }
-

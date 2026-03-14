@@ -21,31 +21,14 @@ public class Attack : CharacterAction
 
     public override void OnExecute(CharacterManager player, CharacterManager target)
     {
-        // Player.ApplyEffects(ON_ATTACK);
-
-        // float desiredDistance = 1.5f;
-
-        // bool iAmBehind = Player.expectedPosition.z < Target.expectedPosition.z;
-
-        // float targetZ = iAmBehind
-        //     ? Target.expectedPosition.z - desiredDistance
-        //     : Target.expectedPosition.z + desiredDistance;
+        Player.ApplyEffects(ON_ATTACK);
 
         float targetZ = Player.rigController.CalculateTargetZ(Target.expectedPosition.z);
         if (targetZ != Player.expectedPosition.z) Player.expectedPosition.z = targetZ;
 
-        Anim.Sequence(
-            // Anim.Parallel(
-            //     Anim.Do(() =>
-            //         CombatUI.Instance.WriteText(
-            //             $"{Player.username} attacks {Target.username}", waitTime: 0)
-            //     ),
-            //     Anim.Do(() =>
-            //         Player.rigController.Move(targetZ)
-            //     )
-            // ),
-            Anim.Do(() => Player.rigController.Move(targetZ)),
-            Anim.Do(() => Player.rigController.ActionAnimation("Attack"))
+        Act.Sequence(
+            Act.Do(() => Player.rigController.Move(targetZ)),
+            Act.Do(() => Player.rigController.ActionAnimation("Attack", 0.4f))
         );
 
         // TODO: think of a way to Invoke event one time inside the for
@@ -61,19 +44,33 @@ public class Attack : CharacterAction
             if (AttackHits(Player.accuracy))
             {
                 successfulHits += 1;
-                if (!Mathf.Approximately(totalDamage, 0)) target.TakeDamage(totalDamage);
+                if (!Mathf.Approximately(totalDamage, 0))
+                {
+                    Target.TakeDamage(totalDamage);
+
+/*                     Action onFrameHandler = () =>
+                    {
+                        Debug.Log("hola");
+                        CombatUI.Instance
+                        .UpdateHPText(Target, Target.currentHP)
+                        .Forget();
+                    };
+                    Player.rigController.OnFrame += onFrameHandler; */
+                }
             }
             else
             {
-                Anim.Sequence(
-                    Anim.Do(() =>
+                Act.Sequence(
+                    Act.Do(() =>
                         CombatUI.Instance.WriteText(Player.username + " misses")
                     )
                 );
             }
         }
         if (successfulHits > 0 && target.action is Block)
+        {
             target.TakeMeterDamage(Player.meterDamage * meterDamageValue);
+        }
 
         //user.RecoverShieldCharge();
         Player.ConsumeEffects(ON_ATTACK);

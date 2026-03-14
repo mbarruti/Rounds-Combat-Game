@@ -69,7 +69,7 @@ public class CombatManager : MonoBehaviour
         Player.transform.LookAt(Enemy.transform);
         Enemy.transform.LookAt(Player.transform);
 
-        Anim.Sequence(Anim.Do(() => CombatUI.Instance.WriteText("Begin match")));
+        Act.Sequence(Act.Do(() => CombatUI.Instance.WriteText("Begin match")));
         PreRound();
     }
 
@@ -112,9 +112,9 @@ public class CombatManager : MonoBehaviour
         Player.actionController.SetAvailableActions();
         Enemy.actionController.SetAvailableActions();
 
-        Anim.Sequence(
-            Anim.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
-            Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 0))
+        Act.Sequence(
+            Act.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
+            Act.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 0))
         );
         //await AnimationLoop();
         AnimationManager.Instance.RunAnimations().Forget();
@@ -208,8 +208,8 @@ public class CombatManager : MonoBehaviour
     {
         state = CombatState.ACTION;
         //CombatUI.AddAnimation(CombatUI.Instance.HideActionButtons());
-        Anim.Sequence(
-            Anim.Do(() => CombatUI.Instance.HideActionButtons())
+        Act.Sequence(
+            Act.Do(() => CombatUI.Instance.HideActionButtons())
         );
 
         AIAction();
@@ -240,11 +240,11 @@ public class CombatManager : MonoBehaviour
         float playerTwoTargetZ = Enemy.rigController.CalculateTargetZ(-0.75f);
         Enemy.expectedPosition.z = playerTwoTargetZ;
 
-        Anim.Sequence(
-            Anim.Parallel(
-                Anim.Do(() => CombatUI.Instance.WriteText("A clash is happening!", waitTime: 0)),
-                Anim.Do(() => Player.rigController.Move(playerOneTargetZ)),
-                Anim.Do(() => Enemy.rigController.Move(playerTwoTargetZ))
+        Act.Sequence(
+            Act.Parallel(
+                Act.Do(() => CombatUI.Instance.WriteText("A clash is happening!", waitTime: 0)),
+                Act.Do(() => Player.rigController.Move(playerOneTargetZ)),
+                Act.Do(() => Enemy.rigController.Move(playerTwoTargetZ))
             )
         );
 
@@ -272,8 +272,8 @@ public class CombatManager : MonoBehaviour
 
             // CombatUI.AddAnimation(
             //     CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!")
                 )
             );
@@ -295,8 +295,8 @@ public class CombatManager : MonoBehaviour
 
             // CombatUI.AddAnimation(
             //     CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!")
                 )
             );
@@ -316,20 +316,10 @@ public class CombatManager : MonoBehaviour
 /*         if (Player.expectedPosition != Player.defaultPosition ||
             Enemy.expectedPosition != Enemy.defaultPosition)
         { */
-        Anim.Sequence(
-            Anim.Parallel(
-                Anim.Do(async () =>
-                {
-                    await Player.rigController.Move(Player.defaultPosition.z);
-                    //await Player.rigController.IdleAnimation("DefaultIdle");
-                    await IdleAnimation(Player, Enemy);
-                }),
-                Anim.Do(async () =>
-                {
-                    await Enemy.rigController.Move(Enemy.defaultPosition.z);
-                    //await Enemy.rigController.IdleAnimation("DefaultIdle");
-                    await IdleAnimation(Enemy, Player);
-                })
+        Act.Sequence(
+            Act.Parallel(
+                Act.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
+                Act.Do(() => Enemy.rigController.Move(Enemy.defaultPosition.z))
             )
         );
 /*         } */
@@ -363,8 +353,8 @@ public class CombatManager : MonoBehaviour
     {
         if (Player.IsDead() && Enemy.IsDead())
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText(
                         "Both players have fallen. The match ends in a draw!")
                 )
@@ -373,8 +363,8 @@ public class CombatManager : MonoBehaviour
         else
         {
             (var winner, var loser) = Player.IsDead() ? (Enemy, Player) : (Player, Enemy);
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText(winner.name + " wins the match!")
                 )
             );
@@ -385,25 +375,25 @@ public class CombatManager : MonoBehaviour
     // TEST FUNCTIONS (DELETE LATER)
     async UniTask AnimationLoop()
     {
-        Anim.Sequence(
-            Anim.Do(() => CombatUI.Instance.WriteText("Begin match")),
-            Anim.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
-            Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 1))
+        Act.Sequence(
+            Act.Do(() => CombatUI.Instance.WriteText("Begin match")),
+            Act.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
+            Act.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 1))
         );
-        Anim.Sequence(
-            Anim.Parallel(
-                Anim.Do(() => CombatUI.Instance.HideActionButtons()),
-                Anim.Do(() => CombatUI.Instance.WriteText($"{Player.username} goes to attack", delay: 0.01f, waitTime: 0)),
-                Anim.Do(() => Player.rigController.Move(Enemy.transform.position.z-1.5f))
+        Act.Sequence(
+            Act.Parallel(
+                Act.Do(() => CombatUI.Instance.HideActionButtons()),
+                Act.Do(() => CombatUI.Instance.WriteText($"{Player.username} goes to attack", delay: 0.01f, waitTime: 0)),
+                Act.Do(() => Player.rigController.Move(Enemy.transform.position.z-1.5f))
             ),
-            Anim.Parallel(
-                Anim.Do(() => CombatUI.Instance.WriteText($"{Player.username} attacks {Enemy.username}", delay: 0.01f, waitTime: 0)),
-                Anim.Do(() => AttackAnimation())
+            Act.Parallel(
+                Act.Do(() => CombatUI.Instance.WriteText($"{Player.username} attacks {Enemy.username}", delay: 0.01f, waitTime: 0)),
+                Act.Do(() => AttackAnimation())
             )
         );
-        Anim.Sequence(
-            Anim.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
-            Anim.Do(() => IdleAnimation(Player, Enemy, waitTime: 1))
+        Act.Sequence(
+            Act.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
+            Act.Do(() => IdleAnimation(Player, Enemy, waitTime: 1))
             //Anim.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController))
         );
         await AnimationManager.Instance.RunAnimations();
@@ -413,7 +403,6 @@ public class CombatManager : MonoBehaviour
 
     async UniTask AttackAnimation()
     {
-        Player.isPerformingAction = true;
         Player.animator.CrossFadeInFixedTime("Attack", 0.2f);
 
         while (Player.isPerformingAction)
@@ -424,8 +413,7 @@ public class CombatManager : MonoBehaviour
 
     async UniTask IdleAnimation(CharacterManager player, CharacterManager target, float waitTime = 0)
     {
-        player.isPerformingAction = true;
-        player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
+        //player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
         player.transform.LookAt(target.transform);
 
         await UniTask.Delay(

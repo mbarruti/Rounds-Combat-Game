@@ -49,6 +49,7 @@ MonoBehaviour:
     Name: 
   defaultPosition: {x: 0, y: 0, z: 0}
   expectedPosition: {x: 0, y: 0, z: 0}
+  animationReceiver: {fileID: 4928679758661635640}
   animator: {fileID: 8075410989873234463}
   weapon: {fileID: 11400000, guid: cd4568f0d3930bf4c807fe3b36880b29, type: 2}
   shield: {fileID: 11400000, guid: c710cbb5f50e6c1478a86e0bf347c38d, type: 2}
@@ -69,6 +70,7 @@ MonoBehaviour:
   parryChance: 0
   attackSO: {fileID: 11400000, guid: f95aeea4328545f4f8d00a1eeac44a35, type: 2}
   blockSO: {fileID: 11400000, guid: c902dbb0431c57341823e753d5e4fc69, type: 2}
+  isPerformingAction: 0
   state: 0
 --- !u!1001 &5826189796915844515
 PrefabInstance:
@@ -125,13 +127,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9034409121898502012, guid: d508f7b5e601b2542994402009c29087, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4928679758661635640}
   m_SourcePrefab: {fileID: 100100000, guid: d508f7b5e601b2542994402009c29087, type: 3}
 --- !u!4 &2806221225042630757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8515035406679363014, guid: d508f7b5e601b2542994402009c29087, type: 3}
   m_PrefabInstance: {fileID: 5826189796915844515}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3295056005274239711 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9034409121898502012, guid: d508f7b5e601b2542994402009c29087, type: 3}
+  m_PrefabInstance: {fileID: 5826189796915844515}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4928679758661635640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295056005274239711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9941f707373a8034c82d97bd6f676c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReceiver
 --- !u!95 &8075410989873234463 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2363078374718609340, guid: d508f7b5e601b2542994402009c29087, type: 3}

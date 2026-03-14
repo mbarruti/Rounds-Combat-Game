@@ -20,8 +20,8 @@ public class Charge : CharacterAction
         }
         else
         {
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{Player.username} keeps charging")
                 )
             );

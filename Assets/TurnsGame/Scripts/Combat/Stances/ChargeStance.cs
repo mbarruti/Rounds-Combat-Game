@@ -10,8 +10,8 @@ public class ChargeStance : Stance
     {
         if (Applied) return;
 
-        Anim.Sequence(
-            Anim.Do(() =>
+        Act.Sequence(
+            Act.Do(() =>
                 CombatUI.Instance.WriteText($"{Player.username} is charging an attack")
             )
         );

@@ -24,8 +24,8 @@ public class DamageBuffEffect : IEffect
         {
             user.activeBuffs.BonusDamage += Value;
 
-            Anim.Sequence(
-                Anim.Do(() =>
+            Act.Sequence(
+                Act.Do(() =>
                     CombatUI.Instance.WriteText($"{user.username} increases damage by {Value*100}%")
                 )
             );

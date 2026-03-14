@@ -99,9 +99,9 @@ public class CombatUI : MonoBehaviour
     {
         attackButton.SetActive(true);
         blockButton.SetActive(true);
-        weaponSpecialButton.SetActive(true);
-        weaponSpecialButton2.SetActive(true);
-        shieldSpecialButton.SetActive(true);
+        //weaponSpecialButton.SetActive(true);
+        //weaponSpecialButton2.SetActive(true);
+        //shieldSpecialButton.SetActive(true);
         nothingButton.SetActive(true);
         await UniTask.Delay(
             Mathf.RoundToInt(waitTime * 1000),
