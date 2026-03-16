@@ -23,11 +23,11 @@ public class Attack : CharacterAction
     {
         Player.ApplyEffects(ON_ATTACK);
 
-        float targetZ = Player.rigController.CalculateTargetZ(Target.expectedPosition.z);
-        if (targetZ != Player.expectedPosition.z) Player.expectedPosition.z = targetZ;
+        //float targetZ = Player.rigController.CalculateTargetZ(Target.expectedPosition.z);
+        //if (targetZ != Player.expectedPosition.z) Player.expectedPosition.z = targetZ;
 
         Act.Sequence(
-            Act.Do(() => Player.rigController.Move(targetZ)),
+            //Act.Do(() => Player.rigController.Move(targetZ)),
             Act.Do(() => Player.rigController.ActionAnimation("Attack", 0.4f))
         );
 

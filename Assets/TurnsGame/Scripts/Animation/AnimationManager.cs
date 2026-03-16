@@ -20,7 +20,7 @@ public class AnimationManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds a sequence of steps to the list
+    /// Creates a sequence of steps
     /// </summary>
     public static void Sequence(params AnimationStep[] steps)
     {
@@ -58,12 +58,6 @@ public class AnimationManager : MonoBehaviour
         if (CombatManager.Instance.state != CombatState.END)
             CombatManager.Instance.RoundStart();
     }
-
-    // private static IEnumerator ForceYield(IEnumerator coroutine)
-    // {
-    //     yield return null;
-    //     yield return coroutine;
-    // }
 
     // Helpers
 

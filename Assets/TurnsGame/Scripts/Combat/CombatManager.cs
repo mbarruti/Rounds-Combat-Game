@@ -242,9 +242,9 @@ public class CombatManager : MonoBehaviour
 
         Act.Sequence(
             Act.Parallel(
-                Act.Do(() => CombatUI.Instance.WriteText("A clash is happening!", waitTime: 0)),
-                Act.Do(() => Player.rigController.Move(playerOneTargetZ)),
-                Act.Do(() => Enemy.rigController.Move(playerTwoTargetZ))
+                Act.Do(() => CombatUI.Instance.WriteText("A clash is happening!", waitTime: 0))
+                //Act.Do(() => Player.rigController.Move(playerOneTargetZ)),
+                //Act.Do(() => Enemy.rigController.Move(playerTwoTargetZ))
             )
         );
 
@@ -270,8 +270,6 @@ public class CombatManager : MonoBehaviour
             (var counterWinner, var counterLoser) =
                 playerGain > enemyGain ? (Player, Enemy) : (Enemy, Player);
 
-            // CombatUI.AddAnimation(
-            //     CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!"));
             Act.Sequence(
                 Act.Do(() =>
                     CombatUI.Instance.WriteText($"{counterWinner.username} gets a counter!")

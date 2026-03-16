@@ -11,39 +11,12 @@ public class RigAnimationController
     Animator PlayerAnimator { get; set; }
     AnimatorTask Anim { get; set; }
     List<string> rigAnimationList = new();
-    UniTaskCompletionSource animationCompletionSource;
-    UniTaskCompletionSource frameCompletionSource;
-
-    public event Action OnFrame;
 
     public RigAnimationController(CharacterManager player, Animator playerAnimator)
     {
         Player = player;
         PlayerAnimator = playerAnimator;
         Anim = new(playerAnimator);
-    }
-
-    // public void ReturnToIdle()
-    // {
-    //     IdleAnimation()
-    // }
-
-    public void DeleteFrameEvents()
-    {
-        OnFrame = null;
-    }
-
-    public void OnAnimationFrame()
-    {
-        //OnFrame?.Invoke();
-        frameCompletionSource?.TrySetResult();
-        frameCompletionSource = null;
-    }
-
-    public void OnAnimationFinished()
-    {
-        animationCompletionSource?.TrySetResult();
-        animationCompletionSource = null;
     }
 
     public async UniTask Move(float targetZ, float waitTime = 0f)
@@ -73,12 +46,6 @@ public class RigAnimationController
         }
         Player.transform.position = targetPosition;
         PlayerAnimator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
-
-        // if (rigAnimationList.Count == 1)
-        //     PlayerAnimator.Play("DefaultIdle");
-
-        // if (rigAnimationList.Count > 0)
-        //     rigAnimationList.RemoveAt(0);
 
         if (waitTime > 0f)
         {
