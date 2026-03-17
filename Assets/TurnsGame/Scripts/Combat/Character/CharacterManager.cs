@@ -200,23 +200,22 @@ public class CharacterManager : MonoBehaviour
 
         if (currentHP != previousHP)
         {
-            // Action onFrameHandler = () =>
-            // {
-            //     CombatUI.Instance
-            //     .UpdateHPText(this, currentHP)
-            //     .Forget();
-            // };
-            // //tiene que ser el rigcontroller del player contrario rigController.OnFrame += onFrameHandler;
             Act.Sequence(
-                Act.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP))
+                Act.Do(() => rigController.ActionAnimation("Hit"))
+/*                 Act.Parallel(
+                    Act.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP)),
+                    Act.Do(() => rigController.ActionAnimation("Hit"))
+                ) */
             );
-            // {
-            //    void HandleFrame()
-            //     {
-            //         CombatUI.Instance.UpdateHPText(this, currentHP).Forget();
-            //     }
-            //     rigController.OnFrame += HandleFrame;
-            // }
+
+            // TESTING PURPOSESS (DELETE LATER)
+/*             Act.Sequence(
+                Act.Do(() => rigController.ActionAnimation("Parry", trigger: 0.3f))
+            );
+
+            Act.Sequence(
+                Act.Do(() => rigController.ActionAnimation("Block"))
+            ); */
         }
     }
 
@@ -227,7 +226,7 @@ public class CharacterManager : MonoBehaviour
         {
             CrushedEffect crushedEffect = new();
             AddEffect(crushedEffect);
-            //CombatUI.AddAnimation(CombatUI.Instance.WriteText($"{username} got crushed!"));
+
             Act.Sequence(
                 Act.Do(() => CombatUI.Instance.WriteText($"{username} got crushed!"))
             );

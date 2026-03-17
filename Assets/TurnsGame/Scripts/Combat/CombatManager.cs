@@ -69,7 +69,7 @@ public class CombatManager : MonoBehaviour
         Player.transform.LookAt(Enemy.transform);
         Enemy.transform.LookAt(Player.transform);
 
-        Act.Sequence(Act.Do(() => CombatUI.Instance.WriteText("Begin match")));
+        //Act.Sequence(Act.Do(() => CombatUI.Instance.WriteText("Begin match")));
         PreRound();
     }
 
@@ -113,7 +113,7 @@ public class CombatManager : MonoBehaviour
         Enemy.actionController.SetAvailableActions();
 
         Act.Sequence(
-            Act.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}")),
+            Act.Do(() => CombatUI.Instance.WriteText($"Round {roundNumber}", waitTime: 0.5f)),
             Act.Do(() => CombatUI.Instance.ShowActionButtons(Player.actionController, waitTime: 0))
         );
         //await AnimationLoop();
@@ -314,12 +314,12 @@ public class CombatManager : MonoBehaviour
 /*         if (Player.expectedPosition != Player.defaultPosition ||
             Enemy.expectedPosition != Enemy.defaultPosition)
         { */
-        Act.Sequence(
+/*         Act.Sequence(
             Act.Parallel(
                 Act.Do(() => Player.rigController.Move(Player.defaultPosition.z)),
                 Act.Do(() => Enemy.rigController.Move(Enemy.defaultPosition.z))
             )
-        );
+        ); */
 /*         } */
 
         // TODO: perhaps an event for this

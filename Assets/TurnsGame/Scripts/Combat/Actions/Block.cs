@@ -41,8 +41,12 @@ public class Block : CharacterAction
         if (IsParry(Player.parryChance))
         {
             Act.Sequence(
-                Act.Do(() =>
-                    CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
+                Act.Parallel(
+/*                     Act.Do(() =>
+                        CombatUI.Instance.WriteText($"{Player.username} parries {target.username}!")
+                    ), */
+                    Act.Do(() => Player.rigController.ActionAnimation("Parry", trigger: 0.3f)),
+                    Act.Do(() => Target.rigController.ActionAnimation("Counter", trigger: 0.5f))
                 )
             );
 
@@ -61,7 +65,7 @@ public class Block : CharacterAction
                         CombatUI.Instance.WriteText(
                             $"{Player.username} blocks the incoming attack", waitTime: 0)
                     ),
-                    Act.Do(() => Player.rigController.ActionAnimation("Block", 1f))
+                    Act.Do(() => Player.rigController.ActionAnimation("Block"))
                 )
             );
 

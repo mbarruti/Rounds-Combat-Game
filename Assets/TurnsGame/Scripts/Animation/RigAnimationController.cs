@@ -81,39 +81,34 @@ public class RigAnimationController
         );
     }
 
-    public async UniTask ActionAnimation(string anim, float trigger)
+    public async UniTask ActionAnimation(string anim, float trigger = 1f)
     {
-/*         Player.animator.CrossFadeInFixedTime(anim, 0.2f);
-
-        // Esperar a que el animator entre en el estado
-        await UniTask.WaitUntil(() =>
-            Player.animator.GetCurrentAnimatorStateInfo(0).IsName(anim)
-        );
-
-        _ = UniTask.Create(async () =>
-        {
-            await UniTask.WaitUntil(() =>
-                Player.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f
-            );
-
-            if (Player.animator.GetCurrentAnimatorStateInfo(0).IsName(anim))
-                Player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
-        });
-
-        // Esperar a que termine la animación
-        await UniTask.WaitUntil(() =>
-            Player.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animEndTime
-        ); */
+        // TODO: FIND A WAY TO WAIT FOR AN ANIMATION TO FINISH (IF REQUIRED) BEFORE PLAYING NEXT ONE
         var actionAnim = Anim.Play(anim);
-        _ = UniTask.Create(async () =>
+
+        if (trigger < 1f)
+        {
+            Debug.Log($"{Player.username} enters in {anim}");
+            _ = UniTask.Create(async () =>
+            {
+                await actionAnim.End();
+
+                var state = Player.animator.GetCurrentAnimatorStateInfo(0);
+
+                if (!PlayerAnimator.IsInTransition(0) && state.IsName(anim))
+                    PlayerAnimator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
+
+            });
+            await actionAnim.At(trigger);
+        }
+        else
         {
             await actionAnim.End();
 
             var state = Player.animator.GetCurrentAnimatorStateInfo(0);
 
-            if (state.IsName(anim))
-                Player.animator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
-        });
-        if (trigger != 1f) await actionAnim.At(trigger);
+            if (!PlayerAnimator.IsInTransition(0) && state.IsName(anim))
+                PlayerAnimator.CrossFadeInFixedTime("DefaultIdle", 0.2f);
+        }
     }
 }

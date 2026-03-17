@@ -28,7 +28,7 @@ public class Attack : CharacterAction
 
         Act.Sequence(
             //Act.Do(() => Player.rigController.Move(targetZ)),
-            Act.Do(() => Player.rigController.ActionAnimation("Attack", 0.4f))
+            Act.Do(() => Player.rigController.ActionAnimation("Attack", trigger: 0.4f))
         );
 
         // TODO: think of a way to Invoke event one time inside the for
@@ -47,15 +47,6 @@ public class Attack : CharacterAction
                 if (!Mathf.Approximately(totalDamage, 0))
                 {
                     Target.TakeDamage(totalDamage);
-
-/*                     Action onFrameHandler = () =>
-                    {
-                        Debug.Log("hola");
-                        CombatUI.Instance
-                        .UpdateHPText(Target, Target.currentHP)
-                        .Forget();
-                    };
-                    Player.rigController.OnFrame += onFrameHandler; */
                 }
             }
             else
