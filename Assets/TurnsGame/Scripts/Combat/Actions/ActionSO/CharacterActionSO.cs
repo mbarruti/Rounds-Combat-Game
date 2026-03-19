@@ -1,5 +1,6 @@
 using System;
 using MyProject;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static MyProject.Constants;
@@ -28,7 +29,7 @@ public abstract class CharacterActionSO : ScriptableObject
     public bool CanCreateAction(CharacterManager player)
     {
         if (!OnCanCreate(player)) return false;
-        if (player.shieldMeter.GetAvailableCharges() <= MeterCost) return false;
+        if (MeterCost >= 0 && player.shieldMeter.GetAvailableCharges() <= MeterCost) return false;
         return true;
     }
 }

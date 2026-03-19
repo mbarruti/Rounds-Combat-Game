@@ -16,5 +16,5 @@ MonoBehaviour:
   <Type>k__BackingField: 0
   <Lead>k__BackingField: 3
   <CurrentState>k__BackingField: 1
-  <MeterCost>k__BackingField: 0
+  <MeterCost>k__BackingField: -1
   <CanRecoverMeter>k__BackingField: 1

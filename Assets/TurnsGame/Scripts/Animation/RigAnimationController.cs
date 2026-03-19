@@ -88,7 +88,6 @@ public class RigAnimationController
 
         if (trigger < 1f)
         {
-            Debug.Log($"{Player.username} enters in {anim}");
             _ = UniTask.Create(async () =>
             {
                 await actionAnim.End();
