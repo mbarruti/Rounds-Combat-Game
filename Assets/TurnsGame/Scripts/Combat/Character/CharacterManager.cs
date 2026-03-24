@@ -173,8 +173,6 @@ public class CharacterManager : MonoBehaviour
         expectedPosition = defaultPosition;
 
         shieldMeterUI.SetChargesCopy();
-
-        //rigController.DeleteFrameEvents();
     }
 
     public void PerformAction(CharacterManager target)
@@ -201,13 +199,12 @@ public class CharacterManager : MonoBehaviour
         if (currentHP != previousHP)
         {
             Act.Sequence(
-                Act.Do(() => rigController.ActionAnimation("Hit"))
-/*                 Act.Parallel(
-                    Act.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP)),
-                    Act.Do(() => rigController.ActionAnimation("Hit"))
-                ) */
+                /* Act.Do(() => rigController.ActionAnimation("Hit")) */
+                Act.Parallel(
+                    Act.Do(() => CombatUI.Instance.UpdateHPText(this, currentHP, waitTime: 0)),
+                    Act.Do(() => rigController.ActionAnimation("Hit", trigger: 0.6f))
+                )
             );
-
             // TESTING PURPOSESS (DELETE LATER)
 /*             Act.Sequence(
                 Act.Do(() => rigController.ActionAnimation("Parry", trigger: 0.3f))
@@ -221,6 +218,8 @@ public class CharacterManager : MonoBehaviour
 
     public void TakeMeterDamage(float meterDamage)
     {
+        if (meterDamage <= 0) return;
+
         shieldMeter.LoseCharges(meterDamage);
         if (shieldMeter.GetCurrentCharges() <= 0)
         {
@@ -228,7 +227,17 @@ public class CharacterManager : MonoBehaviour
             AddEffect(crushedEffect);
 
             Act.Sequence(
-                Act.Do(() => CombatUI.Instance.WriteText($"{username} got crushed!"))
+                Act.Parallel(
+                    Act.Do(() => CombatUI.Instance.WriteText($"{username} got crushed!", waitTime: 0.5f)),
+                    Act.Do(() => rigController.ActionAnimation("Counter"))
+                ),
+                Act.Do(() => rigController.IdleAnimation("CrushedIdle"))
+            );
+        }
+        else
+        {
+            Act.Sequence(
+                Act.Do(() => rigController.ActionAnimation("Block"))
             );
         }
     }

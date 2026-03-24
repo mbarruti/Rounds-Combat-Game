@@ -59,15 +59,15 @@ public class Block : CharacterAction
         }
         else
         {
-            Act.Sequence(
+/*             Act.Sequence(
                 Act.Parallel(
                     Act.Do(() =>
                         CombatUI.Instance.WriteText(
                             $"{Player.username} blocks the incoming attack", waitTime: 0)
-                    ),
-                    Act.Do(() => Player.rigController.ActionAnimation("Block"))
+                    )
+                    //Act.Do(() => Player.rigController.ActionAnimation("Block"))
                 )
-            );
+            ); */
 
             targetAttack.prowessBonus = BLOCK_PROWESS_LOSS;
         }
@@ -79,15 +79,4 @@ public class Block : CharacterAction
         float randomValue = Random.Range(0f, 1f);
         return parryChance >= randomValue;
     }
-
-    // private async UniTask BlockAnimation()
-    // {
-    //     Player.isPerformingAction = true;
-    //     Player.animator.CrossFadeInFixedTime("Block", 0.2f);
-
-    //     while (Player.isPerformingAction)
-    //     {
-    //         await UniTask.Yield(PlayerLoopTiming.Update);
-    //     }
-    // }
 }

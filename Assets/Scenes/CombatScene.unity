@@ -1144,7 +1144,7 @@ PrefabInstance:
     - target: {fileID: 488297555584424816, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
       propertyPath: shield
       value: 
-      objectReference: {fileID: 11400000, guid: 0f3d78779c21cba46967af906b04c362, type: 2}
+      objectReference: {fileID: 11400000, guid: c710cbb5f50e6c1478a86e0bf347c38d, type: 2}
     - target: {fileID: 557162274663391888, guid: 69cf1b17e47afe94199354ab363b0d61, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -0.0002501205

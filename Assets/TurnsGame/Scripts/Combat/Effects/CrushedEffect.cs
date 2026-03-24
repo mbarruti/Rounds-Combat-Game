@@ -18,7 +18,7 @@ public class CrushedEffect : IEffect
 
         Act.Sequence(
             Act.Do(() =>
-                CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0)
+                CombatUI.Instance.WriteText($"{user.username} can't do anything", waitTime: 0.5f)
             )
         );
 
@@ -27,6 +27,11 @@ public class CrushedEffect : IEffect
 
     public void Consume(CharacterManager user, CharacterManager target)
     {
-        // Uses++;
+        if (Uses == MaxUses)
+        {
+            Act.Sequence(
+                Act.Do(() => user.rigController.IdleAnimation("DefaultIdle"))
+            );
+        }
     }
 }
